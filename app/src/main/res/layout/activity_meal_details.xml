@@ -1,0 +1,139 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="aterbo.MemoryBite.MealDetails">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/primary_photo"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_photo_height"
+                android:layout_marginBottom="6dp"
+                android:scaleType="centerCrop"/>
+
+            <LinearLayout style="@style/DetailsBlock">
+
+                <TextView
+                    android:id="@+id/restaurant_name_details"
+                    style="@style/DetailsTextCentered"
+                    android:textSize="@dimen/large_text" />
+
+                <TextView
+                    android:id="@+id/date_details"
+                    style="@style/DetailsTextCentered" />
+
+                <TextView
+                    android:id="@+id/location_details"
+                    style="@style/DetailsTextCentered" />
+
+                <TextView
+                    android:id="@+id/cuisine_type_details"
+                    style="@style/DetailsTextCentered" />
+
+                <TextView
+                    android:id="@+id/dined_with_details"
+                    style="@style/DetailsTextCentered" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DetailsBlock">
+
+                <TextView
+                    android:id="@+id/appetizers_title"
+                    style="@style/DetailsLabel"
+                    android:text="@string/appetizers" />
+
+                <TextView
+                    android:id="@+id/appetizers_details"
+                    style="@style/DetailsText" />
+
+                <TextView
+                    android:id="@+id/main_course_title"
+                    style="@style/DetailsLabel"
+                    android:text="@string/main_courses" />
+
+                <TextView
+                    android:id="@+id/main_course_details"
+                    style="@style/DetailsText" />
+
+                <TextView
+                    android:id="@+id/dessert_title"
+                    style="@style/DetailsLabel"
+                    android:text="@string/desserts" />
+
+                <TextView
+                    android:id="@+id/dessert_details"
+                    style="@style/DetailsText" />
+
+                <TextView
+                    android:id="@+id/drinks_title"
+                    style="@style/DetailsLabel"
+                    android:text="@string/drinks" />
+
+                <TextView
+                    android:id="@+id/drinks_details"
+                    style="@style/DetailsText" />
+
+                <TextView
+                    android:id="@+id/general_notes_title"
+                    style="@style/DetailsLabel"
+                    android:text="@string/notes" />
+
+                <TextView
+                    android:id="@+id/general_notes_details"
+                    style="@style/DetailsText" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/DetailsBlock"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/atmosphere_details"
+                    style="@style/DetailsText"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/price_details"
+                    style="@style/DetailsText"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/photoGroup"
+                style="@style/DetailsBlock"
+                android:visibility="gone">
+
+                <aterbo.MemoryBite.FullHeightGridView
+                    android:id="@+id/meal_details_photo_grid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="5dp"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="5dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

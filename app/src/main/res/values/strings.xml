@@ -1,0 +1,142 @@
+<resources>
+    <string name="app_name">Memory Bite</string>
+    <string name="email">"MemoryBiteApp@gmail.com"</string>
+    <string name="version_number">Version: 1.0</string>
+    <string name="release_date">Release Date: October 1, 2015</string>
+    <string name="title_activity_open_screen">Memory Bite</string>
+    <string name="title_activity_list_of_meals">My Meal Journal</string>
+    <string name="title_activity_meal_details">Meal Details</string>
+    <string name="title_activity_input_meal">Enter Meal Details</string>
+
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="location">Location</string>
+    <string name="cuisine_type">Cuisine Type</string>
+    <string name="dined_with">Dined with</string>
+
+    <string name="appetizers">Appetizers</string>
+    <string name="main_courses">Main Courses</string>
+    <string name="desserts">Desserts</string>
+    <string name="drinks">Drinks</string>
+    <string name="notes">Notes</string>
+    <string name="style">Style</string>
+
+    <string name="atmosphere">Atmosphere</string>
+    <string name="atmosphere_1">Shack</string>
+    <string name="atmosphere_2">Diner</string>
+    <string name="atmosphere_3">Casual</string>
+    <string name="atmosphere_4">Dressy</string>
+    <string name="atmosphere_5">White Linen</string>
+
+    <string name="price">Price</string>
+    <string name="price_1">$</string>
+    <string name="price_2">$$</string>
+    <string name="price_3">$$$</string>
+    <string name="price_4">$$$$</string>
+    <string name="price_5">$$$$$</string>
+
+    <string name="save">Save</string>
+    <string name="saved_meal_message">This meal has been saved!</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="add_new_meal">Add Meal</string>
+    <string name="edit_last_meal">Edit Last Meal</string>
+    <string name="view_journal">View Journal</string>
+    <string name="add_photo">Add photo!</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="about">About</string>
+
+    <string name="ok">OK!</string>-
+
+
+    <string name="share">Share</string>
+    <string name="share_subject">Someone wants to share a Memory Bite with you from</string>
+    <string name="share_body_intro">Check out this meal I had!</string>
+    <string name="share_body_closing">If you want to start your own food journal and share memories,
+    check out www.MemoryBite.com or at the Google Play Store.</string>
+
+    <string name="send_to_chooser">Share using&#8230;</string>
+    <string name="date">Date</string>
+
+    <string name="dialog_delete_title">Delete?</string>
+    <string name="dialog_delete_meal">Are you sure you wish to delete this meal from your journal?
+        \nThis can\'t be undone and food can\'t be uneaten!</string>
+
+    <string name="dialog_about_body">I love food and I love eating new things in new places. I
+        still can\'t believe my luck that I spent the better part of three years living in the
+        wonderful city of New Orleans, sleeping on an air mattress so I could spend all of my money
+        eating interesting meals like
+        gas station boudin or Commander\'s Palace turtle soup.
+        \n
+        \nUnfortunately, as a side effect of this life-span shortening life style (and possibly
+        from IPAs, sazeracs, and red wine) I found that I was having a tough time keeping it all
+        straight. After a point, there\'s just no way you can remember what was when and where with
+        who. Since I think that eating good food, especially in the company of good people, is one
+        of the greatest gifts you can ask for in life, forgetting these meals is a true sin to me.
+        \n
+        \nI made a few valiant efforts at carrying a notebook, but I was always caught without it.
+        I tried tracking meals and photos in apps meant for general note taking, but it is slow,
+        cumbersome, and clunky. I wanted a better way. And, since I no longer have the distraction
+        of New Orleans food and nightlife and I might be mildly obsessive when I have projects in
+        mind, this is my attempt at a better way of remembering meals.
+        \n
+        \nThis program is a whole hearted effort to solve an admittedly first world problem and
+        get a chance to learn some new skills along the way. I am not a programmer by education or
+        occupation, but I have used this app as a proving ground to learn. I have attempted to make
+        a solid, usable product that I can build and improve on in future versions. Although I have
+        tested it for stability and usability concerns, there is a chance you might find a few bugs
+        and glitches here and there. Please, let me know what you see and I\'ll do my best to
+        correct them. Along with this, I will be updating and improving the user interface to make
+        it as efficient as possible. And hopefully prettier, too.
+        \n
+        \nNow that I have this tool that I wanted, I no longer live in New Orleans and I try to
+        spend some money on things other than restaurants, things like new clothes and actual
+        furniture. Even though I may be missing a few meals from my journal, I
+        hope it\'s something you find useful.
+        \n
+        \nPlease let me know your thoughts, questions, comments, or complaints.
+        \nAndy Terbovich
+        \n
+        \n
+        \n
+        \nSpecial thanks to:
+        \nAmtrak for free WiFi through the barren desert of California\'s Central Valley.
+        \nUdacity.com and Google for providing such incredible training materials.
+        \nThe community at StackOverflow.com. I don\'t know who you are or why you answer all the
+        programming questions you do, but keep doing it.
+        \nZack for helping me with a logo.
+        \nMy family for teaching me the value of a good meal is not just the food.
+        \n
+        \n
+        \nUsing Universal Image Loader &#169; 2011-2015 Sergey Tarasevich
+        \n
+        \n
+        &#169; 2015, Andy Terbovich. All rights reserved
+    </string>
+    <string name="on">on</string>
+
+
+    <string name="help">What is this?</string>
+    <string name="dialog_help_header">How to track a Memory Bite</string>
+    <string name="dialog_help_body">Memory Bite is a quick, lightweight food journal which tracks
+        photos and notes of different meals, lets you quickly flip through your previous meals, and
+        share with friends and family. It is intended to be fast and unobtrusive so that you can
+        make entries without interrupting your meal.
+        \n
+        \nNow get started!
+    </string>
+    <string name="got_it">Got it!</string>
+
+    <string name="comments_suggestions">Comments or suggestions?</string>
+    <string name="photo_removed">POOF! Photo removed!</string>
+
+    <string name="cant_add_photos">Can only attach 6 photos!</string>
+    <string name="no_data_no_save_message">But you haven\'t eaten anything?
+        \nEnter some data and try again!</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="select_file">Select File</string>
+
+</resources>

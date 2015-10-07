@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="aterbo.MemoryBite.ListOfMeals">
+
+    <ImageView
+        android:id="@+id/primary_photo"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_photo_height"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ramen"/>
+
+
+    <ListView
+        android:id="@+id/meal_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="6dp">
+
+    </ListView>
+
+</LinearLayout>

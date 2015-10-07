@@ -1,0 +1,304 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".AddNewRestaurant">
+
+        <LinearLayout style="@style/DetailsBlock">
+
+            <TextView
+                android:id="@+id/label_restaurant_name"
+                style="@style/InputLabel"
+                android:text="@string/restaurant_name" />
+
+            <EditText
+                android:id="@+id/restaurant_name_input"
+                style="@style/InputText"
+                android:ellipsize="none"
+                android:inputType="textCapWords"
+                android:singleLine="false" />
+
+            <TextView
+                android:id="@+id/label_meal_date"
+                style="@style/InputLabel"
+                android:text="@string/date" />
+
+            <EditText
+                android:id="@+id/meal_date"
+                style="@style/InputText"
+                android:focusable="false"
+                android:inputType="date" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/DetailsBlock">
+
+            <TextView
+                android:id="@+id/label_location"
+                style="@style/InputLabel"
+                android:text="@string/location" />
+
+            <EditText
+                android:id="@+id/location_input"
+                style="@style/InputText"
+                android:inputType="textCapWords" />
+
+            <TextView
+                android:id="@+id/label_cuisine_type"
+                style="@style/InputLabel"
+                android:text="@string/cuisine_type" />
+
+            <EditText
+                android:id="@+id/cuisine_type_input"
+                style="@style/InputText"
+                android:inputType="textCapWords" />
+
+            <TextView
+                android:id="@+id/label_dined_with"
+                style="@style/InputLabel"
+                android:text="@string/dined_with" />
+
+            <EditText
+                android:id="@+id/dined_with_input"
+                style="@style/InputText"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/DetailsBlock">
+
+            <TextView
+                android:id="@+id/label_appetizers"
+                style="@style/InputLabel"
+                android:text="@string/appetizers" />
+
+            <EditText
+                android:id="@+id/appetizers_input"
+                style="@style/InputText"
+                android:gravity="top"
+                android:inputType="textCapSentences"
+                android:minHeight="80dp" />
+
+            <TextView
+                android:id="@+id/label_main_course"
+                style="@style/InputLabel"
+                android:text="@string/main_courses" />
+
+            <EditText
+                android:id="@+id/main_courses_input"
+                style="@style/InputText"
+                android:gravity="top"
+                android:inputType="textCapSentences"
+                android:minHeight="80dp" />
+
+
+            <TextView
+                android:id="@+id/label_desserts"
+                style="@style/InputLabel"
+                android:text="@string/desserts" />
+
+            <EditText
+                android:id="@+id/desserts_input"
+                style="@style/InputText"
+                android:gravity="top"
+                android:inputType="textCapSentences"
+                android:minHeight="80dp" />
+
+            <TextView
+                android:id="@+id/label_drinks"
+                style="@style/InputLabel"
+                android:text="@string/drinks" />
+
+            <EditText
+                android:id="@+id/drinks_input"
+                style="@style/InputText"
+                android:gravity="top"
+                android:inputType="textCapSentences"
+                android:minHeight="80dp" />
+
+            <TextView
+                android:id="@+id/label_notes"
+                style="@style/InputLabel"
+                android:text="@string/notes" />
+
+            <EditText
+                android:id="@+id/notes_input"
+                style="@style/InputText"
+                android:gravity="top"
+                android:inputType="textCapSentences"
+                android:minHeight="80dp" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/DetailsBlock">
+
+            <TextView
+                android:id="@+id/label_atmosphere"
+                style="@style/InputLabel"
+                android:text="@string/atmosphere" />
+
+            <RadioGroup
+                android:id="@+id/atmosphere_radio"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/atmosphere_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/atmosphere_1" />
+
+                <RadioButton
+                    android:id="@+id/atmosphere_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/atmosphere_2" />
+
+                <RadioButton
+                    android:id="@+id/atmosphere_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/atmosphere_3" />
+
+                <RadioButton
+                    android:id="@+id/atmosphere_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/atmosphere_4" />
+
+                <RadioButton
+                    android:id="@+id/atmosphere_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/atmosphere_5" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/label_price"
+                style="@style/InputLabel"
+                android:text="@string/price" />
+
+            <RadioGroup
+                android:id="@+id/price_radio"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/price_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/price_1" />
+
+                <RadioButton
+                    android:id="@+id/price_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/price_2" />
+
+                <RadioButton
+                    android:id="@+id/price_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/price_3" />
+
+                <RadioButton
+                    android:id="@+id/price_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/price_4" />
+
+                <RadioButton
+                    android:id="@+id/price_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="@string/price_5" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/photoGroup"
+            style="@style/DetailsBlock"
+            android:visibility="gone">
+
+            <aterbo.MemoryBite.FullHeightGridView
+                android:id="@+id/meal_input_photo_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:horizontalSpacing="5dp"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="5dp" />
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/DetailsBlock">
+
+            <TextView
+                android:id="@+id/photo_button"
+                android:onClick="addPictureButtonClick"
+                android:text="@string/add_photo"
+                style="@style/Button" />
+
+            <TextView
+                android:id="@+id/save_button"
+                style="@style/Button"
+                android:onClick="saveMeal"
+                android:text="@string/save" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,22 @@
+<resources>
+
+    <color name="main_background">#303030</color>
+    <color name="card_background">#424242</color>
+    <color name="primary_green">#638034</color>
+    <color name="accent_blue">#102B69</color>
+    <color name="primary_green_darker">#3d552a</color>
+    <color name="secondary_text">#CCFFFFFF</color>
+
+    <color name="brighter_text">#e1ffffff</color>
+
+    <!--Retro colors from Colourlovers.com/palette/433420/Mediterrasian -->
+    <color name="faded_white">#75FFFFFF</color>
+    <color name="cl_tan">#EBE18C</color>
+    <color name="cl_tan_secondary">#70EBE18C</color>
+    <color name="cl_tan_hint">#30EBE18C</color>
+    <color name="cl_red">#DC3F1C</color>
+    <color name="cl_aqua">#448D7A</color>
+    <color name="cl_copper">#70D8A027</color>
+    <color name="cl_green">#88A764</color>
+ <color name="cl_background">#52534E</color>
+</resources>

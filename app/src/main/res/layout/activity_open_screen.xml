@@ -1,0 +1,64 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="aterbo.MemoryBite.OpenScreen">
+
+        <Button
+            android:id="@+id/add_new_meal_button"
+            style="@style/MainMenuButton"
+            android:layout_marginTop="75dp"
+            android:onClick="startNewMeal"
+            android:text="@string/add_new_meal" />
+
+        <Button
+            android:id="@+id/edit_last_meal_button"
+            style="@style/MainMenuButton"
+            android:onClick="editLastMeal"
+            android:text="@string/edit_last_meal" />
+
+        <Button
+            android:id="@+id/view_journal_button"
+            style="@style/MainMenuButton"
+            android:onClick="goToViewList"
+            android:text="@string/view_journal" />
+
+
+        <Button
+            android:id="@+id/help_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:gravity="center|bottom"
+            android:onClick="helpButtonClick"
+            android:textAllCaps="false"
+            android:text="@string/help"
+            android:textColor="@color/secondary_text" />
+
+        <Button
+            android:id="@+id/feedback_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:onClick="commentsButtonClick"
+            android:textAllCaps="false"
+            android:text="@string/comments_suggestions"
+            android:textColor="@color/secondary_text" />
+
+    </LinearLayout>
+
+</ScrollView>

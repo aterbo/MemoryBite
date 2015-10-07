@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="aterbo.MemoryBite">
+
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:name=".GlobalState">
+        <activity
+            android:name="aterbo.MemoryBite.InputMeal"
+            android:label="@string/title_activity_input_meal"
+            android:hardwareAccelerated="true">
+        </activity>
+        <activity
+            android:name="aterbo.MemoryBite.OpenScreen"
+            android:label="@string/title_activity_open_screen"
+            android:hardwareAccelerated="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="aterbo.MemoryBite.ListOfMeals"
+            android:label="@string/title_activity_list_of_meals"
+            android:hardwareAccelerated="true"
+            android:parentActivityName=".OpenScreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="aterbo.MemoryBite.OpenScreen" />
+        </activity>
+        <activity
+            android:name="aterbo.MemoryBite.MealDetails"
+            android:label="@string/title_activity_meal_details"
+            android:hardwareAccelerated="true"
+            android:parentActivityName="aterbo.MemoryBite.ListOfMeals">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="aterbo.MemoryBite.ListOfMeals" />
+        </activity>
+    </application>
+
+</manifest>

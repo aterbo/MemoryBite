@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".AddNewRestaurant">
+    <item
+        android:id="@+id/view_journal_menu"
+        android:orderInCategory="80"
+        android:title="@string/view_journal"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/about_menu"
+        android:orderInCategory="90"
+        android:title="@string/about"
+        app:showAsAction="never" />
+</menu>
