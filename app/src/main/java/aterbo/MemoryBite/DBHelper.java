@@ -201,7 +201,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + DBContract.MealDBTable._ID + " FROM " + DBContract.MealDBTable.MEAL_TABLE;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(maxQuery, null);
-        int maxId = 0;
+        int maxId = 0; //set to 0. if 0 is returned, no meal found?
         try {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();

@@ -1,6 +1,5 @@
 package aterbo.MemoryBite;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -10,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class OpenScreen extends ActionBarActivity {
@@ -48,11 +46,7 @@ public class OpenScreen extends ActionBarActivity {
                 startActivity(newMealIntent);
                 return true;
             case R.id.edit_last_entry_menu:
-                DBHelper db = new DBHelper(this);
-                int maxId = db.getMaxMealId();
-                Intent editLastIntent = new Intent(getApplicationContext(), InputMeal.class)
-                        .putExtra(Intent.EXTRA_TEXT, maxId);
-                startActivity(editLastIntent);
+                editLastMeal();
                 return true;
             case R.id.view_journal_menu:
                 Intent viewJournalIntent = new Intent(this, ListOfMeals.class);
@@ -77,13 +71,25 @@ public class OpenScreen extends ActionBarActivity {
     //onClick of Edit Last Meal button
     // 1. get count of all meals
     //2. Call edit on that database item.
-    public void editLastMeal(View view) {
+    public void editLastMealClick(View view) {
+        editLastMeal();
+    }
+
+    public void editLastMeal(){
         DBHelper db = new DBHelper(this);
         int maxId = db.getMaxMealId();
-        Intent intent = new Intent(getApplicationContext(), InputMeal.class)
-                .putExtra(Intent.EXTRA_TEXT, maxId);
-        startActivity(intent);
+
+        //test if 0 is returned, showing no meals entered. if so, toast!!
+        if (maxId == 0){
+            Toast.makeText(this, getResources().getString(R.string.no_meals), Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(getApplicationContext(), InputMeal.class)
+                    .putExtra(Intent.EXTRA_TEXT, maxId);
+            startActivity(intent);
+        }
     }
+
+
 
     //onClick of List Button
     public void goToViewList(View view) {

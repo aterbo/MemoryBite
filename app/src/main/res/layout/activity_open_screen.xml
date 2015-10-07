@@ -23,7 +23,7 @@
         <Button
             android:id="@+id/edit_last_meal_button"
             style="@style/MainMenuButton"
-            android:onClick="editLastMeal"
+            android:onClick="editLastMealClick"
             android:text="@string/edit_last_meal" />
 
         <Button

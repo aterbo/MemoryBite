@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -100,11 +101,7 @@ public class MealDetails extends ActionBarActivity {
                 startActivity(newMealIntent);
                 return true;
             case R.id.edit_last_entry_menu:
-                DBHelper db = new DBHelper(this);
-                int maxId = db.getMaxMealId();
-                Intent editLastIntent = new Intent(getApplicationContext(), InputMeal.class)
-                        .putExtra(Intent.EXTRA_TEXT, maxId);
-                startActivity(editLastIntent);
+                editLastMeal();
                 return true;
             case R.id.view_journal_menu:
                 Intent viewJournalIntent = new Intent(this, ListOfMeals.class);
@@ -252,6 +249,20 @@ public class MealDetails extends ActionBarActivity {
 
 
             return alertDialogBuilder.create();
+        }
+    }
+
+    public void editLastMeal(){
+        DBHelper db = new DBHelper(this);
+        int maxId = db.getMaxMealId();
+
+        //test if 0 is returned, showing no meals entered. if so, toast!!
+        if (maxId == 0){
+            Toast.makeText(this, getResources().getString(R.string.no_meals), Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(getApplicationContext(), InputMeal.class)
+                    .putExtra(Intent.EXTRA_TEXT, maxId);
+            startActivity(intent);
         }
     }
 }
