@@ -10,11 +10,10 @@
     tools:context="aterbo.MemoryBite.ListOfMeals">
 
     <ImageView
-        android:id="@+id/primary_photo"
+        android:id="@+id/header_photo"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_photo_height"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ramen"/>
+        android:scaleType="centerCrop"/>
 
 
     <ListView

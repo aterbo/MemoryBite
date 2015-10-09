@@ -137,8 +137,8 @@ public class MealDetails extends ActionBarActivity {
 
             //Display title using UIL
             ImageLoader.getInstance().displayImage("file://" + photos.get(0).getPhotoFilePath(),
-                    (ImageView) findViewById(R.id.primary_photo));
-            ((ImageView) findViewById(R.id.primary_photo)).setVisibility(View.VISIBLE);
+                    (ImageView) findViewById(R.id.header_photo));
+            ((ImageView) findViewById(R.id.header_photo)).setVisibility(View.VISIBLE);
 
             //Set photo grid
             setPhotosToGridView();

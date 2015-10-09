@@ -20,7 +20,7 @@
 
 
             <ImageView
-                android:id="@+id/primary_photo"
+                android:id="@+id/header_photo"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/top_photo_height"
                 android:layout_marginBottom="6dp"

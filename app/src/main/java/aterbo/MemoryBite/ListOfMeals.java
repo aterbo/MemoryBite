@@ -3,6 +3,8 @@ package aterbo.MemoryBite;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.util.List;
+import java.util.Random;
 
 
 public class ListOfMeals extends ActionBarActivity {
@@ -36,6 +39,14 @@ public class ListOfMeals extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_meals);
+
+        //Set random header image based on files in drawable folder and value array
+        final TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
+        final Random rand = new Random();
+        final int rndInt = rand.nextInt(imgs.length());
+        final int resID = imgs.getResourceId(rndInt, 0);
+        ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
+
         displayListView();
     }
 

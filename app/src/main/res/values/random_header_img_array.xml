@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="headerimages">
+        <item>@drawable/header_img_1</item>
+        <item>@drawable/header_img_2</item>
+        <item>@drawable/header_img_3</item>
+        <item>@drawable/header_img_4</item>
+    </array>
+
+</resources>
