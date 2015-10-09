@@ -13,7 +13,7 @@
         android:id="@+id/header_photo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:scaleType="centerCrop"/>
 
 
@@ -21,7 +21,7 @@
         android:id="@+id/meal_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="5"
         android:layout_margin="6dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="6dp">
