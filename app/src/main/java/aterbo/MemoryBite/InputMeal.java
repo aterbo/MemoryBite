@@ -9,12 +9,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +29,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +48,8 @@ public class InputMeal extends ActionBarActivity {
     private List<Photo> photos;
     private boolean hasPhotos;
     private int mealIdNumber = -1;
-    private static int RESULT_LOAD_IMAGE = 1;
+
+    private String photoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -341,101 +349,12 @@ public class InputMeal extends ActionBarActivity {
     public void addPictureButtonClick(View view) {
 
         if (numberOfPhotos() < getResources().getInteger(R.integer.max_number_of_photos)) {
-            /*Intent i = new Intent(
-                    Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, RESULT_LOAD_IMAGE); */
-            openImageIntent();
+selectImage();
         } else {
             Toast.makeText(this, getResources().getString(R.string.cant_add_photos), Toast.LENGTH_LONG).show();
         }
 
 
-    }
-
-    private Uri outputFileUri;
-    private int YOUR_SELECT_PICTURE_REQUEST_CODE;
-
-    private void openImageIntent() {
-
-// Determine Uri of camera image to save.
-        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MyDir" + File.separator);
-        root.mkdirs();
-        final String fname = "img_"+ System.currentTimeMillis()+".jpg";
-        final File sdImageMainDirectory = new File(root, fname);
-        outputFileUri = Uri.fromFile(sdImageMainDirectory);
-
-        // Camera.
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
-        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        final PackageManager packageManager = getPackageManager();
-        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-        for(ResolveInfo res : listCam) {
-            final String packageName = res.activityInfo.packageName;
-            final Intent intent = new Intent(captureIntent);
-            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-            intent.setPackage(packageName);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-            cameraIntents.add(intent);
-        }
-
-        // Filesystem.
-        final Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-
-        // Chooser of filesystem options.
-        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
-
-        // Add the camera options.
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
-
-        startActivityForResult(chooserIntent, YOUR_SELECT_PICTURE_REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == YOUR_SELECT_PICTURE_REQUEST_CODE) {
-                final boolean isCamera;
-                if (data == null) {
-                    isCamera = true;
-                } else {
-                    final String action = data.getAction();
-                    if (action == null) {
-                        isCamera = false;
-                    } else {
-                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    }
-                }
-
-                Uri selectedImageUri;
-                String photoPath;
-
-                if (isCamera) {
-                    photoPath = getRealPathFromURI(outputFileUri);
-                } else {
-                    selectedImageUri = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                    Cursor cursor = getContentResolver().query(selectedImageUri,
-                            filePathColumn, null, null, null);
-
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-
-                    // String picturePath contains the path of selected Image
-                    photoPath = cursor.getString(columnIndex);
-                    cursor.close();
-                }
-                //Create photo object
-                Photo newPhoto = new Photo(photoPath);
-                //Add returned photo to end of photos list
-                photos.add(newPhoto);
-                //Redraw gridview
-                setPhotosToGridView();
-            }
-        }
     }
     private String getRealPathFromURI(Uri contentURI) {
         String result;
@@ -450,58 +369,126 @@ public class InputMeal extends ActionBarActivity {
         }
         return result;
     }
-    /*
+
+    private static int REQUEST_CAMERA =1;
+    private static int SELECT_FILE = 2;
+
+    private String mCurrentPhotoPath;
+
+    private static final String JPEG_FILE_PREFIX = "IMG_";
+    private static final String JPEG_FILE_SUFFIX = ".jpg";
+
 
     private void selectImage() {
-        final CharSequence[] items = {
-                getResources().getString(R.string.take_photo),
-                getResources().getString(R.string.choose_from_gallery),
-                getResources().getString(R.string.cancel)};
+        final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Photo!");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals(getResources().getString(R.string.take_photo))) {
+                if (items[item].equals("Take Photo")) {
+                    File f = null;
+
+                    try {
+                        f = setUpPhotoFile();
+                        mCurrentPhotoPath = f.getAbsolutePath();
+                        photoPath = f.getAbsolutePath();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        f = null;
+                        mCurrentPhotoPath = null;
+                    }
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, REQUEST_CAMERA);
-                } else if (items[item].equals(getResources().getString(R.string.choose_from_gallery))) {
+                } else if (items[item].equals("Choose from Library")) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(
-                            Intent.createChooser(intent, getResources().getString(R.string.select_file)),
+                            Intent.createChooser(intent, "Select File"),
                             SELECT_FILE);
-                } else if (items[item].equals(getResources().getString(R.string.cancel))) {
+                } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
         });
         builder.show();
     }
-    - See more at: http://www.theappguruz.com/blog/android-take-photo-camera-gallery-code-sample#sthash.owsmLn0k.dpuf
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+        File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES));
+        return imageF;
+    }
+
+    private File setUpPhotoFile() throws IOException {
+
+        File f = createImageFile();
+        mCurrentPhotoPath = f.getAbsolutePath();
+
+        return f;
+    }
+    /* Photo album for this application */
+    private String getAlbumName() {
+        return "MemoryBite";
+    }
+
+
+    private File getAlbumDir() {
+        File storageDir = null;
+
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+
+
+            if (storageDir != null) {
+                if (! storageDir.mkdirs()) {
+                    if (! storageDir.exists()){
+                        Log.d("CameraSample", "failed to create directory");
+                        return null;
+                    }
+                }
+            }
+
+        } else {
+            Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+        }
+
+        return storageDir;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA) {
+                Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+                File f = new File(mCurrentPhotoPath);
+                Uri contentUri = Uri.fromFile(f);
+                mediaScanIntent.setData(contentUri);
+                this.sendBroadcast(mediaScanIntent);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            } else if (requestCode == SELECT_FILE) {
+                Uri selectedImageUri = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
+                Cursor cursor = getContentResolver().query(selectedImageUri,
+                        filePathColumn, null, null, null);
 
-            cursor.moveToFirst();
+                cursor.moveToFirst();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 
-            // String picturePath contains the path of selected Image
-            String photoPath = cursor.getString(columnIndex);
-            cursor.close();
+                // String picturePath contains the path of selected Image
+                photoPath = cursor.getString(columnIndex);
+                cursor.close();
 
+            }
             //Create photo object
             Photo newPhoto = new Photo(photoPath);
             //Add returned photo to end of photos list
@@ -510,6 +497,4 @@ public class InputMeal extends ActionBarActivity {
             setPhotosToGridView();
         }
     }
-
-*/
 }
