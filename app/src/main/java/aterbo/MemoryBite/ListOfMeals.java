@@ -33,6 +33,8 @@ public class ListOfMeals extends ActionBarActivity {
     private DBHelper db;
     private SimpleCursorAdapter dataAdapter;
     private List<Meal> mealList;
+    private int resID;
+    static final String STATE_RESID = "imageResID";
 
 
     @Override
@@ -40,14 +42,20 @@ public class ListOfMeals extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_meals);
 
+        //address saved instance state to deal with screen rotation
+        if (savedInstanceState!=null){
+            //get INT from saved state
+            resID = savedInstanceState.getInt(STATE_RESID);
+        } else{
         //Set random header image based on files in drawable folder and value array
         final TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
         final Random rand = new Random();
         final int rndInt = rand.nextInt(imgs.length());
-        final int resID = imgs.getResourceId(rndInt, 0);
-        ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
-
+        resID = imgs.getResourceId(rndInt, 0);
         displayListView();
+
+        }
+        ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
     }
 
     @Override
@@ -82,6 +90,15 @@ public class ListOfMeals extends ActionBarActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the resID from the random image
+        savedInstanceState.putInt(STATE_RESID, resID);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private void displayListView() {
