@@ -1,63 +1,82 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
-    <LinearLayout
+    <ScrollView xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_height="match_parent"
         tools:context="aterbo.MemoryBite.OpenScreen">
 
-        <Button
-            android:id="@+id/add_new_meal_button"
-            style="@style/MainMenuButton"
-            android:layout_marginTop="75dp"
-            android:onClick="startNewMeal"
-            android:text="@string/add_new_meal" />
-
-        <Button
-            android:id="@+id/edit_last_meal_button"
-            style="@style/MainMenuButton"
-            android:onClick="editLastMealClick"
-            android:text="@string/edit_last_meal" />
-
-        <Button
-            android:id="@+id/view_journal_button"
-            style="@style/MainMenuButton"
-            android:onClick="goToViewList"
-            android:text="@string/view_journal" />
-
-        <Button
-            android:id="@+id/help_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:gravity="center|bottom"
-            android:onClick="helpButtonClick"
-            android:textAllCaps="false"
-            android:text="@string/help"
-            android:textColor="@color/secondary_text" />
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
 
-        <Button
-            android:id="@+id/feedback_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:onClick="commentsButtonClick"
-            android:textAllCaps="false"
-            android:text="@string/comments_suggestions"
-            android:textColor="@color/secondary_text" />
+            <Button
+                android:id="@+id/add_new_meal_button"
+                style="@style/MainMenuButton"
+                android:layout_marginTop="75dp"
+                android:onClick="startNewMeal"
+                android:text="@string/add_new_meal" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/edit_last_meal_button"
+                style="@style/MainMenuButton"
+                android:onClick="editLastMealClick"
+                android:text="@string/edit_last_meal" />
 
-</ScrollView>
+            <Button
+                android:id="@+id/view_journal_button"
+                style="@style/MainMenuButton"
+                android:onClick="goToViewList"
+                android:text="@string/view_journal" />
+
+            <Button
+                android:id="@+id/help_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="60dp"
+                android:gravity="center|bottom"
+                android:onClick="helpButtonClick"
+                android:text="@string/help"
+                android:textAllCaps="false"
+                android:textColor="@color/secondary_text" />
+
+            <Button
+                android:id="@+id/feedback_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:onClick="commentsButtonClick"
+                android:text="@string/comments_suggestions"
+                android:textAllCaps="false"
+                android:textColor="@color/secondary_text" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"></com.google.android.gms.ads.AdView>
+</LinearLayout>

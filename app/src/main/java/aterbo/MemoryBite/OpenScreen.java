@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 public class OpenScreen extends ActionBarActivity {
 
     @Override
@@ -25,6 +28,10 @@ public class OpenScreen extends ActionBarActivity {
         button.setTypeface(tf);
         button = (Button) findViewById(R.id.view_journal_button);
         button.setTypeface(tf);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override
