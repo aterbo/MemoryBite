@@ -1,6 +1,7 @@
 package aterbo.MemoryBite;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -265,4 +266,16 @@ public class MealDetails extends ActionBarActivity {
             startActivity(intent);
         }
     }
+
+    //Override on Back so that app always goes from Meal Details to Meal Journal
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(MealDetails.this, ListOfMeals.class));
+
+        finish();
+
+    }
+
 }
