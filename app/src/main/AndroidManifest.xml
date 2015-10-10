@@ -17,7 +17,8 @@
         <activity
             android:name="aterbo.MemoryBite.InputMeal"
             android:label="@string/title_activity_input_meal"
-            android:hardwareAccelerated="true">
+            android:hardwareAccelerated="true"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
         </activity>
         <activity
             android:name="aterbo.MemoryBite.OpenScreen"

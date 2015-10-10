@@ -56,38 +56,40 @@ public class InputMeal extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_meal);
 
-        //Setting appetizer, mains, desserts, drinks, and notes to have multiline input on display
-        //but to also have Next button
-        setNextWithWordWrap((EditText) findViewById(R.id.appetizers_input));
-        setNextWithWordWrap((EditText) findViewById(R.id.main_courses_input));
-        setNextWithWordWrap((EditText) findViewById(R.id.desserts_input));
-        setNextWithWordWrap((EditText) findViewById(R.id.drinks_input));
-        setNextWithWordWrap((EditText) findViewById(R.id.notes_input));
+            //Setting appetizer, mains, desserts, drinks, and notes to have multiline input on display
+            //but to also have Next button
+            setNextWithWordWrap((EditText) findViewById(R.id.appetizers_input));
+            setNextWithWordWrap((EditText) findViewById(R.id.main_courses_input));
+            setNextWithWordWrap((EditText) findViewById(R.id.desserts_input));
+            setNextWithWordWrap((EditText) findViewById(R.id.drinks_input));
+            setNextWithWordWrap((EditText) findViewById(R.id.notes_input));
 
 
-        //Check for intent and if one present load meal. If no intent, new meal
-        Intent intent = this.getIntent();
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            mealIdNumber = intent.getIntExtra(Intent.EXTRA_TEXT, 0);
-            DBHelper db = new DBHelper(this);
-            meal = db.readMeal(mealIdNumber);
+            //Check for intent and if one present load meal. If no intent, new meal
+            Intent intent = this.getIntent();
+            if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+                mealIdNumber = intent.getIntExtra(Intent.EXTRA_TEXT, 0);
+                DBHelper db = new DBHelper(this);
+                meal = db.readMeal(mealIdNumber);
 
-            //Get all photos and check for photos exist
-            photos = db.getAllPhotosForMealList(mealIdNumber);
-            if (photos.isEmpty()) {
-                hasPhotos = false;
-            } else { hasPhotos = true; }
+                //Get all photos and check for photos exist
+                photos = db.getAllPhotosForMealList(mealIdNumber);
+                if (photos.isEmpty()) {
+                    hasPhotos = false;
+                } else {
+                    hasPhotos = true;
+                }
 
-            setMealToUI();
+                setMealToUI();
 
-        } else {
-            meal = new Meal();
-            photos = new ArrayList<>();
-            EditText dateBox = (EditText) findViewById(R.id.meal_date);
-            dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
-        }
+            } else {
+                meal = new Meal();
+                photos = new ArrayList<>();
+                EditText dateBox = (EditText) findViewById(R.id.meal_date);
+                dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+            }
 
-        setMealDatePicker(findViewById(R.id.meal_date));
+            setMealDatePicker(findViewById(R.id.meal_date));
     }
 
     private void setMealDatePicker(final View edittext){
