@@ -69,7 +69,7 @@
             <EditText
                 android:id="@+id/dined_with_input"
                 style="@style/InputText"
-                android:inputType="textPersonName" />
+                android:inputType="textCapWords" />
         </LinearLayout>
 
         <LinearLayout style="@style/DetailsBlock">
