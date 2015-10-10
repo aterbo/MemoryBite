@@ -211,7 +211,8 @@ public class MealDetails extends ActionBarActivity {
         //check if general share or share with Memory Bite
         if (shareType == SHARE_W_MEMORY_BITE){
             //set Memory Bite email as destination
-            sharingIntent.putExtra(Intent.EXTRA_EMAIL, getResources().getString(R.string.email));
+            String[] toAddresses = getResources().getStringArray(R.array.email_array);
+            sharingIntent.putExtra(Intent.EXTRA_EMAIL, toAddresses);
         }
             //create subject
             shareSubject = meal.getEmailShareSubjectString(this);
@@ -222,6 +223,13 @@ public class MealDetails extends ActionBarActivity {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
         startActivity(Intent.createChooser(sharingIntent, getResources().getText(R.string.send_to_chooser)));
+    }
+
+    public void shareWithFriend(View view){
+        shareMeal(SHARE_GENERAL);
+    }
+    public void shareWithMemoryBite(View view){
+        shareMeal(SHARE_W_MEMORY_BITE);
     }
 
     public void doPositiveClick() {
