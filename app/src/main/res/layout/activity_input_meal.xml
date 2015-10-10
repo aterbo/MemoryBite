@@ -282,6 +282,13 @@
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hold_to_delete_photo"
+                android:layout_marginTop="4dp"
+                android:gravity="center"/>
         </LinearLayout>
 
 
