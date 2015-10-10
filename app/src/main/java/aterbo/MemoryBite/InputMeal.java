@@ -3,18 +3,12 @@ package aterbo.MemoryBite;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -29,10 +23,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,43 +47,43 @@ public class InputMeal extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_meal);
 
-            //Setting appetizer, mains, desserts, drinks, and notes to have multiline input on display
-            //but to also have Next button
-            setNextWithWordWrap((EditText) findViewById(R.id.appetizers_input));
-            setNextWithWordWrap((EditText) findViewById(R.id.main_courses_input));
-            setNextWithWordWrap((EditText) findViewById(R.id.desserts_input));
-            setNextWithWordWrap((EditText) findViewById(R.id.drinks_input));
-            setNextWithWordWrap((EditText) findViewById(R.id.notes_input));
+        //Setting appetizer, mains, desserts, drinks, and notes to have multiline input on display
+        //but to also have Next button
+        setNextWithWordWrap((EditText) findViewById(R.id.appetizers_input));
+        setNextWithWordWrap((EditText) findViewById(R.id.main_courses_input));
+        setNextWithWordWrap((EditText) findViewById(R.id.desserts_input));
+        setNextWithWordWrap((EditText) findViewById(R.id.drinks_input));
+        setNextWithWordWrap((EditText) findViewById(R.id.notes_input));
 
 
-            //Check for intent and if one present load meal. If no intent, new meal
-            Intent intent = this.getIntent();
-            if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-                mealIdNumber = intent.getIntExtra(Intent.EXTRA_TEXT, 0);
-                DBHelper db = new DBHelper(this);
-                meal = db.readMeal(mealIdNumber);
+        //Check for intent and if one present load meal. If no intent, new meal
+        Intent intent = this.getIntent();
+        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+            mealIdNumber = intent.getIntExtra(Intent.EXTRA_TEXT, 0);
+            DBHelper db = new DBHelper(this);
+            meal = db.readMeal(mealIdNumber);
 
-                //Get all photos and check for photos exist
-                photos = db.getAllPhotosForMealList(mealIdNumber);
-                if (photos.isEmpty()) {
-                    hasPhotos = false;
-                } else {
-                    hasPhotos = true;
-                }
-
-                setMealToUI();
-
+            //Get all photos and check for photos exist
+            photos = db.getAllPhotosForMealList(mealIdNumber);
+            if (photos.isEmpty()) {
+                hasPhotos = false;
             } else {
-                meal = new Meal();
-                photos = new ArrayList<>();
-                EditText dateBox = (EditText) findViewById(R.id.meal_date);
-                dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+                hasPhotos = true;
             }
 
-            setMealDatePicker(findViewById(R.id.meal_date));
+            setMealToUI();
+
+        } else {
+            meal = new Meal();
+            photos = new ArrayList<>();
+            EditText dateBox = (EditText) findViewById(R.id.meal_date);
+            dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+        }
+
+        setMealDatePicker(findViewById(R.id.meal_date));
     }
 
-    private void setMealDatePicker(final View edittext){
+    private void setMealDatePicker(final View edittext) {
         final Calendar myCalendar = Calendar.getInstance();
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -127,7 +118,7 @@ public class InputMeal extends ActionBarActivity {
 
     //http://stackoverflow.com/questions/5014219/multiline-edittext-with-done-softinput-action-label-on-2-3
     //Setting the larger EditText boxes to display wordwrapping while showing a next key
-    private void setNextWithWordWrap(EditText editText){
+    private void setNextWithWordWrap(EditText editText) {
         editText.setHorizontallyScrolling(false);
         editText.setMaxLines(Integer.MAX_VALUE);
     }
@@ -173,7 +164,7 @@ public class InputMeal extends ActionBarActivity {
 
         //set radio buttons
         //Atmosphere
-        if(meal.getAtmosphere() != null && !meal.getAtmosphere().isEmpty()) {
+        if (meal.getAtmosphere() != null && !meal.getAtmosphere().isEmpty()) {
             if (meal.getAtmosphere().equals(getString(R.string.atmosphere_1))) {
                 ((RadioButton) findViewById(R.id.atmosphere_1)).setChecked(true);
             } else if (meal.getAtmosphere().equals(getString(R.string.atmosphere_2))) {
@@ -188,7 +179,7 @@ public class InputMeal extends ActionBarActivity {
         }
         //set radio buttons
         //Price
-        if(meal.getPrice() != null && !meal.getPrice().isEmpty()) {
+        if (meal.getPrice() != null && !meal.getPrice().isEmpty()) {
             if (meal.getPrice().equals(getString(R.string.price_1))) {
                 ((RadioButton) findViewById(R.id.price_1)).setChecked(true);
             } else if (meal.getPrice().equals(getString(R.string.price_2))) {
@@ -203,13 +194,13 @@ public class InputMeal extends ActionBarActivity {
         }
 
         //Set Photos to Grid View, if present
-        if (hasPhotos){
+        if (hasPhotos) {
             setPhotosToGridView();
         }
     }
 
     //Set photos to grid view
-    private void setPhotosToGridView(){
+    private void setPhotosToGridView() {
         final PhotoGridAdaptor photoGridAdaptor = new PhotoGridAdaptor(photos, this);
         final FullHeightGridView photoGrid = (FullHeightGridView) findViewById(R.id.meal_input_photo_grid);
         photoGrid.setAdapter(photoGridAdaptor);
@@ -265,24 +256,24 @@ public class InputMeal extends ActionBarActivity {
         //Get Atmosphere radio result
         RadioButton inputRadioButton;
         RadioGroup inputRadioGroup = (RadioGroup) findViewById(R.id.atmosphere_radio);
-            //test if checked and if so set Atmosphere
-        if (inputRadioGroup.getCheckedRadioButtonId()!=-1) {
+        //test if checked and if so set Atmosphere
+        if (inputRadioGroup.getCheckedRadioButtonId() != -1) {
             inputRadioButton = (RadioButton) findViewById(inputRadioGroup.getCheckedRadioButtonId());
-                meal.setAtmosphere(inputRadioButton.getText().toString());
-            }
+            meal.setAtmosphere(inputRadioButton.getText().toString());
+        }
 
         //Get price radio result
         inputRadioGroup = (RadioGroup) findViewById(R.id.price_radio);
         //test if checked and if so set Price
-        if (inputRadioGroup.getCheckedRadioButtonId()!=-1) {
+        if (inputRadioGroup.getCheckedRadioButtonId() != -1) {
             inputRadioButton = (RadioButton) findViewById(inputRadioGroup.getCheckedRadioButtonId());
             meal.setPrice(inputRadioButton.getText().toString());
         }
 
     }
 
-    private int numberOfPhotos(){
-        if(photos!=null) {
+    private int numberOfPhotos() {
+        if (photos != null) {
             return photos.size();
         } else {
             return 0;
@@ -297,7 +288,7 @@ public class InputMeal extends ActionBarActivity {
         setInputToMeal();
 
         //check if there is data to save
-        if(meal.isDataFilledOut()||numberOfPhotos()>0) {
+        if (meal.isDataFilledOut() || numberOfPhotos() > 0) {
 
             //Save photo 1 to primary photo in meal prior to updating meal DB
             //if no photos, ensure to clear any existing primary photo if was deleted during upgrayedd
@@ -330,7 +321,7 @@ public class InputMeal extends ActionBarActivity {
             Intent intent = new Intent(getApplicationContext(), MealDetails.class)
                     .putExtra(Intent.EXTRA_TEXT, mealIdNumber);
             startActivity(intent);
-        } else{ //Make a toast if the IDIOT USER tries saving a meal without entering anything
+        } else { //Make a toast if the IDIOT USER tries saving a meal without entering anything
 
             Toast.makeText(this, getResources().getText(R.string.no_data_no_save_message), Toast.LENGTH_LONG).show();
 
@@ -339,7 +330,7 @@ public class InputMeal extends ActionBarActivity {
 
     //save photos via enhanced for loop through photo list
     private void savePhotos() {
-        if (numberOfPhotos()>0) {
+        if (numberOfPhotos() > 0) {
             for (Photo photo : photos) {
                 photo.setAssociatedMealIdNumber(mealIdNumber);
                 db.createPhoto(photo);
@@ -351,13 +342,14 @@ public class InputMeal extends ActionBarActivity {
     public void addPictureButtonClick(View view) {
 
         if (numberOfPhotos() < getResources().getInteger(R.integer.max_number_of_photos)) {
-selectImage();
+            selectImage();
         } else {
             Toast.makeText(this, getResources().getString(R.string.cant_add_photos), Toast.LENGTH_LONG).show();
         }
 
 
     }
+
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
@@ -372,7 +364,7 @@ selectImage();
         return result;
     }
 
-    private static int REQUEST_CAMERA =1;
+    private static int REQUEST_CAMERA = 1;
     private static int SELECT_FILE = 2;
 
     private String mCurrentPhotoPath;
@@ -382,7 +374,7 @@ selectImage();
 
 
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
+        final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Photo!");
@@ -436,6 +428,7 @@ selectImage();
 
         return f;
     }
+
     /* Photo album for this application */
     private String getAlbumName() {
         return "MemoryBite";
@@ -449,8 +442,8 @@ selectImage();
 
 
             if (storageDir != null) {
-                if (! storageDir.mkdirs()) {
-                    if (! storageDir.exists()){
+                if (!storageDir.mkdirs()) {
+                    if (!storageDir.exists()) {
                         Log.d("CameraSample", "failed to create directory");
                         return null;
                     }

@@ -40,9 +40,13 @@ public class Meal {
 
     //Setters and Getters
 
-    public long getMealIdNumber() { return mealIdNumber; }
+    public long getMealIdNumber() {
+        return mealIdNumber;
+    }
 
-    public void setMealIdNumber(long mealIdNumber) { this.mealIdNumber = mealIdNumber; }
+    public void setMealIdNumber(long mealIdNumber) {
+        this.mealIdNumber = mealIdNumber;
+    }
 
     public String getRestaurantName() {
         return restaurantName;
@@ -97,7 +101,9 @@ public class Meal {
         return dessertsNotes;
     }
 
-    public void setDessertsNotes(String dessertsNotes) { this.dessertsNotes = dessertsNotes; }
+    public void setDessertsNotes(String dessertsNotes) {
+        this.dessertsNotes = dessertsNotes;
+    }
 
     public String getDrinksNotes() {
         return drinksNotes;
@@ -139,11 +145,13 @@ public class Meal {
         this.price = price;
     }
 
-    public boolean isDataFilledOut(){
+    public boolean isDataFilledOut() {
         String testString = restaurantName + location + cuisineType + dinedWith + appetizersNotes
                 + mainCoursesNotes + dessertsNotes + drinksNotes + generalNotes;
 
-        if (testString.length()>1) {return true;}
+        if (testString.length() > 1) {
+            return true;
+        }
 
         return false;
     }
@@ -157,6 +165,7 @@ public class Meal {
         return shareSubject;
 
     }
+
     public String getEmailShareBodyString(Context context) {
         String shareBody = "";
 

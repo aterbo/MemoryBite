@@ -75,12 +75,12 @@ public class OpenScreen extends ActionBarActivity {
         editLastMeal();
     }
 
-    public void editLastMeal(){
+    public void editLastMeal() {
         DBHelper db = new DBHelper(this);
         int maxId = db.getMaxMealId();
 
         //test if 0 is returned, showing no meals entered. if so, toast!!
-        if (maxId == 0){
+        if (maxId == 0) {
             Toast.makeText(this, getResources().getString(R.string.no_meals), Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(getApplicationContext(), InputMeal.class)
@@ -88,7 +88,6 @@ public class OpenScreen extends ActionBarActivity {
             startActivity(intent);
         }
     }
-
 
 
     //onClick of List Button
@@ -107,7 +106,7 @@ public class OpenScreen extends ActionBarActivity {
     public void commentsButtonClick(View view) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{getResources().getString(R.string.email)});
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{getResources().getString(R.string.email)});
         i.putExtra(Intent.EXTRA_SUBJECT, "Feedback on Memory Bite");
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));

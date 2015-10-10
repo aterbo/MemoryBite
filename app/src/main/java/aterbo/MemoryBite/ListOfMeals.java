@@ -1,28 +1,18 @@
 package aterbo.MemoryBite;
 
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.util.List;
 import java.util.Random;
@@ -43,16 +33,16 @@ public class ListOfMeals extends ActionBarActivity {
         setContentView(R.layout.activity_list_of_meals);
 
         //address saved instance state to deal with screen rotation
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
             //get INT from saved state
             resID = savedInstanceState.getInt(STATE_RESID);
-        } else{
-        //Set random header image based on files in drawable folder and value array
-        final TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
-        final Random rand = new Random();
-        final int rndInt = rand.nextInt(imgs.length());
-        resID = imgs.getResourceId(rndInt, 0);
-        displayListView();
+        } else {
+            //Set random header image based on files in drawable folder and value array
+            final TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
+            final Random rand = new Random();
+            final int rndInt = rand.nextInt(imgs.length());
+            resID = imgs.getResourceId(rndInt, 0);
+            displayListView();
 
         }
         ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
@@ -121,12 +111,12 @@ public class ListOfMeals extends ActionBarActivity {
         });
     }
 
-    public void editLastMeal(){
+    public void editLastMeal() {
         DBHelper db = new DBHelper(this);
         int maxId = db.getMaxMealId();
 
         //test if 0 is returned, showing no meals entered. if so, toast!!
-        if (maxId == 0){
+        if (maxId == 0) {
             Toast.makeText(this, getResources().getString(R.string.no_meals), Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(getApplicationContext(), InputMeal.class)

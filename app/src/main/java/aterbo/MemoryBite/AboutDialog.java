@@ -18,7 +18,7 @@ public class AboutDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String dialogText = getResources().getText(R.string.app_name) + "\n"+
+        String dialogText = getResources().getText(R.string.app_name) + "\n" +
                 getResources().getText(R.string.version_number) + "\n" +
                 getResources().getText(R.string.release_date) + "\n\n\n" +
                 getResources().getText(R.string.dialog_about_body);

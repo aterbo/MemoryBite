@@ -83,8 +83,8 @@ public class DBContract {
                 COLUMN_PHOTO_COURSE_TAG + TEXT_TYPE + COMMA_SEP +
                 COLUMN_PHOTO_NOTES + TEXT_TYPE + COMMA_SEP +
                 COLUMN_PRIMARY_PHOTO + INT_TYPE + COMMA_SEP +
-                "FOREIGN KEY("+ COLUMN_MEAL_ID + ") REFERENCES " +
-                MealDBTable.MEAL_TABLE +"(" + MealDBTable._ID + ") )";
+                "FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " +
+                MealDBTable.MEAL_TABLE + "(" + MealDBTable._ID + ") )";
     }
 
     //Meal Table
