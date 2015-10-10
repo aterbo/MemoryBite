@@ -149,6 +149,6 @@
     <string name="hold_to_delete_photo">Click and hold to a remove photo.</string>
     <string name="share_w_memory_bite">Email to Memory Bite</string>
     <string name="share_instructions">Share with a friend</string>
-    <string name="share_w_memory_bite_instructions">Share on Memory Bite's website</string>
+    <string name="share_w_memory_bite_instructions">Share on Memory Bite\'s website</string>
 
 </resources>
