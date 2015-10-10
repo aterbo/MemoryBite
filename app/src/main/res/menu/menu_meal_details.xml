@@ -10,6 +10,11 @@
         android:title="@string/share"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/share_meal_w_memory_bite_menu"
+        android:orderInCategory="40"
+        android:title="@string/share_w_memory_bite"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/edit_meal_menu"
         android:icon="@mipmap/ic_create_white_24dp"
         android:orderInCategory="40"

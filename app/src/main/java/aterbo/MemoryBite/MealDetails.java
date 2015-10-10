@@ -30,6 +30,8 @@ public class MealDetails extends ActionBarActivity {
     private Meal meal;
     private List<Photo> photos;
     private boolean hasPhotos;
+    private static int SHARE_GENERAL = 1;
+    private static int SHARE_W_MEMORY_BITE = 2;
 
     //Trying to set ShareActionProvider. Issues with ActionBarActivity
     //private ShareActionProvider mShareActionProvider;
@@ -90,7 +92,10 @@ public class MealDetails extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case R.id.share_meal_menu:
-                shareMeal();
+                shareMeal(SHARE_GENERAL);
+                return true;
+            case R.id.share_meal_w_memory_bite_menu:
+                shareMeal(SHARE_W_MEMORY_BITE);
                 return true;
             case R.id.edit_meal_menu:
                 editMeal();
@@ -187,8 +192,10 @@ public class MealDetails extends ActionBarActivity {
 
 
     //share this meal!
-    private void shareMeal() {
+    private void shareMeal(int shareType) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        String shareSubject;
+        String shareBody;
 
         if (photos.get(0) != null) {
             String path = photos.get(0).getPhotoFilePath();
@@ -201,16 +208,20 @@ public class MealDetails extends ActionBarActivity {
             sharingIntent.setType("text/plain");
         }
 
-        //create subject
-        String shareSubject = meal.getEmailShareSubjectString(this);
-        //create body
-        String shareBody = meal.getEmailShareBodyString(this);
+        //check if general share or share with Memory Bite
+        if (shareType == SHARE_W_MEMORY_BITE){
+            //set Memory Bite email as destination
+            sharingIntent.putExtra(Intent.EXTRA_EMAIL, getResources().getString(R.string.email));
+        }
+            //create subject
+            shareSubject = meal.getEmailShareSubjectString(this);
+            //create body
+            shareBody = meal.getEmailShareBodyString(this);
 
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSubject);
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
         startActivity(Intent.createChooser(sharingIntent, getResources().getText(R.string.send_to_chooser)));
-
     }
 
     public void doPositiveClick() {

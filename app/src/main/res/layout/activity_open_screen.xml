@@ -32,6 +32,13 @@
             android:onClick="goToViewList"
             android:text="@string/view_journal" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="60dp"
+            android:text="@string/share_w_memory_bite_instructions"/>
+
 
         <Button
             android:id="@+id/help_button"
@@ -39,7 +46,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="60dp"
             android:gravity="center|bottom"
             android:onClick="helpButtonClick"
             android:textAllCaps="false"

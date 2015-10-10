@@ -72,8 +72,8 @@
         \n
         \nUnfortunately, as a side effect of this lifespan-shortening life style (and possibly
         from IPAs, sazeracs, and red wine) I found that I was having a tough time keeping it all
-        straight. After a point, you can't remember what was when and where with
-        who. Since eating good food in the company of good people is one of life's great joys,
+        straight. After a point, you can\'t remember what was when and where with
+        who. Since eating good food in the company of good people is one of life\'s great joys,
         forgetting these meals is a true sin to me.
         \n
         \nI made a few valiant efforts at carrying a notebook, but I was always caught without it.
@@ -144,5 +144,7 @@
     <string name="select_file">Select File</string>
     <string name="no_meals">You don\'t have any meals to edit!</string>
     <string name="hold_to_delete_photo">Click and hold to a remove photo.</string>
+    <string name="share_w_memory_bite">Email to Memory Bite!</string>
+    <string name="share_w_memory_bite_instructions">Email your meal to Memory Bite to have it displayed on our webpage!</string>
 
 </resources>
