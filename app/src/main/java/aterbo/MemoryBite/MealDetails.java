@@ -1,7 +1,6 @@
 package aterbo.MemoryBite;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -54,7 +53,9 @@ public class MealDetails extends ActionBarActivity {
         photos = db.getAllPhotosForMealList(mealIdNumber);
         if (photos.isEmpty()) {
             hasPhotos = false;
-        } else { hasPhotos = true; }
+        } else {
+            hasPhotos = true;
+        }
 
         populateLayoutWMeal();
     }
@@ -214,12 +215,34 @@ public class MealDetails extends ActionBarActivity {
 
     public void doPositiveClick() {
         DBHelper db = new DBHelper(this);
-        //delete all assocaited photos (should be able to do this via SQLite Foreign key, but it's
+        //delete all associated photos (should be able to do this via SQLite Foreign key, but it's
         //easier and safer to do it separately
         db.deleteAllPhotosFromMeal(mealIdNumber);
         db.deleteMeal(meal);
         Intent intent = new Intent(this, ListOfMeals.class);
         startActivity(intent);
+    }
+
+    public void editLastMeal() {
+        DBHelper db = new DBHelper(this);
+        int maxId = db.getMaxMealId();
+
+        //test if 0 is returned, showing no meals entered. if so, toast!!
+        if (maxId == 0) {
+            Toast.makeText(this, getResources().getString(R.string.no_meals), Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(getApplicationContext(), InputMeal.class)
+                    .putExtra(Intent.EXTRA_TEXT, maxId);
+            startActivity(intent);
+        }
+    }
+
+    //Override on Back so that app always goes from Meal Details to Meal Journal
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(MealDetails.this, ListOfMeals.class));
+        finish();
     }
 
     public static class DeleteMealDialog extends android.app.DialogFragment {
@@ -251,31 +274,6 @@ public class MealDetails extends ActionBarActivity {
 
             return alertDialogBuilder.create();
         }
-    }
-
-    public void editLastMeal(){
-        DBHelper db = new DBHelper(this);
-        int maxId = db.getMaxMealId();
-
-        //test if 0 is returned, showing no meals entered. if so, toast!!
-        if (maxId == 0){
-            Toast.makeText(this, getResources().getString(R.string.no_meals), Toast.LENGTH_SHORT).show();
-        } else {
-            Intent intent = new Intent(getApplicationContext(), InputMeal.class)
-                    .putExtra(Intent.EXTRA_TEXT, maxId);
-            startActivity(intent);
-        }
-    }
-
-    //Override on Back so that app always goes from Meal Details to Meal Journal
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        startActivity(new Intent(MealDetails.this, ListOfMeals.class));
-
-        finish();
-
     }
 
 }
