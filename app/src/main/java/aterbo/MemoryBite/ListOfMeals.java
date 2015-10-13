@@ -14,6 +14,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.List;
 import java.util.Random;
 
@@ -46,6 +49,13 @@ public class ListOfMeals extends ActionBarActivity {
 
         }
         ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
+
+
+        if(findViewById(R.id.adView)!=null) {
+            AdView mAdView = (AdView) findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
     }
 
     @Override
