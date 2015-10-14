@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -55,6 +57,12 @@ public class InputMeal extends ActionBarActivity {
         setNextWithWordWrap((EditText) findViewById(R.id.drinks_input));
         setNextWithWordWrap((EditText) findViewById(R.id.notes_input));
 
+        //Set button font to fancy type
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/kaushanscript.ttf");
+        Button button = (Button) findViewById(R.id.save_button);
+        button.setTypeface(tf);
+        button = (Button) findViewById(R.id.photo_button);
+        button.setTypeface(tf);
 
         //Check for intent and if one present load meal. If no intent, new meal
         Intent intent = this.getIntent();

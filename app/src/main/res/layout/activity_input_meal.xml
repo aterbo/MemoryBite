@@ -294,13 +294,13 @@
 
         <LinearLayout style="@style/DetailsBlock">
 
-            <TextView
+            <Button
                 android:id="@+id/photo_button"
                 android:onClick="addPictureButtonClick"
                 android:text="@string/add_photo"
                 style="@style/Button" />
 
-            <TextView
+            <Button
                 android:id="@+id/save_button"
                 style="@style/Button"
                 android:onClick="saveMeal"

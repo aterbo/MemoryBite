@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +45,13 @@ public class MealDetails extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_meal_details);
+
+        //Set button font to fancy type
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/kaushanscript.ttf");
+        Button button = (Button) findViewById(R.id.share_meal_button);
+        button.setTypeface(tf);
+        button = (Button) findViewById(R.id.share_meal_w_memory_bite_button);
+        button.setTypeface(tf);
 
         Intent intent = this.getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
