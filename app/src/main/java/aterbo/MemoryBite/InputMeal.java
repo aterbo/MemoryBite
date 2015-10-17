@@ -398,10 +398,7 @@ public class InputMeal extends ActionBarActivity {
                         File cameraPicFile = null;
                         try {
                             cameraPicFile = createImageFile();
-
-                            // Save a file: path for use with ACTION_VIEW intents
-                            mCurrentPhotoPath = "file:" + cameraPicFile.getAbsolutePath();
-
+                            mCurrentPhotoPath = cameraPicFile.getAbsolutePath();
                             photoPath = cameraPicFile.getAbsolutePath();
                         } catch (IOException e) {
                             e.printStackTrace();
