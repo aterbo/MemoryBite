@@ -119,7 +119,7 @@
         \nMy family for teaching me the value of a good meal is not just the food.
         \n
         \n
-        \nMemory Bite is provided as-is and is not responsible for any loss of user's photos,
+        \nMemory Bite is provided as-is and is not responsible for any loss of or negative impacts on user\'s photos,
         written meal entries, or other data.
         \n
         \n
@@ -153,6 +153,6 @@
     <string name="share_w_memory_bite">Email to Memory Bite</string>
     <string name="share_instructions">Share with a friend</string>
     <string name="share_w_memory_bite_instructions">Share on Memory Bite\'s website</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
 
 </resources>
