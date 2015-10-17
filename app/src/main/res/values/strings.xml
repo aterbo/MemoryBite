@@ -154,11 +154,12 @@
     <string name="share_instructions">Share with a friend</string>
     <string name="share_w_memory_bite_instructions">Share on Memory Bite\'s website</string>
     <!-- Live Ad ID! -->
-    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
-    <!-- Test Ad ID! -->
     <!--
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
     -->
+    <!-- Test Ad ID! -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 
 
 </resources>

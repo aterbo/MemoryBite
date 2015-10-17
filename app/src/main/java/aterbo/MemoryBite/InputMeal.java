@@ -433,16 +433,16 @@ public class InputMeal extends ActionBarActivity {
         if (success) { //if folder creation works or folder exists return MemoryBite folder
             // Create an image file name
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
-            File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, folder);
+            String imageFileName = JPEG_FILE_PREFIX + timeStamp + JPEG_FILE_SUFFIX;
+            File imageF = new File(folder, imageFileName);
             return imageF;
         } else { //else return non-MemoryBite folder
             // Do something else on failure
             // Create an image file name
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
-            File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES));
+            String imageFileName = JPEG_FILE_PREFIX + timeStamp + JPEG_FILE_SUFFIX;
+            File imageF = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES),imageFileName);
             return imageF;
         }
     }
