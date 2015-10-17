@@ -390,10 +390,10 @@ public class InputMeal extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals("Take Photo")) {
-                    File f = null;
+                    File f;
 
                     try {
-                        f = setUpPhotoFile();
+                        f = createImageFile();
                         mCurrentPhotoPath = f.getAbsolutePath();
                         photoPath = f.getAbsolutePath();
                     } catch (IOException e) {
@@ -421,21 +421,32 @@ public class InputMeal extends ActionBarActivity {
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
-        File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES));
-        return imageF;
+        //Check if MemoryBite subfolder exists in gallery and create if needed
+        // Get the directory for the user's public pictures directory.
+        boolean success = true;
+        File folder = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MemoryBite/");
+        if (!folder.exists()) {
+            success = folder.mkdirs();
+            Log.e("Album Creation", "Directory not created");
+        }
+        if (success) { //if folder creation works or folder exists return MemoryBite folder
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+            File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, folder);
+            return imageF;
+        } else { //else return non-MemoryBite folder
+            // Do something else on failure
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+            File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES));
+            return imageF;
+        }
     }
 
-    private File setUpPhotoFile() throws IOException {
-
-        File f = createImageFile();
-        mCurrentPhotoPath = f.getAbsolutePath();
-
-        return f;
-    }
 
     /* Photo album for this application */
     private String getAlbumName() {
