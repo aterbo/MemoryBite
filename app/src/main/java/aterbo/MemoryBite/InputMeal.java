@@ -398,7 +398,10 @@ public class InputMeal extends ActionBarActivity {
                         File cameraPicFile = null;
                         try {
                             cameraPicFile = createImageFile();
-                            mCurrentPhotoPath = cameraPicFile.getAbsolutePath();
+
+                            // Save a file: path for use with ACTION_VIEW intents
+                            mCurrentPhotoPath = "file:" + cameraPicFile.getAbsolutePath();
+
                             photoPath = cameraPicFile.getAbsolutePath();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -412,6 +415,7 @@ public class InputMeal extends ActionBarActivity {
                         {
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_taking_photo),
                                     Toast.LENGTH_LONG).show();
+                            photoPath = null;
 
                         }
                     }
