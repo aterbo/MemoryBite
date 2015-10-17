@@ -6,6 +6,11 @@
         <item>@drawable/header_img_2</item>
         <item>@drawable/header_img_3</item>
         <item>@drawable/header_img_4</item>
+        <item>@drawable/header_img_5</item>
+        <item>@drawable/header_img_6</item>
+        <item>@drawable/header_img_7</item>
+        <item>@drawable/header_img_8</item>
+        <item>@drawable/header_img_9</item>
     </array>
 
 </resources>
