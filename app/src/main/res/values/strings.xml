@@ -159,7 +159,7 @@
     -->
     <!-- Test Ad ID! -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-
+    <string name="error_taking_photo">There was an error using the camera. Please try selecting a photo from the gallery. Sorry!</string>
 
 
 </resources>

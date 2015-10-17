@@ -390,20 +390,31 @@ public class InputMeal extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals("Take Photo")) {
-                    File f;
 
-                    try {
-                        f = createImageFile();
-                        mCurrentPhotoPath = f.getAbsolutePath();
-                        photoPath = f.getAbsolutePath();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        f = null;
-                        mCurrentPhotoPath = null;
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // Ensure that there's a camera activity to handle the intent
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File cameraPicFile = null;
+                        try {
+                            cameraPicFile = createImageFile();
+                            mCurrentPhotoPath = cameraPicFile.getAbsolutePath();
+                            photoPath = cameraPicFile.getAbsolutePath();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            cameraPicFile = null;
+                            mCurrentPhotoPath = null;
+                        }
+                        if(cameraPicFile != null){
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPicFile));
+                            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+                        } else
+                        {
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_taking_photo),
+                                    Toast.LENGTH_LONG).show();
+
+                        }
                     }
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, REQUEST_CAMERA);
                 } else if (items[item].equals("Choose from Library")) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
