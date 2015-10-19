@@ -1,9 +1,12 @@
 package aterbo.MemoryBite;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by ATerbo on 9/16/15.
  */
-public class Photo {
+public class Photo implements Parcelable{
 
     private long photoIdNumber;
     private long associatedMealIdNumber;
@@ -22,6 +25,7 @@ public class Photo {
         this.photoFilePath = photoFilePath;
     }
 
+    // Getter and setter methods
     public long getPhotoIdNumber() {
         return photoIdNumber;
     }
@@ -77,4 +81,47 @@ public class Photo {
     public void setPhotoIsPrimary(int photoIsPrimary) {
         this.photoIsPrimary = photoIsPrimary;
     }
+
+    // Parcelling part
+    protected Photo(Parcel in) {
+        photoIdNumber = in.readLong();
+        associatedMealIdNumber = in.readLong();
+        photoFilePath = in.readString();
+        photoCaption = in.readString();
+        photoCourse = in.readString();
+        photoNotes = in.readString();
+        photoIsPrimary = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(photoIdNumber);
+        dest.writeLong(associatedMealIdNumber);
+        dest.writeString(photoFilePath);
+        dest.writeString(photoCaption);
+        dest.writeString(photoCourse);
+        dest.writeString(photoNotes);
+        dest.writeInt(photoIsPrimary);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Photo> CREATOR = new Parcelable.Creator<Photo>() {
+        @Override
+        public Photo createFromParcel(Parcel in) {
+            return new Photo(in);
+        }
+
+        @Override
+        public Photo[] newArray(int size) {
+            return new Photo[size];
+        }
+    };
+
+
+
 }

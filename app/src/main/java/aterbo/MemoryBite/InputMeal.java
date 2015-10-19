@@ -38,9 +38,12 @@ import java.util.Locale;
 public class InputMeal extends ActionBarActivity {
     private DBHelper db = new DBHelper(this);
     private Meal meal;
-    private List<Photo> photos;
+    private ArrayList<Photo> photos;
     private boolean hasPhotos;
     private int mealIdNumber = -1;
+    static final String STATE_MEAL_ID = "mealIdNumber";
+    static final String STATE_MEAL = "meal";
+    static final String STATE_PHOTO_LIST = "photoList";
     static final String STATE_PHOTO_PATH = "photoPath";
     private String photoPath;
 
@@ -48,13 +51,6 @@ public class InputMeal extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); //always call the superclass first
 
-        // Check whether we're recreating a previously destroyed instance
-        // This should check if the app is coming back from the camera after a rotation. If so,
-        // photo path variable is saved.
-        if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            photoPath = savedInstanceState.getString(STATE_PHOTO_PATH);
-        }
 
         setContentView(R.layout.activity_input_meal);
 
@@ -66,6 +62,9 @@ public class InputMeal extends ActionBarActivity {
         setNextWithWordWrap((EditText) findViewById(R.id.drinks_input));
         setNextWithWordWrap((EditText) findViewById(R.id.notes_input));
 
+        //Set date picker for date box
+        setMealDatePicker(findViewById(R.id.meal_date));
+
         //Set button font to fancy type
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/kaushanscript.ttf");
         Button button = (Button) findViewById(R.id.save_button);
@@ -73,31 +72,49 @@ public class InputMeal extends ActionBarActivity {
         button = (Button) findViewById(R.id.photo_button);
         button.setTypeface(tf);
 
-        //Check for intent and if one present load meal. If no intent, new meal
-        Intent intent = this.getIntent();
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            mealIdNumber = intent.getIntExtra(Intent.EXTRA_TEXT, 0);
-            DBHelper db = new DBHelper(this);
-            meal = db.readMeal(mealIdNumber);
 
-            //Get all photos and check for photos exist
-            photos = db.getAllPhotosForMealList(mealIdNumber);
+        // Check whether we're recreating a previously destroyed instance
+        // This should check if the app is coming back from the camera and unpack all needed
+        //data from the bundle
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            mealIdNumber = savedInstanceState.getInt(STATE_MEAL_ID);
+            meal = savedInstanceState.getParcelable(STATE_MEAL);
+            photos = savedInstanceState.getParcelableArrayList(STATE_PHOTO_LIST);
+            photoPath = savedInstanceState.getString(STATE_PHOTO_PATH);
+
             if (photos.isEmpty()) {
                 hasPhotos = false;
             } else {
                 hasPhotos = true;
             }
-
             setMealToUI();
+        } else { //continue create if not from bundle
 
-        } else {
-            meal = new Meal();
-            photos = new ArrayList<>();
-            EditText dateBox = (EditText) findViewById(R.id.meal_date);
-            dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+            //Check for intent and if one present load meal. If no intent, new meal
+            Intent intent = this.getIntent();
+            if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+                mealIdNumber = intent.getIntExtra(Intent.EXTRA_TEXT, 0);
+                DBHelper db = new DBHelper(this);
+                meal = db.readMeal(mealIdNumber);
+
+                //Get all photos and check for photos exist
+                photos = (ArrayList) db.getAllPhotosForMealList(mealIdNumber);
+                if (photos.isEmpty()) {
+                    hasPhotos = false;
+                } else {
+                    hasPhotos = true;
+                }
+
+                setMealToUI();
+
+            } else { //no intent, make no meal
+                meal = new Meal();
+                photos = new ArrayList<>();
+                EditText dateBox = (EditText) findViewById(R.id.meal_date);
+                dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+            }
         }
-
-        setMealDatePicker(findViewById(R.id.meal_date));
     }
 
     private void setMealDatePicker(final View edittext) {
@@ -410,11 +427,10 @@ public class InputMeal extends ActionBarActivity {
                             cameraPicFile = null;
                             photoPath = null;
                         }
-                        if(cameraPicFile != null){
+                        if (cameraPicFile != null) {
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPicFile));
                             startActivityForResult(takePictureIntent, REQUEST_CAMERA);
-                        } else
-                        {
+                        } else {
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_taking_photo),
                                     Toast.LENGTH_LONG).show();
                             photoPath = null;
@@ -459,7 +475,7 @@ public class InputMeal extends ActionBarActivity {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = JPEG_FILE_PREFIX + timeStamp + JPEG_FILE_SUFFIX;
             File imageF = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES),imageFileName);
+                    Environment.DIRECTORY_PICTURES), imageFileName);
             return imageF;
         }
     }
@@ -530,8 +546,11 @@ public class InputMeal extends ActionBarActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString(STATE_PHOTO_PATH, photoPath);
+        savedInstanceState.putInt(STATE_MEAL_ID, mealIdNumber);
+        savedInstanceState.putParcelable(STATE_MEAL, meal);
+        savedInstanceState.putParcelableArrayList(STATE_PHOTO_LIST, photos);
         super.onSaveInstanceState(savedInstanceState);
     }
 

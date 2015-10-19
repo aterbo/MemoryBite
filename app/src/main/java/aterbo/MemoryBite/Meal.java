@@ -1,6 +1,8 @@
 package aterbo.MemoryBite;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * This is the meal class that stores all of the data for a given meal.
@@ -9,7 +11,7 @@ import android.content.Context;
  * it will be read from the database to either view in the journal or
  * be fed back into the input screen to edit an existing entry.
  */
-public class Meal {
+public class Meal implements Parcelable {
 
     private long mealIdNumber;
     private String restaurantName;
@@ -207,4 +209,58 @@ public class Meal {
             return detailTitle + ": " + mealDetail + "\n";
         } else return "";
     }
+
+    //Parceling info!!
+    protected Meal(Parcel in) {
+        mealIdNumber = in.readLong();
+        restaurantName = in.readString();
+        location = in.readString();
+        dateMealEaten = in.readString();
+        cuisineType = in.readString();
+        appetizersNotes = in.readString();
+        mainCoursesNotes = in.readString();
+        dessertsNotes = in.readString();
+        drinksNotes = in.readString();
+        generalNotes = in.readString();
+        dinedWith = in.readString();
+        atmosphere = in.readString();
+        price = in.readString();
+        primaryPhoto = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mealIdNumber);
+        dest.writeString(restaurantName);
+        dest.writeString(location);
+        dest.writeString(dateMealEaten);
+        dest.writeString(cuisineType);
+        dest.writeString(appetizersNotes);
+        dest.writeString(mainCoursesNotes);
+        dest.writeString(dessertsNotes);
+        dest.writeString(drinksNotes);
+        dest.writeString(generalNotes);
+        dest.writeString(dinedWith);
+        dest.writeString(atmosphere);
+        dest.writeString(price);
+        dest.writeString(primaryPhoto);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Meal> CREATOR = new Parcelable.Creator<Meal>() {
+        @Override
+        public Meal createFromParcel(Parcel in) {
+            return new Meal(in);
+        }
+
+        @Override
+        public Meal[] newArray(int size) {
+            return new Meal[size];
+        }
+    };
 }

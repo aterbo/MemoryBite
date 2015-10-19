@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -217,7 +217,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public List getAllMealsList() {
-        List meals = new LinkedList();
+        List meals = new ArrayList();
 
         // select meal query
         String query = "SELECT  * FROM " + DBContract.MealDBTable.MEAL_TABLE;
@@ -429,7 +429,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public List getAllPhotosList() {
-        List photos = new LinkedList();
+        List photos = new ArrayList();
 
         // select meal query
         String query = "SELECT  * FROM " + DBContract.PhotosDBTable.PHOTO_TABLE;
@@ -489,7 +489,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //Get all photos from a given meal ID
     public List getAllPhotosForMealList(long mealId) {
-        List photosFromMeal = new LinkedList();
+        List photosFromMeal = new ArrayList();
 
         // select meal query
         String query = "SELECT  * FROM " + DBContract.PhotosDBTable.PHOTO_TABLE + " WHERE " +
