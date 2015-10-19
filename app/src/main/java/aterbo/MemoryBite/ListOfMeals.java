@@ -50,7 +50,7 @@ public class ListOfMeals extends ActionBarActivity {
         }
         ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
 
-
+        //AD MONEY AD MONEY
         if(findViewById(R.id.adView)!=null) {
             AdView mAdView = (AdView) findViewById(R.id.adView);
             AdRequest adRequest = new AdRequest.Builder().build();

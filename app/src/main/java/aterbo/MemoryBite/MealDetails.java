@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
@@ -69,6 +71,13 @@ public class MealDetails extends ActionBarActivity {
         }
 
         populateLayoutWMeal();
+
+        //AD MONEY AD MONEY
+        if(findViewById(R.id.adView)!=null) {
+            AdView mAdView = (AdView) findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
     }
 
 
