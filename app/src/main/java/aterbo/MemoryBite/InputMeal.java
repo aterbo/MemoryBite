@@ -69,7 +69,9 @@ public class InputMeal extends ActionBarActivity {
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/kaushanscript.ttf");
         Button button = (Button) findViewById(R.id.save_button);
         button.setTypeface(tf);
-        button = (Button) findViewById(R.id.photo_button);
+        button = (Button) findViewById(R.id.take_photo_button);
+        button.setTypeface(tf);
+        button = (Button) findViewById(R.id.select_photo_button);
         button.setTypeface(tf);
 
 
@@ -372,18 +374,6 @@ public class InputMeal extends ActionBarActivity {
         }
     }
 
-    //Photo button clicked (choose from gallery
-    public void addPictureButtonClick(View view) {
-
-        if (numberOfPhotos() < getResources().getInteger(R.integer.max_number_of_photos)) {
-            selectImage();
-        } else {
-            Toast.makeText(this, getResources().getString(R.string.cant_add_photos), Toast.LENGTH_LONG).show();
-        }
-
-
-    }
-
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
@@ -403,54 +393,52 @@ public class InputMeal extends ActionBarActivity {
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
 
+    //Test if number of photos is under limit
+    private boolean canAddMorePhotos() {
+        if (numberOfPhotos() < getResources().getInteger(R.integer.max_number_of_photos)) {
+            return true;
+        } else {
+            Toast.makeText(this, getResources().getString(R.string.cant_add_photos), Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
 
-    private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
+    public void takeNewPhoto(View view){
+        if(canAddMorePhotos()){
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Ensure that there's a camera activity to handle the intent
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File cameraPicFile = null;
+                try {
+                    cameraPicFile = createImageFile();
+                    photoPath = cameraPicFile.getAbsolutePath();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    cameraPicFile = null;
+                    photoPath = null;
+                }
+                if (cameraPicFile != null) {
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPicFile));
+                    startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+                } else {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_taking_photo),
+                            Toast.LENGTH_LONG).show();
+                    photoPath = null;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add Photo!");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
-
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Ensure that there's a camera activity to handle the intent
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        File cameraPicFile = null;
-                        try {
-                            cameraPicFile = createImageFile();
-                            photoPath = cameraPicFile.getAbsolutePath();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            cameraPicFile = null;
-                            photoPath = null;
-                        }
-                        if (cameraPicFile != null) {
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPicFile));
-                            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
-                        } else {
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_taking_photo),
-                                    Toast.LENGTH_LONG).show();
-                            photoPath = null;
-
-                        }
-                    }
-                } else if (items[item].equals("Choose from Library")) {
-                    Intent intent = new Intent(
-                            Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-                    startActivityForResult(
-                            Intent.createChooser(intent, "Select File"),
-                            SELECT_FILE);
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
                 }
             }
-        });
-        builder.show();
+        }
+    }
+
+    public void choosePhotoFromGallery(View view){
+        Intent intent = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(
+                Intent.createChooser(intent, "Select File"),
+                SELECT_FILE);
     }
 
     private File createImageFile() throws IOException {
@@ -480,35 +468,7 @@ public class InputMeal extends ActionBarActivity {
         }
     }
 
-
-    /* Photo album for this application */
-    private String getAlbumName() {
-        return "MemoryBite";
-    }
-
-
-    private File getAlbumDir() {
-        File storageDir = null;
-
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-
-
-            if (storageDir != null) {
-                if (!storageDir.mkdirs()) {
-                    if (!storageDir.exists()) {
-                        Log.d("CameraSample", "failed to create directory");
-                        return null;
-                    }
-                }
-            }
-
-        } else {
-            Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
-        }
-
-        return storageDir;
-    }
-
+    //Handling return from camera or gallery
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
