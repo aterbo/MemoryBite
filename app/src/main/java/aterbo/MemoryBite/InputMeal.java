@@ -41,12 +41,21 @@ public class InputMeal extends ActionBarActivity {
     private List<Photo> photos;
     private boolean hasPhotos;
     private int mealIdNumber = -1;
-
+    static final String STATE_PHOTO_PATH = "photoPath";
     private String photoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); //always call the superclass first
+
+        // Check whether we're recreating a previously destroyed instance
+        // This should check if the app is coming back from the camera after a rotation. If so,
+        // photo path variable is saved.
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            photoPath = savedInstanceState.getString(STATE_PHOTO_PATH);
+        }
+
         setContentView(R.layout.activity_input_meal);
 
         //Setting appetizer, mains, desserts, drinks, and notes to have multiline input on display
@@ -374,9 +383,6 @@ public class InputMeal extends ActionBarActivity {
 
     private static int REQUEST_CAMERA = 1;
     private static int SELECT_FILE = 2;
-
-    private String mCurrentPhotoPath;
-
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
 
@@ -398,12 +404,11 @@ public class InputMeal extends ActionBarActivity {
                         File cameraPicFile = null;
                         try {
                             cameraPicFile = createImageFile();
-                            mCurrentPhotoPath = cameraPicFile.getAbsolutePath();
                             photoPath = cameraPicFile.getAbsolutePath();
                         } catch (IOException e) {
                             e.printStackTrace();
                             cameraPicFile = null;
-                            mCurrentPhotoPath = null;
+                            photoPath = null;
                         }
                         if(cameraPicFile != null){
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPicFile));
@@ -494,7 +499,7 @@ public class InputMeal extends ActionBarActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
                 Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
-                File f = new File(mCurrentPhotoPath);
+                File f = new File(photoPath);
                 Uri contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
@@ -523,4 +528,11 @@ public class InputMeal extends ActionBarActivity {
             setPhotosToGridView();
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putString(STATE_PHOTO_PATH, photoPath);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
 }
