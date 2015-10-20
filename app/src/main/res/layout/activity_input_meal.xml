@@ -152,52 +152,27 @@
 
                 <RadioButton
                     android:id="@+id/atmosphere_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/atmosphere_1" />
 
                 <RadioButton
                     android:id="@+id/atmosphere_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/atmosphere_2" />
 
                 <RadioButton
                     android:id="@+id/atmosphere_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/atmosphere_3" />
 
                 <RadioButton
                     android:id="@+id/atmosphere_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/atmosphere_4" />
 
                 <RadioButton
                     android:id="@+id/atmosphere_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/atmosphere_5" />
 
             </RadioGroup>
@@ -215,52 +190,27 @@
 
                 <RadioButton
                     android:id="@+id/price_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/price_1" />
 
                 <RadioButton
                     android:id="@+id/price_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/price_2" />
 
                 <RadioButton
                     android:id="@+id/price_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/price_3" />
 
                 <RadioButton
                     android:id="@+id/price_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/price_4" />
 
                 <RadioButton
                     android:id="@+id/price_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:drawableBottom="?android:attr/listChoiceIndicatorSingle"
-                    android:gravity="center_horizontal|bottom"
+                    style="@style/CustomRadioButton"
                     android:text="@string/price_5" />
 
             </RadioGroup>
