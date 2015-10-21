@@ -165,6 +165,7 @@
     <string name="error_taking_photo">There was an error using the camera. Please try selecting a photo from the gallery. Sorry!</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="sort_meals">Sort Meals</string>
 
 
 </resources>

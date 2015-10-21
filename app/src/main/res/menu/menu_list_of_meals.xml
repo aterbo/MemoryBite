@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="aterbo.MemoryBite.ListOfMeals">
     <item
+        android:id="@+id/sort_meals_menu"
+        android:orderInCategory="50"
+        android:title="@string/sort_meals"
+        android:icon="@mipmap/ic_sort_white_24dp"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/add_new_meal_menu"
         android:orderInCategory="60"
         android:title="@string/add_new_meal"
