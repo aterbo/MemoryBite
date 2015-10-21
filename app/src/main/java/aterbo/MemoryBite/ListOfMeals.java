@@ -77,6 +77,9 @@ public class ListOfMeals extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case R.id.sort_meals_menu:
+                sortMeals();
+                return true;
             case R.id.add_new_meal_menu:
                 Intent newMealIntent = new Intent(this, InputMeal.class);
                 startActivity(newMealIntent);
@@ -133,6 +136,10 @@ public class ListOfMeals extends ActionBarActivity {
                     .putExtra(Intent.EXTRA_TEXT, maxId);
             startActivity(intent);
         }
+    }
+
+    public void sortMeals() {
+
     }
 
 }
