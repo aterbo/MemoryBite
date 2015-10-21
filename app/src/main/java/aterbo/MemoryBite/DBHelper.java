@@ -272,7 +272,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List meals = new ArrayList();
 
         //sort query
-        String sortQuery = "ORDER BY CASE WHEN " + sortColumn + " IS NULL THEN 1 ELSE 0 END, " + sortColumn;
+        String sortQuery = "ORDER BY " + sortColumn + " IS NULL OR " + sortColumn + "='', " + sortColumn;
 
         // select meal query
         String query = "SELECT  * FROM " + DBContract.MealDBTable.MEAL_TABLE + " " + sortQuery;
