@@ -268,6 +268,61 @@ public class DBHelper extends SQLiteOpenHelper {
         return meals;
     }
 
+    public List getAllMealsSortedList(String sortColumn) {
+        List meals = new ArrayList();
+
+        //sort query
+        String sortQuery = "ORDER BY CASE WHEN " + sortColumn + " IS NULL THEN 1 ELSE 0 END, " + sortColumn;
+
+        // select meal query
+        String query = "SELECT  * FROM " + DBContract.MealDBTable.MEAL_TABLE + " " + sortQuery;
+
+        // get reference of the BookDB database
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // parse all results
+        Meal meal = null;
+        if (cursor.moveToFirst()) {
+            do {
+                meal = new Meal();
+                meal.setMealIdNumber(Integer.parseInt(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable._ID))));
+                meal.setRestaurantName(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_RESTAURANT_NAME)));
+                meal.setLocation(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_LOCATION)));
+                meal.setDateMealEaten(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE)));
+                meal.setCuisineType(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_CUISINE_TYPE)));
+                meal.setAppetizersNotes(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_APPETIZERS)));
+                meal.setMainCoursesNotes(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_MAIN_COURSES)));
+                meal.setDessertsNotes(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DESSERTS)));
+                meal.setDrinksNotes(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DRINKS)));
+                meal.setGeneralNotes(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_GENERAL_NOTES)));
+                meal.setDinedWith(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DINED_WITH)));
+                meal.setAtmosphere(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_ATMOSPHERE)));
+                meal.setPrice(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_PRICE)));
+                meal.setPrimaryPhoto(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_PRIMARY_PHOTO)));
+
+                // Add meal to meals
+                meals.add(meal);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return meals;
+    }
+
     /////////////////////////////////////////////
 
 

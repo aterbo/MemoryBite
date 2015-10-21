@@ -1,6 +1,8 @@
 package aterbo.MemoryBite;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ public class ListOfMeals extends ActionBarActivity {
     private List<Meal> mealList;
     private int resID;
     static final String STATE_RESID = "imageResID";
+    static final String STATE_SORT_SETTING = "sortSetting";
+    private String sortColumn;
 
 
     @Override
@@ -39,12 +43,14 @@ public class ListOfMeals extends ActionBarActivity {
         if (savedInstanceState != null) {
             //get INT from saved state
             resID = savedInstanceState.getInt(STATE_RESID);
+            sortColumn = savedInstanceState.getString(STATE_SORT_SETTING);
         } else {
             //Set random header image based on files in drawable folder and value array
             final TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
             final Random rand = new Random();
             final int rndInt = rand.nextInt(imgs.length());
             resID = imgs.getResourceId(rndInt, 0);
+            sortColumn = DBContract.MealDBTable.COLUMN_DATE;
             displayListView();
 
         }
@@ -95,18 +101,22 @@ public class ListOfMeals extends ActionBarActivity {
         }
     }
 
+    //Saving the randome header image so that it doesn't change on screen rotation
+    //Also save current sort setting, just in case
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the resID from the random image
         savedInstanceState.putInt(STATE_RESID, resID);
+        savedInstanceState.putString(STATE_SORT_SETTING, sortColumn);
 
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    //Pulls list from database for display
     private void displayListView() {
         DBHelper db = new DBHelper(this);
-        mealList = db.getAllMealsList();
+        mealList = db.getAllMealsSortedList(sortColumn);
         final MealListAdaptor mealListAdaptor = new MealListAdaptor(mealList, this);
         final ListView mealsList = (ListView) findViewById(R.id.meal_list_view);
         mealsList.setAdapter(mealListAdaptor);
@@ -140,6 +150,35 @@ public class ListOfMeals extends ActionBarActivity {
 
     public void sortMeals() {
 
-    }
+        CharSequence sortOptions[] = new CharSequence[] {
+                getResources().getString(R.string.date),
+                getResources().getString(R.string.restaurant_name),
+                getResources().getString(R.string.location),
 
-}
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.sort_meals));
+        builder.setItems(sortOptions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        sortColumn = DBContract.MealDBTable.COLUMN_DATE;
+                        displayListView();
+                        break;
+                    case 1:
+                        sortColumn = DBContract.MealDBTable.COLUMN_RESTAURANT_NAME;
+                        displayListView();
+                        break;
+                    case 2:
+                        sortColumn = DBContract.MealDBTable.COLUMN_LOCATION;
+                        displayListView();
+                        break;
+                }
+            }
+        });
+            builder.show();
+        }
+
+    }
