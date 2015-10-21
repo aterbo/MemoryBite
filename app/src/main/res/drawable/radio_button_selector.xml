@@ -6,9 +6,9 @@
         android:drawable="@drawable/button_normal" />
 
     <item android:state_checked="true" android:state_pressed="true"
-        android:drawable="@drawable/button_pressed" />
+        android:drawable="@drawable/button_touched" />
     <item android:state_checked="false" android:state_pressed="true"
-        android:drawable="@drawable/button_normal" />
+        android:drawable="@drawable/button_touched" />
 
     <item android:state_checked="true" android:state_focused="true"
         android:drawable="@drawable/button_pressed" />
