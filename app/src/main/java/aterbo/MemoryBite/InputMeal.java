@@ -69,11 +69,6 @@ public class InputMeal extends ActionBarActivity {
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/kaushanscript.ttf");
         Button button = (Button) findViewById(R.id.save_button);
         button.setTypeface(tf);
-        button = (Button) findViewById(R.id.take_photo_button);
-        button.setTypeface(tf);
-        button = (Button) findViewById(R.id.select_photo_button);
-        button.setTypeface(tf);
-
 
         // Check whether we're recreating a previously destroyed instance
         // This should check if the app is coming back from the camera and unpack all needed
