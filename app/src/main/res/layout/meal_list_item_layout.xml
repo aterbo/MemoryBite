@@ -37,18 +37,13 @@
             android:textSize="@dimen/medium_text" />
 
         <TextView
-            android:id="@+id/date_list"
+            android:id="@+id/date_and_dined_with_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary_text"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textSize="@dimen/small_text" />
-
-        <TextView
-            android:id="@+id/dined_with_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/secondary_text"
-            android:textSize="@dimen/small_text"/>
     </LinearLayout>
 
     <TextView
