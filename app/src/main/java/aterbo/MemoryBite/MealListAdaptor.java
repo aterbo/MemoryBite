@@ -50,11 +50,12 @@ public class MealListAdaptor extends BaseAdapter {
 
             viewHolder = new ViewHolder();
 
-            viewHolder.restaurantName = (TextView) convertView.findViewById(R.id.restaurant_name);
-            viewHolder.dinedWith = (TextView) convertView.findViewById(R.id.dined_with);
-            viewHolder.mealDate = (TextView) convertView.findViewById(R.id.date);
-            viewHolder.mealIdNumber = (TextView) convertView.findViewById(R.id.id_number);
-            viewHolder.mealPicture = (SquareImageView) convertView.findViewById(R.id.meal_picture);
+            viewHolder.restaurantName = (TextView) convertView.findViewById(R.id.restaurant_name_list);
+            viewHolder.location = (TextView) convertView.findViewById(R.id.location_list);
+            viewHolder.dinedWith = (TextView) convertView.findViewById(R.id.dined_with_list);
+            viewHolder.mealDate = (TextView) convertView.findViewById(R.id.date_list);
+            viewHolder.mealIdNumber = (TextView) convertView.findViewById(R.id.id_number_list);
+            viewHolder.mealPicture = (SquareImageView) convertView.findViewById(R.id.meal_picture_list);
 
             convertView.setTag(viewHolder);
         } else {
@@ -64,15 +65,11 @@ public class MealListAdaptor extends BaseAdapter {
         Meal meal = mealList.get(position);
 
         //
-        if (!meal.getRestaurantName().isEmpty()) {
-            viewHolder.restaurantName.setText(meal.getRestaurantName());
-        } else{ viewHolder.restaurantName.setText(""); }
-        if (!meal.getDinedWith().isEmpty()) {
-            viewHolder.dinedWith.setText("With " + meal.getDinedWith());
-        } else{ viewHolder.dinedWith.setText(""); }
-        if (!meal.getDateMealEaten().isEmpty()) {
-            viewHolder.mealDate.setText(meal.getDateMealEaten());
-        } else { viewHolder.mealDate.setText(""); }
+        contentTest(meal.getRestaurantName(), viewHolder.restaurantName,false);
+        contentTest(meal.getLocation(), viewHolder.location,false);
+        contentTest(meal.getDinedWith(), viewHolder.dinedWith,true);
+        contentTest(meal.getRestaurantName(), viewHolder.restaurantName,false);
+        contentTest(meal.getDateMealEaten(), viewHolder.mealDate,false);
 
         viewHolder.mealIdNumber.setText(Long.toString(meal.getMealIdNumber()));
 
@@ -86,6 +83,13 @@ public class MealListAdaptor extends BaseAdapter {
         return convertView;
     }
 
+    private void contentTest(String string, TextView textView, boolean withTest) {
+        if (!string.isEmpty()) {
+            if(withTest){string = "With " + string;}
+            textView.setText(string);
+        } else{ textView.setText(""); }
+    }
+
     public Meal getMeal(int position) {
         return mealList.get(position);
     }
@@ -95,6 +99,7 @@ public class MealListAdaptor extends BaseAdapter {
     //http://www.javacodegeeks.com/2013/09/android-viewholder-pattern-example.html
     static class ViewHolder {
         TextView restaurantName;
+        TextView location;
         TextView dinedWith;
         TextView mealDate;
         TextView mealIdNumber;

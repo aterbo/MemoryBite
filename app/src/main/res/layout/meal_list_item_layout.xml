@@ -6,7 +6,7 @@
     android:background="@drawable/customborder">
 
     <aterbo.MemoryBite.SquareImageView
-        android:id="@+id/meal_picture"
+        android:id="@+id/meal_picture_list"
         android:layout_width="120dp"
         android:layout_height="2dp"
         android:layout_margin="4dp"
@@ -22,33 +22,36 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/restaurant_name"
+            android:id="@+id/restaurant_name_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
             android:textColor="@android:color/white"
             android:textSize="@dimen/large_text" />
 
-
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/location_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary_text"
-            android:textSize="@dimen/medium_text"
-            android:layout_weight="1" />
+            android:textSize="@dimen/medium_text" />
 
         <TextView
-            android:id="@+id/dined_with"
+            android:id="@+id/date_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary_text"
-            android:textSize="@dimen/medium_text"
-            android:layout_weight="1" />
+            android:textSize="@dimen/small_text" />
+
+        <TextView
+            android:id="@+id/dined_with_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/small_text"/>
     </LinearLayout>
 
     <TextView
-        android:id="@+id/id_number"
+        android:id="@+id/id_number_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone" />

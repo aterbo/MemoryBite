@@ -154,7 +154,6 @@ public class ListOfMeals extends ActionBarActivity {
                 getResources().getString(R.string.date),
                 getResources().getString(R.string.restaurant_name),
                 getResources().getString(R.string.location),
-
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -180,5 +179,4 @@ public class ListOfMeals extends ActionBarActivity {
         });
             builder.show();
         }
-
     }
