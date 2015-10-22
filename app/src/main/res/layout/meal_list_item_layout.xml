@@ -10,8 +10,7 @@
         android:layout_width="120dp"
         android:layout_height="2dp"
         android:layout_margin="4dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/mbicon" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="fill_parent"
