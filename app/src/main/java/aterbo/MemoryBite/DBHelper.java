@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,11 @@ public class DBHelper extends SQLiteOpenHelper {
     // Logcat tag
     private static final String LOG = "DatabaseHelper";
 
-    // Database Version
-    private static final int DATABASE_VERSION = 1;
+    // Database Version control
+    private static final int VERSION_LAUNCH = 1;
+    private static final int VERSION_CORRECT_DATE_FORMAT = 2;
+
+    private static final int DATABASE_VERSION = VERSION_CORRECT_DATE_FORMAT;
 
     // Database Name
     private static final String DATABASE_NAME = "photoJournal";
@@ -42,9 +46,29 @@ public class DBHelper extends SQLiteOpenHelper {
     //upgrade database on version change(currently drops table)
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DBContract.MealDBTable.MEAL_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + DBContract.PhotosDBTable.PHOTO_TABLE);
-        this.onCreate(db);
+        Log.d(LOG, "onUpgrade() from " + oldVersion + " to " + newVersion);
+
+        // NOTE: This switch statement is designed to handle cascading database
+        // updates, starting at the current version and falling through to all
+        // future upgrade cases. Only use "break;" when you want to drop and
+        // recreate the entire database.
+        int version = oldVersion;
+
+        switch (version) {
+            case VERSION_LAUNCH:
+                // Version 2 fixes date formatting.
+                db.execSQL("UPDATE " + DBContract.MealDBTable.MEAL_TABLE + " SET " +
+                        DBContract.MealDBTable.COLUMN_DATE + " = SUBSTR(" +
+                        DBContract.MealDBTable.COLUMN_DATE + ", 7) || '-' || SUBSTR(" +
+                        DBContract.MealDBTable.COLUMN_DATE + ", 1,2) || '-' || SUBSTR(" +
+                        DBContract.MealDBTable.COLUMN_DATE + ",4,2)");
+                version = VERSION_CORRECT_DATE_FORMAT;
+        }
+
+        Log.d(LOG, "after upgrade logic, at version " + version);
+        if (version != DATABASE_VERSION) {
+            Log.w(LOG, "Error with upgrade");
+        }
     }
 
     //MEAL TABLE

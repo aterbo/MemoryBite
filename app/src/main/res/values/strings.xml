@@ -154,13 +154,13 @@
     <string name="share_instructions">Share with a friend</string>
     <string name="share_w_memory_bite_instructions">Email to Memory Bite\'s website</string>
     <!-- Live Ad ID! -->
-
-    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
-
-    <!-- Test Ad ID! -->
     <!--
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
     -->
+    <!-- Test Ad ID! -->
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 
     <string name="error_taking_photo">There was an error using the camera. Please try selecting a photo from the gallery. Sorry!</string>
     <string name="camera">Camera</string>
