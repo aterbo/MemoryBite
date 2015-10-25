@@ -20,4 +20,5 @@
     <color name="cl_copper">#70D8A027</color>
     <color name="cl_green">#88A764</color>
  <color name="cl_background">#52534E</color>
+    <color name="accent_material_dark">#c22a7d19</color>
 </resources>
