@@ -59,7 +59,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 // Version 2 fixes date formatting.
                 db.execSQL("UPDATE " + DBContract.MealDBTable.MEAL_TABLE + " SET " +
                         DBContract.MealDBTable.COLUMN_DATE + " = SUBSTR(" +
-                        DBContract.MealDBTable.COLUMN_DATE + ", 7) || '-' || SUBSTR(" +
+                        DBContract.MealDBTable.COLUMN_DATE + ", 7,4) || '-' || SUBSTR(" +
                         DBContract.MealDBTable.COLUMN_DATE + ", 1,2) || '-' || SUBSTR(" +
                         DBContract.MealDBTable.COLUMN_DATE + ",4,2)");
                 version = VERSION_CORRECT_DATE_FORMAT;
@@ -82,7 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(DBContract.MealDBTable.COLUMN_RESTAURANT_NAME, meal.getRestaurantName());
         values.put(DBContract.MealDBTable.COLUMN_LOCATION, meal.getLocation());
-        values.put(DBContract.MealDBTable.COLUMN_DATE, meal.getDateMealEaten());
+        values.put(DBContract.MealDBTable.COLUMN_DATE, convertDateSQLFormat(meal.getDateMealEaten()));
         values.put(DBContract.MealDBTable.COLUMN_CUISINE_TYPE, meal.getCuisineType());
         values.put(DBContract.MealDBTable.COLUMN_APPETIZERS, meal.getAppetizersNotes());
         values.put(DBContract.MealDBTable.COLUMN_MAIN_COURSES, meal.getMainCoursesNotes());
@@ -124,8 +124,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_RESTAURANT_NAME)));
         meal.setLocation(cursor.getString(
                 cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_LOCATION)));
-        meal.setDateMealEaten(cursor.getString(
-                cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE)));
+        meal.setDateMealEaten(convertDateUIFormat(cursor.getString(
+                cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE))));
         meal.setCuisineType(cursor.getString(
                 cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_CUISINE_TYPE)));
         meal.setAppetizersNotes(cursor.getString(
@@ -161,7 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(DBContract.MealDBTable.COLUMN_RESTAURANT_NAME, meal.getRestaurantName());
         values.put(DBContract.MealDBTable.COLUMN_LOCATION, meal.getLocation());
-        values.put(DBContract.MealDBTable.COLUMN_DATE, meal.getDateMealEaten());
+        values.put(DBContract.MealDBTable.COLUMN_DATE, convertDateSQLFormat(meal.getDateMealEaten()));
         values.put(DBContract.MealDBTable.COLUMN_CUISINE_TYPE, meal.getCuisineType());
         values.put(DBContract.MealDBTable.COLUMN_APPETIZERS, meal.getAppetizersNotes());
         values.put(DBContract.MealDBTable.COLUMN_MAIN_COURSES, meal.getMainCoursesNotes());
@@ -194,31 +194,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //////////////////////////////////////
-
-    public Cursor getAllMealsCursor() {
-        // select meal query
-        String query = "SELECT  * FROM " + DBContract.MealDBTable.MEAL_TABLE;
-
-        // get reference of the mealDB database
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        db.close();
-        return cursor;
-    }
-
-    public int getCountOfMeals() {
-        String countQuery = "SELECT * FROM " + DBContract.MealDBTable.MEAL_TABLE;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int cnt = cursor.getCount();
-        cursor.close();
-        db.close();
-        return cnt;
-    }
 
     public int getMaxMealId() {
         String maxQuery = "SELECT MAX(" + DBContract.MealDBTable._ID + ") AS "
@@ -261,8 +236,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_RESTAURANT_NAME)));
                 meal.setLocation(cursor.getString(
                         cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_LOCATION)));
-                meal.setDateMealEaten(cursor.getString(
-                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE)));
+                meal.setDateMealEaten(convertDateUIFormat(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE))));
                 meal.setCuisineType(cursor.getString(
                         cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_CUISINE_TYPE)));
                 meal.setAppetizersNotes(cursor.getString(
@@ -316,8 +291,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_RESTAURANT_NAME)));
                 meal.setLocation(cursor.getString(
                         cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_LOCATION)));
-                meal.setDateMealEaten(cursor.getString(
-                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE)));
+                meal.setDateMealEaten(convertDateUIFormat(cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE))));
                 meal.setCuisineType(cursor.getString(
                         cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_CUISINE_TYPE)));
                 meal.setAppetizersNotes(cursor.getString(
@@ -436,76 +411,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return i;
     }
 
-    // Deleting single photo
-    public void deletePhoto(Photo photo) {
-
-        // get reference of the MealDB database
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // delete meal
-        db.delete(DBContract.PhotosDBTable.PHOTO_TABLE, DBContract.PhotosDBTable._ID
-                + " = ?", new String[]{String.valueOf(photo.getPhotoIdNumber())});
-        db.close();
-    }
-
-    //Delete all photos from a given meal
-    public void deleteAllPhotosFromMeal(long mealId) {
-
-        // get reference of the MealDB database
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // delete photos
-        db.delete(DBContract.PhotosDBTable.PHOTO_TABLE, DBContract.PhotosDBTable.COLUMN_MEAL_ID
-                + " = ?", new String[]{String.valueOf(mealId)});
-        db.close();
-    }
 
     ////////////////////////
-
-    public Cursor getAllPhotosCursor() {
-        // select photo query
-        String query = "SELECT  * FROM " + DBContract.PhotosDBTable.PHOTO_TABLE;
-
-        // get reference of the mealDB database
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        db.close();
-        return cursor;
-    }
-
-    public int getCountOfPhotos() {
-        String countQuery = "SELECT * FROM " + DBContract.PhotosDBTable.PHOTO_TABLE;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int cnt = cursor.getCount();
-        cursor.close();
-        db.close();
-        return cnt;
-    }
-
-    public int getMaxPhotoId() {
-        String maxQuery = "SELECT MAX(" + DBContract.PhotosDBTable._ID + ") AS "
-                + DBContract.PhotosDBTable._ID + " FROM " + DBContract.PhotosDBTable.PHOTO_TABLE;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(maxQuery, null);
-        int maxId = 0;
-        try {
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                maxId = cursor.getInt(0);
-            }
-        } catch (Exception e) {
-            Log.e("Get Max", "ERRRORRRR");
-        } finally {
-            db.close();
-        }
-        return maxId;
-    }
-
 
     public List getAllPhotosList() {
         List photos = new ArrayList();
@@ -546,27 +453,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //Get all photos from a given meal ID
-    public boolean checkMealIdForPhotos(long mealId) {
-
-        // select meal query
-        String query = "SELECT  * FROM " + DBContract.PhotosDBTable.PHOTO_TABLE + " WHERE " +
-                DBContract.PhotosDBTable.COLUMN_MEAL_ID + " = " + mealId;
-
-        // get reference of the MealDB database
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.getCount() <= 0) {
-            cursor.close();
-            db.close();
-            return false;
-        }
-        cursor.close();
-        db.close();
-        return true;
-    }
-
-    //Get all photos from a given meal ID
     public List getAllPhotosForMealList(long mealId) {
         List photosFromMeal = new ArrayList();
 
@@ -604,5 +490,33 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         db.close();
         return photosFromMeal;
+    }
+
+    //Delete all photos from a given meal
+    public void deleteAllPhotosFromMeal(long mealId) {
+
+        // get reference of the MealDB database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // delete photos
+        db.delete(DBContract.PhotosDBTable.PHOTO_TABLE, DBContract.PhotosDBTable.COLUMN_MEAL_ID
+                + " = ?", new String[]{String.valueOf(mealId)});
+        db.close();
+    }
+
+    private String convertDateSQLFormat(String date) {
+        if (date.contains("/")) {
+            return date.substring(6) + "-" + date.substring(0, 2) + "-" + date.substring(3, 5);
+        } else {
+            return date;
+        }
+    }
+
+    private String convertDateUIFormat(String date) {
+        if (date.contains("-")) {
+            return date.substring(5, 7) + "/" + date.substring(8) + "/" + date.substring(0, 4);
+        } else {
+            return date;
+        }
     }
 }
