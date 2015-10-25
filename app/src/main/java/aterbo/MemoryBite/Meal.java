@@ -151,7 +151,7 @@ public class Meal implements Parcelable {
         String testString = restaurantName + location + cuisineType + dinedWith + appetizersNotes
                 + mainCoursesNotes + dessertsNotes + drinksNotes + generalNotes;
 
-        if (testString.length() > 1) {
+        if (testString.length() >= 1) {
             return true;
         }
 
