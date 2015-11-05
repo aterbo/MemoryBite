@@ -166,6 +166,7 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="sort_meals">Sort Meals</string>
+    <string name="Close">X</string>
 
 
 </resources>

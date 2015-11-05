@@ -369,9 +369,22 @@ public class InputMeal extends ActionBarActivity {
         }
     }
 
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
     private static int REQUEST_CAMERA = 1;
     private static int SELECT_FILE = 2;
-    private static final String MEMORY_BITE_FOLDER = "MemoryBite/";
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
 
@@ -428,7 +441,7 @@ public class InputMeal extends ActionBarActivity {
         // Get the directory for the user's public pictures directory.
         boolean success = true;
         File folder = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), MEMORY_BITE_FOLDER);
+                Environment.DIRECTORY_PICTURES), "MemoryBite/");
         if (!folder.exists()) {
             success = folder.mkdirs();
             Log.e("Album Creation", "Directory not created");

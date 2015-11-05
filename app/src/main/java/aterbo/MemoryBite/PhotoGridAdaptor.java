@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,9 +20,9 @@ import java.util.List;
  */
 public class PhotoGridAdaptor extends BaseAdapter {
     Context context;
-    List<Photo> photoList;
+    ArrayList<Photo> photoList;
 
-    public PhotoGridAdaptor(List<Photo> photoList, Context context) {
+    public PhotoGridAdaptor(ArrayList<Photo> photoList, Context context) {
         this.photoList = photoList;
         this.context = context;
     }

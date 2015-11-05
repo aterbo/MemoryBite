@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -453,8 +454,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //Get all photos from a given meal ID
-    public List getAllPhotosForMealList(long mealId) {
-        List photosFromMeal = new ArrayList();
+    public ArrayList getAllPhotosForMealList(long mealId) {
+        ArrayList photosFromMeal = new ArrayList();
 
         // select meal query
         String query = "SELECT  * FROM " + DBContract.PhotosDBTable.PHOTO_TABLE + " WHERE " +

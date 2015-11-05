@@ -46,6 +46,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="aterbo.MemoryBite.ListOfMeals" />
         </activity>
+        <activity
+            android:name="aterbo.MemoryBite.FullScreenViewActivity"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="aterbo.MemoryBite.MealDetails" />
+        </activity>
     </application>
 
 </manifest>

@@ -25,6 +25,7 @@ import com.google.android.gms.ads.AdView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,7 +33,7 @@ public class MealDetails extends ActionBarActivity {
 
     private int mealIdNumber;
     private Meal meal;
-    private List<Photo> photos;
+    private ArrayList<Photo> photos;
     private boolean hasPhotos;
     private static int SHARE_GENERAL = 1;
     private static int SHARE_W_MEMORY_BITE = 2;
@@ -180,11 +181,9 @@ public class MealDetails extends ActionBarActivity {
         photoGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
-                Photo chosenPhoto = photoGridAdaptor.getPhoto(position);
-                String photoFilePath = chosenPhoto.getPhotoFilePath();
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(new File(photoFilePath)), "image/*");
+                Intent intent = new Intent(MealDetails.this, FullScreenViewActivity.class);
+                intent.putExtra("id", position);
+                intent.putParcelableArrayListExtra("photoList", photos);
                 startActivity(intent);
             }
         });

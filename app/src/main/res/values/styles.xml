@@ -7,6 +7,13 @@
         <item name="colorPrimaryDark">@color/primary_green_darker</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.FullScreen" parent="@style/AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <style name="CustomRadioButton">
         <item name="android:background">@drawable/radio_button_selector</item>
         <item name="android:layout_width">0dp</item>
