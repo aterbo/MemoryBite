@@ -236,7 +236,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/hold_to_delete_photo"
+                android:text="@string/add_caption_delete_photo"
                 android:layout_marginTop="4dp"
                 android:gravity="center"/>
         </LinearLayout>

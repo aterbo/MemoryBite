@@ -3,6 +3,7 @@ package aterbo.MemoryBite;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,10 +13,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -247,6 +251,51 @@ public class InputMeal extends ActionBarActivity {
                         Toast.LENGTH_SHORT).show();
                 photoGridAdaptor.notifyDataSetChanged();
                 return true;
+            }
+        });
+
+        photoGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            private String photoCaption;
+            private Photo updatePhoto;
+
+            public void onItemClick(AdapterView<?> arg0, View arg1,
+                                       final int position, long arg3) {
+                updatePhoto = photos.get(position);
+                // Getting existing caption from photo
+                photoCaption = updatePhoto.getPhotoCaption();
+
+                // Setting up dialog box to enter caption
+                AlertDialog.Builder builder = new AlertDialog.Builder(InputMeal.this);
+                builder.setTitle(getResources().getString(R.string.enter_caption));
+
+                // Set up the input
+                final EditText input = new EditText(InputMeal.this);
+
+                // Specify the type of input expected
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                        | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                builder.setView(input);
+                input.setText(photoCaption);
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        photoCaption = input.getText().toString();
+
+                        updatePhoto.setPhotoCaption(photoCaption);
+
+                        photos.set(position, updatePhoto);
+                        photoGridAdaptor.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
