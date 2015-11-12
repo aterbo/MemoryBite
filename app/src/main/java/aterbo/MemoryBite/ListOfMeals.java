@@ -156,9 +156,12 @@ public class ListOfMeals extends ActionBarActivity {
     public void sortMeals() {
 
         CharSequence sortOptions[] = new CharSequence[] {
-                getResources().getString(R.string.date),
-                getResources().getString(R.string.restaurant_name),
-                getResources().getString(R.string.location),
+                getResources().getString(R.string.new_to_old),
+                getResources().getString(R.string.old_to_new),
+                getResources().getString(R.string.restaurant_a_to_z),
+                getResources().getString(R.string.restaurant_z_to_a),
+                getResources().getString(R.string.location_a_to_z),
+                getResources().getString(R.string.location_z_to_a)
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -169,14 +172,32 @@ public class ListOfMeals extends ActionBarActivity {
                 switch (which) {
                     case 0:
                         sortColumn = DBContract.MealDBTable.COLUMN_DATE;
+                        isAscending = false;
                         displayListView();
                         break;
                     case 1:
-                        sortColumn = DBContract.MealDBTable.COLUMN_RESTAURANT_NAME;
+                        sortColumn = DBContract.MealDBTable.COLUMN_DATE;
+                        isAscending = true;
                         displayListView();
                         break;
                     case 2:
+                        sortColumn = DBContract.MealDBTable.COLUMN_RESTAURANT_NAME;
+                        isAscending = true;
+                        displayListView();
+                        break;
+                    case 3:
+                        sortColumn = DBContract.MealDBTable.COLUMN_RESTAURANT_NAME;
+                        isAscending = false;
+                        displayListView();
+                        break;
+                    case 4:
                         sortColumn = DBContract.MealDBTable.COLUMN_LOCATION;
+                        isAscending = true;
+                        displayListView();
+                        break;
+                    case 5:
+                        sortColumn = DBContract.MealDBTable.COLUMN_LOCATION;
+                        isAscending = false;
                         displayListView();
                         break;
                 }

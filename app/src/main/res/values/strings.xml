@@ -165,8 +165,15 @@
     <string name="error_taking_photo">There was an error using the camera. Please try selecting a photo from the gallery. Sorry!</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
-    <string name="sort_meals">Sort Meals</string>
-    <string name="Close">X</string>
 
+    <string name="sort_meals">Sort Meals</string>
+    <string name="location_z_to_a">Location (Z to A)</string>
+    <string name="location_a_to_z">Location (A to Z)</string>
+    <string name="restaurant_z_to_a">Restaurant (Z to A)</string>
+    <string name="restaurant_a_to_z">Restaurant (A to Z)</string>
+    <string name="old_to_new">Oldest to Newest</string>
+    <string name="new_to_old">Newest to Oldest</string>
+
+    <string name="Close">X</string>
 
 </resources>
