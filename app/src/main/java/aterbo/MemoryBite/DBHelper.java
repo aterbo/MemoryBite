@@ -268,11 +268,20 @@ public class DBHelper extends SQLiteOpenHelper {
         return meals;
     }
 
-    public List getAllMealsSortedList(String sortColumn) {
+    public List getAllMealsSortedList(String sortColumn, Boolean isAscending) {
         List meals = new ArrayList();
 
+        //Determine if ascending or descending
+        String sortOrder;
+
+        if(isAscending){
+            sortOrder = "ASC";
+        } else{
+            sortOrder = "DESC";
+        }
+
         //sort query
-        String sortQuery = "ORDER BY " + sortColumn + " IS NULL OR " + sortColumn + "='', " + sortColumn;
+        String sortQuery = "ORDER BY " + sortColumn + " IS NULL OR " + sortColumn + "='', " + sortColumn + " " + sortOrder;
 
         // select meal query
         String query = "SELECT  * FROM " + DBContract.MealDBTable.MEAL_TABLE + " " + sortQuery;

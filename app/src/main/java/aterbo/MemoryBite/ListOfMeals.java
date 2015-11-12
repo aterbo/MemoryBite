@@ -32,6 +32,8 @@ public class ListOfMeals extends ActionBarActivity {
     static final String STATE_RESID = "imageResID";
     static final String STATE_SORT_SETTING = "sortSetting";
     private String sortColumn;
+    static final String STATE_SORT_ORDER = "sortOrder";
+    private Boolean isAscending;
 
 
     @Override
@@ -44,6 +46,7 @@ public class ListOfMeals extends ActionBarActivity {
             //get INT from saved state
             resID = savedInstanceState.getInt(STATE_RESID);
             sortColumn = savedInstanceState.getString(STATE_SORT_SETTING);
+            isAscending = savedInstanceState.getBoolean(STATE_SORT_ORDER);
         } else {
             //Set random header image based on files in drawable folder and value array
             final TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
@@ -51,6 +54,7 @@ public class ListOfMeals extends ActionBarActivity {
             final int rndInt = rand.nextInt(imgs.length());
             resID = imgs.getResourceId(rndInt, 0);
             sortColumn = DBContract.MealDBTable.COLUMN_DATE;
+            isAscending = false;
             displayListView();
 
         }
@@ -108,6 +112,7 @@ public class ListOfMeals extends ActionBarActivity {
         // Save the resID from the random image
         savedInstanceState.putInt(STATE_RESID, resID);
         savedInstanceState.putString(STATE_SORT_SETTING, sortColumn);
+        savedInstanceState.putBoolean(STATE_SORT_ORDER, isAscending);
 
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
@@ -116,7 +121,7 @@ public class ListOfMeals extends ActionBarActivity {
     //Pulls list from database for display
     private void displayListView() {
         DBHelper db = new DBHelper(this);
-        mealList = db.getAllMealsSortedList(sortColumn);
+        mealList = db.getAllMealsSortedList(sortColumn, isAscending);
         final MealListAdaptor mealListAdaptor = new MealListAdaptor(mealList, this);
         final ListView mealsList = (ListView) findViewById(R.id.meal_list_view);
         mealsList.setAdapter(mealListAdaptor);
