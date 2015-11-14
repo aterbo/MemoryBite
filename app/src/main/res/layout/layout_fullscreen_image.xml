@@ -24,4 +24,36 @@
         android:gravity="center"
         />
 
+    <Button
+        android:id="@+id/btnShowCaption"
+        android:layout_width="wrap_content"
+        android:minWidth="20dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:layout_marginBottom="25dp"
+        android:textSize="@dimen/small_text"
+        android:text="..."
+        android:gravity="center"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/caption"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:maxLines="5"
+        android:scrollbars="vertical"
+        android:textSize="@dimen/medium_text"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@drawable/customborder"
+        />
 </RelativeLayout>

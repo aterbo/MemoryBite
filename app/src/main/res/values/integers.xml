@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="max_number_of_photos">6</integer>
+    <integer name="buttonTransparancy">180</integer>
 </resources>
