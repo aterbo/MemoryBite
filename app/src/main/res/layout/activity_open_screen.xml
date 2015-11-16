@@ -24,10 +24,17 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/mbicon"/>
+
             <Button
                 android:id="@+id/add_new_meal_button"
                 style="@style/MainMenuButton"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="10dp"
                 android:onClick="startNewMeal"
                 android:text="@string/add_new_meal" />
 
@@ -49,7 +56,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
                 android:gravity="center|bottom"
                 android:onClick="helpButtonClick"
                 android:text="@string/help"
@@ -62,7 +68,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:onClick="commentsButtonClick"
                 android:text="@string/comments_suggestions"
