@@ -17,7 +17,7 @@ public class ExportHelper {
         this.context = context;
     }
 
-    public void chooseExportType (Context context){
+    public void chooseExportType (){
         CharSequence sortOptions[] = new CharSequence[] {
                 context.getResources().getString(R.string.toCSV),
                 context.getResources().getString(R.string.cancel)

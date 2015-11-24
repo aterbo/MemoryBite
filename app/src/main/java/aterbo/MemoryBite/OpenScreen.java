@@ -60,7 +60,8 @@ public class OpenScreen extends ActionBarActivity {
                 startActivity(viewJournalIntent);
                 return true;
             case R.id.export_menu:
-                //Need to trigger export function
+                ExportHelper exportHelper = new ExportHelper(this);
+                exportHelper.chooseExportType();
                 return true;
             case R.id.about_menu:
                 DialogFragment newFragment = AboutDialog.newInstance();
