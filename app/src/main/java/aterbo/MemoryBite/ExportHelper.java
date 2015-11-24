@@ -12,10 +12,12 @@ public class ExportHelper {
 
     private Context context;
 
-    public void chooseExportType (Context context){
-
+    //Constructor code
+    public ExportHelper(Context context){
         this.context = context;
+    }
 
+    public void chooseExportType (Context context){
         CharSequence sortOptions[] = new CharSequence[] {
                 context.getResources().getString(R.string.toCSV),
                 context.getResources().getString(R.string.cancel)
