@@ -109,7 +109,7 @@ public class ListOfMeals extends ActionBarActivity {
         }
     }
 
-    //Saving the randome header image so that it doesn't change on screen rotation
+    //Saving the random header image so that it doesn't change on screen rotation
     //Also save current sort setting, just in case
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -170,6 +170,7 @@ public class ListOfMeals extends ActionBarActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.sort_meals));
+        builder.setIcon(R.drawable.mbicon);
         builder.setItems(sortOptions, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

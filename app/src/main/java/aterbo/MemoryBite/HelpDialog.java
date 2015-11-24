@@ -22,6 +22,7 @@ public class HelpDialog extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.dialog_help_header)
+                .setIcon(R.drawable.mbicon)
                 .setCancelable(false)
                 .setMessage(dialogText)
                 .setPositiveButton(R.string.got_it,
