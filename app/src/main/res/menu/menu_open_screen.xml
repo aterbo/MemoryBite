@@ -19,6 +19,11 @@
         android:title="@string/view_journal"
         app:showAsAction="never" />
     <item
+        android:id="@+id/export_menu"
+        android:orderInCategory="80"
+        android:title="@string/export"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/about_menu"
         android:orderInCategory="90"
         android:title="@string/about"

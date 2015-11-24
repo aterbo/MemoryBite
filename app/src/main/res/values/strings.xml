@@ -181,6 +181,7 @@
 
     <string name="enter_caption">Enter caption</string>
     <string name="close_caption">Close</string>
+    <string name="export">Export journal</string>
 
 
 </resources>

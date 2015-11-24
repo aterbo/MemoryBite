@@ -97,6 +97,9 @@ public class ListOfMeals extends ActionBarActivity {
             case R.id.edit_last_entry_menu:
                 editLastMeal();
                 return true;
+            case R.id.export_menu:
+                //Need to trigger export function
+                return true;
             case R.id.about_menu:
                 DialogFragment newFragment = AboutDialog.newInstance();
                 newFragment.show(getFragmentManager(), "about");
