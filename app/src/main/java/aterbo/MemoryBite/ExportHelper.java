@@ -63,8 +63,8 @@ public class ExportHelper {
         {
             file.createNewFile();
             CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
-            SQLiteDatabase db = mHelper.getReadableDatabase();
-            Cursor curCSV = db.rawQuery("SELECT * FROM Table",null);
+            DBHelper db = new DBHelper(context);
+            Cursor curCSV = db.getAllMealsCursor();
             csvWrite.writeNext(curCSV.getColumnNames());
             while(curCSV.moveToNext())
             {

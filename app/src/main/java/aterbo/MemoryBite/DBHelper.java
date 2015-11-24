@@ -332,6 +332,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return meals;
     }
 
+    public Cursor getAllMealsCursor() {
+        // select meal query
+        String query = "SELECT  * FROM " + DBContract.MealDBTable.MEAL_TABLE;
+        // get reference of the MealDB database
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        db.close();
+        return cursor;
+    }
     /////////////////////////////////////////////
 
 
