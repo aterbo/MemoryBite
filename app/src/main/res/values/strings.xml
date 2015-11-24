@@ -182,6 +182,8 @@
     <string name="enter_caption">Enter caption</string>
     <string name="close_caption">Close</string>
     <string name="export">Export journal</string>
+    <string name="toCSV">To .csv format</string>
+    <string name="export_format">Choose a file format</string>
 
 
 </resources>
