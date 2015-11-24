@@ -25,6 +25,7 @@ public class AboutDialog extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.about)
+                .setIcon(R.drawable.mbicon)
                 .setCancelable(false)
                 .setMessage(dialogText)
                 .setPositiveButton(R.string.ok,
