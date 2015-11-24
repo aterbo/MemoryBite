@@ -171,18 +171,18 @@
     <string name="Close">X</string>
 
     <!-- Live Ad ID! -->
-
-    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
-
-    <!-- Test Ad ID! -->
     <!--
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
     -->
+    <!-- Test Ad ID! -->
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 
     <string name="enter_caption">Enter caption</string>
     <string name="close_caption">Close</string>
-    <string name="export">Export journal</string>
-    <string name="toCSV">To .csv format</string>
+    <string name="export">Export Journal</string>
+    <string name="toCSV">To .csv Format</string>
     <string name="export_format">Choose a file format</string>
 
 
