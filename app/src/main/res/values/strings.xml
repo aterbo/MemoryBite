@@ -187,6 +187,8 @@
     <string name="export_subject">Memory Bite Journal Export</string>
     <string name="export_text">Food journal data exported from Memory Bite on </string>
     <string name="export_share_message">Send copy of export via...</string>
+    <string name="export_file_name">MemoryBiteJournalExport</string>
+    <string name="export_folder">/MemoryBite</string>
 
 
 </resources>

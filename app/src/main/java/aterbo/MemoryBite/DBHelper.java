@@ -337,7 +337,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return meals;
     }
 
-    public File exportAsCSV() {
+
+    //Exports CSV file to file passed to method.
+    public File exportAsCSV(File destinationFile) {
 
         // select meal query
         String query = "SELECT  * FROM " + DBContract.MealDBTable.MEAL_TABLE;
@@ -345,17 +347,10 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        File exportDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "");
-        if (!exportDir.exists())
-        {
-            exportDir.mkdirs();
-        }
-
-        File file = new File(exportDir, "MemoryBiteCSVExport.csv");
         try
         {
-            file.createNewFile();
-            CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
+            destinationFile.createNewFile();
+            CSVWriter csvWrite = new CSVWriter(new FileWriter(destinationFile));
             csvWrite.writeNext(cursor.getColumnNames(), true);
 
             if (cursor.moveToFirst()) {
@@ -387,7 +382,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
-        return file;
+        return destinationFile;
     }
     /////////////////////////////////////////////
 
