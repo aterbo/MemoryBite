@@ -184,6 +184,9 @@
     <string name="export">Export Journal</string>
     <string name="toCSV">To .csv Format</string>
     <string name="export_format">Choose a file format</string>
+    <string name="export_subject">Memory Bite Journal Export</string>
+    <string name="export_text">Food journal data exported from Memory Bite on </string>
+    <string name="export_share_message">Send copy of export via...</string>
 
 
 </resources>

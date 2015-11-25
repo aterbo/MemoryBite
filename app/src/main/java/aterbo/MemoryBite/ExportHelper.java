@@ -3,16 +3,14 @@ package aterbo.MemoryBite;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
-import android.util.Log;
+import android.content.Intent;
+import android.net.Uri;
 import android.widget.Toast;
 
-import com.opencsv.CSVWriter;
-
 import java.io.File;
-import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by ATerbo on 11/24/15.
@@ -52,11 +50,29 @@ public class ExportHelper {
 
     private void exportToCSV(){
 
-
         DBHelper db = new DBHelper(context);
-        db.exportAsCSV();
 
-        Toast.makeText(context, "Exported?",  Toast.LENGTH_SHORT).show();
+        File exportedData = db.exportAsCSV();
+
+        Toast.makeText(context, "Data saved in the Documents folder",  Toast.LENGTH_SHORT).show();
+
+        shareOutputFile(exportedData);
+    }
+
+    private void shareOutputFile(File file){
+
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+        Intent shareOuputIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareOuputIntent.setType("image/jpeg");
+        shareOuputIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+                context.getResources().getString(R.string.export_subject));
+        shareOuputIntent.putExtra(Intent.EXTRA_TEXT,
+                context.getResources().getString(R.string.export_text) + currentDate + ".");
+        shareOuputIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
+        context.startActivity(Intent.createChooser(shareOuputIntent,
+                context.getResources().getString(R.string.export_share_message)));
+
     }
 
 }
