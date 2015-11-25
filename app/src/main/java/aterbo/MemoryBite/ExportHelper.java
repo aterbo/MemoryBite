@@ -52,35 +52,11 @@ public class ExportHelper {
 
     private void exportToCSV(){
 
-        File exportDir = new File(Environment.getExternalStorageDirectory(), "");
-        if (!exportDir.exists())
-        {
-            exportDir.mkdirs();
-        }
 
-        File file = new File(exportDir, "MemoryBiteCSVExport.csv");
-        try
-        {
-            file.createNewFile();
-            CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
-            DBHelper db = new DBHelper(context);
-            Cursor curCSV = db.getAllMealsCursor();
-            csvWrite.writeNext(curCSV.getColumnNames());
-            while(curCSV.moveToNext())
-            {
-                //Which column you want to exprort
-                String arrStr[] ={curCSV.getString(0),curCSV.getString(1), curCSV.getString(2)};
-                csvWrite.writeNext(arrStr);
-            }
-            csvWrite.close();
-            curCSV.close();
-        }
-        catch(Exception sqlEx)
-        {
-            Log.e("MainActivity", sqlEx.getMessage(), sqlEx);
-        }
+        DBHelper db = new DBHelper(context);
+        db.exportAsCSV();
 
-
+        Toast.makeText(context, "Exported?",  Toast.LENGTH_SHORT).show();
     }
 
 }

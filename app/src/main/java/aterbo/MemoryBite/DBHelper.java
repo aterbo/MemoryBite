@@ -5,9 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.opencsv.CSVWriter;
+
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -332,14 +337,57 @@ public class DBHelper extends SQLiteOpenHelper {
         return meals;
     }
 
-    public Cursor getAllMealsCursor() {
+    public File exportAsCSV() {
+
         // select meal query
         String query = "SELECT  * FROM " + DBContract.MealDBTable.MEAL_TABLE;
         // get reference of the MealDB database
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
+
+        File exportDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "");
+        if (!exportDir.exists())
+        {
+            exportDir.mkdirs();
+        }
+
+        File file = new File(exportDir, "MemoryBiteCSVExport.csv");
+        try
+        {
+            file.createNewFile();
+            CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
+            csvWrite.writeNext(cursor.getColumnNames(), true);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    String arrStr[] ={cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_RESTAURANT_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_LOCATION)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_CUISINE_TYPE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_APPETIZERS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_MAIN_COURSES)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DESSERTS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DRINKS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_GENERAL_NOTES)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DINED_WITH)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_ATMOSPHERE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_PRICE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_PRIMARY_PHOTO))};
+
+                    csvWrite.writeNext(arrStr, true);
+                } while (cursor.moveToNext());
+            }
+            csvWrite.close();
+            cursor.close();
+        }
+        catch(Exception sqlEx)
+        {
+            Log.e("MainActivity", sqlEx.getMessage(), sqlEx);
+        }
+
         db.close();
-        return cursor;
+        return file;
     }
     /////////////////////////////////////////////
 
