@@ -242,64 +242,91 @@ public class InputMeal extends ActionBarActivity {
 
         findViewById(R.id.photoGroup).setVisibility(View.VISIBLE);
 
-        photoGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int position, long arg3) {
-                photos.remove(position);
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.photo_removed),
-                        Toast.LENGTH_SHORT).show();
-                photoGridAdaptor.notifyDataSetChanged();
-                return true;
-            }
-        });
-
         photoGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            private String photoCaption;
-            private Photo updatePhoto;
 
             public void onItemClick(AdapterView<?> arg0, View arg1,
-                                       final int position, long arg3) {
-                updatePhoto = photos.get(position);
-                // Getting existing caption from photo
-                photoCaption = updatePhoto.getPhotoCaption();
+                                           final int position, long arg3) {
 
-                // Setting up dialog box to enter caption
-                AlertDialog.Builder builder = new AlertDialog.Builder(InputMeal.this);
-                builder.setTitle(getResources().getString(R.string.enter_caption));
+                    CharSequence photoOptions[] = new CharSequence[] {
+                            getResources().getString(R.string.caption),
+                            getResources().getString(R.string.set_as_primary),
+                            getResources().getString(R.string.delete),
+                            getResources().getString(R.string.cancel)
+                    };
 
-                // Set up the input
-                final EditText input = new EditText(InputMeal.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(InputMeal.this);
+                    builder.setTitle(getResources().getString(R.string.photo_options));
+                    builder.setIcon(R.drawable.mbicon);
+                    builder.setItems(photoOptions, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case 0: //Add caption case
 
-                // Specify the type of input expected
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
-                        | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                builder.setView(input);
-                input.setText(photoCaption);
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        photoCaption = input.getText().toString();
+                                    break;
 
-                        updatePhoto.setPhotoCaption(photoCaption);
+                                case 1: //Set Primary Case
+                                    break;
 
-                        photos.set(position, updatePhoto);
-                        photoGridAdaptor.notifyDataSetChanged();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                                case 2: //Delete case
+                                    photos.remove(position);
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.photo_removed),
+                                            Toast.LENGTH_SHORT).show();
+                                    photoGridAdaptor.notifyDataSetChanged();
+                                    break;
 
-                builder.show();
+                                case 4: //cancel case
+                                    break;
+                            }
+                        }
+                    });
+                    builder.show();
             }
         });
-
     }
+
+    /*
+    private boolean addCaption(int position){
+        String photoCaption;
+        Photo updatePhoto;
+
+        updatePhoto = photos.get(position);
+        // Getting existing caption from photo
+        photoCaption = updatePhoto.getPhotoCaption();
+
+        // Setting up dialog box to enter caption
+        AlertDialog.Builder builder = new AlertDialog.Builder(InputMeal.this);
+        builder.setTitle(getResources().getString(R.string.enter_caption));
+
+        // Set up the input
+        final EditText input = new EditText(InputMeal.this);
+
+        // Specify the type of input expected
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        builder.setView(input);
+        input.setText(photoCaption);
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                photoCaption = input.getText().toString();
+
+                updatePhoto.setPhotoCaption(photoCaption);
+
+                photos.set(position, updatePhoto);
+                photoGridAdaptor.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+    */
 
     //Set entered data to meal (pulls data from UI views)
     private void setInputToMeal() {

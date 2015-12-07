@@ -28,7 +28,7 @@ public class ExportHelper {
     }
 
     public void chooseExportType (){
-        CharSequence sortOptions[] = new CharSequence[] {
+        CharSequence exportOptions[] = new CharSequence[] {
                 context.getResources().getString(R.string.toCSV),
                 context.getResources().getString(R.string.cancel)
         };
@@ -36,7 +36,7 @@ public class ExportHelper {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getResources().getString(R.string.export_format));
         builder.setIcon(R.drawable.mbicon);
-        builder.setItems(sortOptions, new DialogInterface.OnClickListener() {
+        builder.setItems(exportOptions, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
