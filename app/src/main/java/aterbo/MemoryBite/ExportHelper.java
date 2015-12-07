@@ -4,11 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
-import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -21,6 +19,9 @@ import java.util.Locale;
 public class ExportHelper {
 
     private Context context;
+    private boolean shouldShare;
+    private String shareType;
+    private final int CSV_FORMAT = 1;
 
     //Constructor code
     public ExportHelper(Context context){
@@ -41,7 +42,8 @@ public class ExportHelper {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        exportToCSV();
+                        shareType = "text/csv";
+                        new AsyncTaskHandler().execute(CSV_FORMAT);
                         break;
                     case 1:
                         break;
@@ -49,15 +51,6 @@ public class ExportHelper {
             }
         });
         builder.show();
-    }
-
-    private void exportToCSV(){
-        DBHelper db = new DBHelper(context);
-        File exportedData = db.exportAsCSV(makeExportFile(".csv"));
-
-        Toast.makeText(context, "Data saved in the Documents folder",  Toast.LENGTH_SHORT).show();
-
-        shareOutputFile(exportedData);
     }
 
     private File makeExportFile(String fileExtension){
@@ -68,27 +61,78 @@ public class ExportHelper {
             exportDir.mkdirs();
             }
 
-        File file = new File(exportDir, context.getResources().getString(R.string.export_file_name)
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+        File file = new File(exportDir, context.getResources().getString(R.string.export_file_name) + currentDate
                 + fileExtension);
 
         return file;
     }
 
-
     private void shareOutputFile(File file){
 
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
-        Intent shareOuputIntent = new Intent(android.content.Intent.ACTION_SEND);
-        shareOuputIntent.setType("image/jpeg");
-        shareOuputIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-                context.getResources().getString(R.string.export_subject));
-        shareOuputIntent.putExtra(Intent.EXTRA_TEXT,
-                context.getResources().getString(R.string.export_text) + " " + currentDate + ".");
-        shareOuputIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
-        context.startActivity(Intent.createChooser(shareOuputIntent,
-                context.getResources().getString(R.string.export_share_message)));
 
+    }
+
+    // The definition of our task class
+    private class AsyncTaskHandler extends AsyncTask<Integer, Void, File> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected File doInBackground(Integer... params) {
+            switch (params[0]) {
+                case CSV_FORMAT:
+                    DBHelper db = new DBHelper(context);
+                    File outputFile = makeExportFile(".csv");
+                    db.exportAsCSV(outputFile);
+                    return outputFile;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final File outputFile) {
+            super.onPostExecute(outputFile);
+
+            //Show dialog notifying where file has been saved.
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            builder.setTitle(context.getResources().getString(R.string.journal_exported));
+            builder.setMessage(context.getResources().getString(R.string.journal_exported_message));
+
+            builder.setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                    //make share intent
+                    String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+                    Intent shareOuputIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    shareOuputIntent.setType(shareType);
+                    shareOuputIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+                            context.getResources().getString(R.string.export_subject));
+                    shareOuputIntent.putExtra(Intent.EXTRA_TEXT,
+                            context.getResources().getString(R.string.export_text) + " " + currentDate + ".");
+                    shareOuputIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + outputFile));
+                    context.startActivity(Intent.createChooser(shareOuputIntent,
+                            context.getResources().getString(R.string.export_share_message)));
+                    dialog.dismiss();
+                }
+            });
+
+            builder.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+
+        }
     }
 
 }

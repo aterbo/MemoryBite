@@ -189,6 +189,11 @@
     <string name="export_share_message">Send copy of export via...</string>
     <string name="export_file_name">MemoryBiteJournalExport</string>
     <string name="export_folder">/MemoryBite</string>
+    <string name="journal_exported">Journal Exported!</string>
+    <string name="journal_exported_message">Your journal has been exported and saved to the Documents folder on your device.
+        \n\nDo you wish to email or share a copy of this file now?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 
 
 </resources>
