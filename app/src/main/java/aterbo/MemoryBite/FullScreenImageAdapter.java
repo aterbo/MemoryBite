@@ -85,7 +85,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
                 public void onClick(View v) {
                     if (btnShowCaption.getText() == "...") {
                         caption.setVisibility(View.VISIBLE);
-                        btnShowCaption.setText(R.string.close_caption);
+                        btnShowCaption.setText(R.string.close);
                     } else {
                         caption.setVisibility(View.GONE);
                         btnShowCaption.setText("...");

@@ -246,7 +246,7 @@ public class InputMeal extends ActionBarActivity {
                                            final int position, long arg3) {
 
                     CharSequence photoOptions[] = new CharSequence[] {
-                            getResources().getString(R.string.caption),
+                            getResources().getString(R.string.add_caption),
                             getResources().getString(R.string.set_as_primary),
                             getResources().getString(R.string.remove),
                             getResources().getString(R.string.cancel)
@@ -315,7 +315,7 @@ public class InputMeal extends ActionBarActivity {
 
         // Setting up dialog box to enter caption
         AlertDialog.Builder builder = new AlertDialog.Builder(InputMeal.this);
-        builder.setTitle(getResources().getString(R.string.enter_caption));
+        builder.setTitle(getResources().getString(R.string.add_caption));
 
         // Set up the input
         final EditText input = new EditText(InputMeal.this);

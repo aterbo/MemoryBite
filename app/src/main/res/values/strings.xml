@@ -47,7 +47,7 @@
     <string name="edit_last_meal">Edit Last Meal</string>
     <string name="view_journal">View Journal</string>
     <string name="add_photo">Add a Photo</string>
-    <string name="caption">Add Caption</string>
+    <string name="add_caption">Add Caption</string>
 
     <string name="action_settings">Settings</string>
     <string name="about">About</string>
@@ -126,7 +126,7 @@
         \n
         &#169; 2015, Andy Terbovich. All rights reserved
     </string>
-    <string name="on">on</string>
+    <string name="on">on</string> <!--Used as "on" as in "File exported ON 12/15/2015 -->
 
 
     <string name="help">What is this?</string>
@@ -150,8 +150,7 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="select_file">Select File</string>
     <string name="no_meals">You don\'t have any meals to edit!</string>
-    <string name="add_caption_delete_photo">Tap to add a caption.
-        \nHold to remove a photo.</string>
+    <string name="photo_menu_instructions">Tap to add photo details.</string>
     <string name="share_w_memory_bite">Email to Memory Bite</string>
     <string name="share_instructions">Share with a friend</string>
     <string name="share_w_memory_bite_instructions">Email to Memory Bite\'s website</string>
@@ -168,19 +167,7 @@
     <string name="old_to_new">Oldest to Newest</string>
     <string name="new_to_old">Newest to Oldest</string>
 
-    <string name="Close">X</string>
-
-    <!-- Live Ad ID! -->
-    <!--
-    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
-    -->
-    <!-- Test Ad ID! -->
-
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-
-
-    <string name="enter_caption">Enter caption</string>
-    <string name="close_caption">Close</string>
+    <string name="close">Close</string>
     <string name="export">Export Journal</string>
     <string name="toCSV">.CSV Format (No Photos)</string>
     <string name="export_format">Choose a file format</string>
@@ -199,5 +186,14 @@
     <string name="remove">Remove from meal</string>
     <string name="photo_set_as_primary">Photo set as primary</string>
 
+    <string name="close_X">X</string> <!--Used as a Close Window X. Do not translate -->
+
+    <!-- Live Ad ID! -->
+    <!--
+    <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
+    -->
+    <!-- Test Ad ID! -->
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
 </resources>
