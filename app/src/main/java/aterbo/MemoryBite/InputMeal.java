@@ -264,6 +264,29 @@ public class InputMeal extends ActionBarActivity {
                                     break;
 
                                 case 1: //Set as Primary Case
+                                    /* This is the code for using the actual "Primary Photo" data in
+                                    the DB. As a current shortcut, I have just moved the primary
+                                    photo to the beginning of the list
+                                    //Set all photos in list to Not Primary
+                                    for (Photo photo : photos){
+                                        photo.setPhotoIsPrimary(0);
+                                    }
+
+                                    //Set selected photo as Primary
+                                    photos.get(position).setPhotoIsPrimary(1);
+                                    */
+
+                                    if (position != 0) {
+                                        Photo holderPhoto = photos.get(position);
+                                        photos.remove(position);
+                                        photos.add(0, holderPhoto);
+                                        Toast.makeText(getApplicationContext(),
+                                                getResources().getString(R.string.photo_set_as_primary),
+                                                Toast.LENGTH_SHORT).show();
+
+                                        photoGridAdaptor.notifyDataSetChanged();
+                                    }
+
                                     break;
 
                                 case 2: //Remove case
