@@ -21,6 +21,7 @@ public class ExportHelper {
     private Context context;
     private String shareType;
     private final int CSV_FORMAT = 1;
+    private final int PDF_FORMAT = 2;
 
     //Constructor code
     public ExportHelper(Context context){
@@ -30,6 +31,7 @@ public class ExportHelper {
     public void chooseExportType (){
         CharSequence exportOptions[] = new CharSequence[] {
                 context.getResources().getString(R.string.toCSV),
+                context.getResources().getString(R.string.toPDF),
                 context.getResources().getString(R.string.cancel)
         };
 
@@ -45,6 +47,10 @@ public class ExportHelper {
                         new AsyncTaskHandler().execute(CSV_FORMAT);
                         break;
                     case 1:
+                        shareType = "application/pdf";
+                        new AsyncTaskHandler().execute(PDF_FORMAT);
+                        break;
+                    case 2:
                         break;
                 }
             }
@@ -77,12 +83,16 @@ public class ExportHelper {
 
         @Override
         protected File doInBackground(Integer... params) {
+            DBHelper db = new DBHelper(context);
             switch (params[0]) {
                 case CSV_FORMAT:
-                    DBHelper db = new DBHelper(context);
-                    File outputFile = makeExportFile(".csv");
-                    db.exportAsCSV(outputFile);
-                    return outputFile;
+                    File csvFile = makeExportFile(".csv");
+                    db.exportAsCSV(csvFile);
+                    return csvFile;
+                case PDF_FORMAT:
+                    File pdfFile = makeExportFile(".pdf");
+
+                    return pdfFile;
             }
             return null;
         }
@@ -126,5 +136,7 @@ public class ExportHelper {
             alert.show();
         }
     }
+
+
 
 }
