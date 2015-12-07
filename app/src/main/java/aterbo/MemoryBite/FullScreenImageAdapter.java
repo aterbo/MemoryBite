@@ -48,7 +48,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
         Button btnClose;
         final Button btnShowCaption;
         final TextView caption;
-        int buttonTransparancy = 180;
+        int buttonTransparency = 180;
 
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,7 +57,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
 
         imgDisplay = (TouchImageView) viewLayout.findViewById(R.id.imgDisplay);
         btnClose = (Button) viewLayout.findViewById(R.id.btnClose);
-        btnClose.getBackground().setAlpha(buttonTransparancy);
+        btnClose.getBackground().setAlpha(buttonTransparency);
 
         Photo photo = photoList.get(position);
 
@@ -71,13 +71,13 @@ public class FullScreenImageAdapter extends PagerAdapter {
         if (photo.getPhotoCaption() != null && !photo.getPhotoCaption().isEmpty()){
             btnShowCaption = (Button) viewLayout.findViewById(R.id.btnShowCaption);
             btnShowCaption.setVisibility(View.VISIBLE);
-            btnShowCaption.getBackground().setAlpha(buttonTransparancy);
+            btnShowCaption.getBackground().setAlpha(buttonTransparency);
             btnShowCaption.setText("...");
 
             caption = (TextView) viewLayout.findViewById(R.id.caption);
             caption.setText(photo.getPhotoCaption());
             caption.setMovementMethod(new ScrollingMovementMethod());
-            caption.getBackground().setAlpha(buttonTransparancy);
+            caption.getBackground().setAlpha(buttonTransparency);
 
             // Caption button click event
             btnShowCaption.setOnClickListener(new View.OnClickListener() {
