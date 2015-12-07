@@ -3,7 +3,6 @@ package aterbo.MemoryBite;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,8 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -35,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 
@@ -50,6 +46,8 @@ public class InputMeal extends ActionBarActivity {
     static final String STATE_PHOTO_LIST = "photoList";
     static final String STATE_PHOTO_PATH = "photoPath";
     private String photoPath;
+    private String photoCaptionHolder;
+    private Photo photoUpdateHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,7 +248,7 @@ public class InputMeal extends ActionBarActivity {
                     CharSequence photoOptions[] = new CharSequence[] {
                             getResources().getString(R.string.caption),
                             getResources().getString(R.string.set_as_primary),
-                            getResources().getString(R.string.delete),
+                            getResources().getString(R.string.remove),
                             getResources().getString(R.string.cancel)
                     };
 
@@ -262,13 +260,13 @@ public class InputMeal extends ActionBarActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case 0: //Add caption case
-
+                                    addCaption(position);
                                     break;
 
-                                case 1: //Set Primary Case
+                                case 1: //Set as Primary Case
                                     break;
 
-                                case 2: //Delete case
+                                case 2: //Remove case
                                     photos.remove(position);
                                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.photo_removed),
                                             Toast.LENGTH_SHORT).show();
@@ -285,14 +283,12 @@ public class InputMeal extends ActionBarActivity {
         });
     }
 
-    /*
-    private boolean addCaption(int position){
-        String photoCaption;
-        Photo updatePhoto;
+//Display dialog box to show caption input and update photo and photo list.
+    private void addCaption(final int position){
 
-        updatePhoto = photos.get(position);
+        photoUpdateHolder = photos.get(position);
         // Getting existing caption from photo
-        photoCaption = updatePhoto.getPhotoCaption();
+        photoCaptionHolder = photoUpdateHolder.getPhotoCaption();
 
         // Setting up dialog box to enter caption
         AlertDialog.Builder builder = new AlertDialog.Builder(InputMeal.this);
@@ -305,20 +301,17 @@ public class InputMeal extends ActionBarActivity {
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
                 | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         builder.setView(input);
-        input.setText(photoCaption);
+        input.setText(photoCaptionHolder);
         // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                photoCaption = input.getText().toString();
-
-                updatePhoto.setPhotoCaption(photoCaption);
-
-                photos.set(position, updatePhoto);
-                photoGridAdaptor.notifyDataSetChanged();
+                photoCaptionHolder = input.getText().toString();
+                photoUpdateHolder.setPhotoCaption(photoCaptionHolder);
+                photos.set(position, photoUpdateHolder);
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -326,7 +319,7 @@ public class InputMeal extends ActionBarActivity {
         });
         builder.show();
     }
-    */
+
 
     //Set entered data to meal (pulls data from UI views)
     private void setInputToMeal() {

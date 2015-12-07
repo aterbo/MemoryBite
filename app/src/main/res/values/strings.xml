@@ -196,6 +196,7 @@
     <string name="yes">Yes</string>
     <string name="set_as_primary">Set as primary</string>
     <string name="photo_options">Photo options</string>
+    <string name="remove">Remove from meal</string>
 
 
 </resources>
