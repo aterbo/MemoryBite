@@ -19,7 +19,6 @@ import java.util.Locale;
 public class ExportHelper {
 
     private Context context;
-    private boolean shouldShare;
     private String shareType;
     private final int CSV_FORMAT = 1;
 
@@ -69,13 +68,7 @@ public class ExportHelper {
         return file;
     }
 
-    private void shareOutputFile(File file){
-
-
-
-    }
-
-    // The definition of our task class
+    // Exporting via AsyncTask
     private class AsyncTaskHandler extends AsyncTask<Integer, Void, File> {
         @Override
         protected void onPreExecute() {
@@ -107,7 +100,7 @@ public class ExportHelper {
             builder.setPositiveButton(context.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
 
-                    //make share intent
+                    //make share intent if user clicks yes
                     String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
                     Intent shareOuputIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -131,7 +124,6 @@ public class ExportHelper {
 
             AlertDialog alert = builder.create();
             alert.show();
-
         }
     }
 
