@@ -182,7 +182,7 @@
     <string name="enter_caption">Enter caption</string>
     <string name="close_caption">Close</string>
     <string name="export">Export Journal</string>
-    <string name="toCSV">To .csv Format</string>
+    <string name="toCSV">.CSV Format (No Photos)</string>
     <string name="export_format">Choose a file format</string>
     <string name="export_subject">Memory Bite Journal Export</string>
     <string name="export_text">Food journal data exported from Memory Bite on </string>
