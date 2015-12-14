@@ -196,5 +196,6 @@
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="toPDF">.PDF (With Photos)</string>
+    <string name="created_w_memory_bite">Created using Memory Bite.\nwww.MemoryBite.com</string>
 
 </resources>

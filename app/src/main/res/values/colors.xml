@@ -2,6 +2,7 @@
 
     <color name="main_background">#424242</color>
     <color name="card_background">#606060</color>
+    <color name="card_background_for_pdf">#bcbcbc</color>
     <color name="primary_green">#1EB48F</color>
     <color name="primary_green_darker">#198369</color>
     <color name="primary_green_dark">#1d9e7e</color>
