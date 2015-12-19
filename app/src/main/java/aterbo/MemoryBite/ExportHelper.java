@@ -4,8 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.pdf.PdfDocument;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -97,6 +102,13 @@ public class ExportHelper {
         ArrayList<Photo> photos;
         Meal meal;
         int position = 0;
+        int headerPhotoHeight = 234;
+        int headerPhotoWidth = 144;
+
+        //Make PDF file
+        try {
+            pdfFile.createNewFile();
+            OutputStream out = new FileOutputStream(pdfFile);
 
         //Sets print options
         PrintAttributes printAttrs = new PrintAttributes.Builder().
@@ -121,10 +133,10 @@ public class ExportHelper {
 
         while(position < mealCount){
             //Inflate layout to view. Attach to container as root.
-            view = inflater.inflate( R.layout.layout_pdf_meal_template, container, true);
+            view = inflater.inflate(R.layout.layout_pdf_meal_template, container, true);
 
             meal = mealList.get(position);
-            //photos = db.getAllPhotosForMealList(meal.getMealIdNumber());
+            photos = db.getAllPhotosForMealList(meal.getMealIdNumber());
 
             checkViewAndDisplay(meal.getRestaurantName(), R.id.restaurant_name_details, 0, container);
             checkViewAndDisplay(meal.getDateMealEaten(), R.id.date_details, 0, container);
@@ -139,8 +151,18 @@ public class ExportHelper {
             checkViewAndDisplay(meal.getAtmosphere(), R.id.atmosphere_details, 0, container);
             checkViewAndDisplay(meal.getPrice(), R.id.price_details, 0, container);
 
+            //check for photos and populate if so
+            if (!photos.isEmpty()) {
+                String photoFilePath = photos.get(0).getPhotoFilePath();
+                ImageView headerPhoto = (ImageView) container.findViewById(R.id.header_photo);
+                headerPhoto.setImageBitmap(decodeSampledBitmapFromResource(photoFilePath, headerPhotoWidth, headerPhotoHeight));
+
+                headerPhoto = (ImageView) container.findViewById(R.id.photo_1);
+                headerPhoto.setImageBitmap(decodeSampledBitmapFromResource(photoFilePath, 600, 600));
+            }
+
             TextView pageNumber = ((TextView) container.findViewById(R.id.page_number));
-            pageNumber.setText("Pg. " + (position+1));
+            pageNumber.setText(context.getResources().getString(R.string.page) + (position+1));
 
             //Method call to make and write page
             document = makePageAndWriteToCanvas(document, container, position + 1);
@@ -148,15 +170,17 @@ public class ExportHelper {
             //Clean up to prevent duplicate data in following meals
             container = new LinearLayout(context);
             position++;
+
+            //Write page to file
+            try {
+                document.writeTo(out);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        //write PDF to file
-        try {
-            pdfFile.createNewFile();
-            OutputStream out = new FileOutputStream(pdfFile);
-            document.writeTo(out);
-            document.close();
-            out.close();
+        document.close();
+        out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -165,6 +189,106 @@ public class ExportHelper {
         return pdfFile;
     }
 
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(String path,
+                                                         int reqWidth, int reqHeight) {
+        //Check orientation of photo
+        int orientation = getOrientation(path);
+
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return rotateBitmap(BitmapFactory.decodeFile(path, options), orientation);
+    }
+
+    public static int getOrientation(String photoPath){
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(photoPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+    }
+
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            if(bitmap != bmRotated){
+            bitmap.recycle();
+            bitmap = null;
+            }
+            return bmRotated;
+        }
+        catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //Takes a filled out and inflated view and makes a PDF page to cram it into
     private PdfDocument makePageAndWriteToCanvas(PdfDocument document, ViewGroup container, int pageNumber){
         //Set page dimensions. Can eventually be set for A4 also
         int pageWidth = 612; //8.5" * 72

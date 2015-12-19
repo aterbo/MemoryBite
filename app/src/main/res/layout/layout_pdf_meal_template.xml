@@ -12,22 +12,22 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12px"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="center">
 
+        <LinearLayout style="@style/DetailsBlockPDF"
+            android:layout_width="wrap_content">
         <ImageView
             android:id="@+id/header_photo"
-            android:layout_width="198px"
+            android:layout_width="234px"
             android:layout_height="144px"
             android:scaleType="centerCrop"
             android:src="@drawable/header_img_2" />
+        </LinearLayout>
 
         <LinearLayout style="@style/DetailsBlockPDF"
             android:gravity="center"
             android:layout_marginLeft="36px"
-            android:layout_marginTop="0px"
-            android:layout_marginBottom="0px"
-            android:layout_marginRight="54px"
             android:layout_height="144px">
 
             <TextView
@@ -35,13 +35,41 @@
                 style="@style/DetailsTextCenteredPDF"
                 android:textSize="24px"/>
 
-            <TextView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
                 android:id="@+id/date_details"
                 style="@style/DetailsTextCenteredPDF" />
 
-            <TextView
-                android:id="@+id/location_details"
-                style="@style/DetailsTextCenteredPDF" />
+                <TextView
+                    android:id="@+id/location_details"
+                    style="@style/DetailsTextCenteredPDF" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/atmosphere_details"
+                    style="@style/DetailsTextPDF"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/price_details"
+                    style="@style/DetailsTextPDF"
+                    android:gravity="center" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/cuisine_type_details"
@@ -52,11 +80,6 @@
                 style="@style/DetailsTextCenteredPDF" />
         </LinearLayout>
     </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
 
     <LinearLayout style="@style/DetailsBlockPDF">
 
@@ -107,23 +130,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        style="@style/DetailsBlockPDF"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/atmosphere_details"
-            style="@style/DetailsTextPDF"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/price_details"
-            style="@style/DetailsTextPDF"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-    </LinearLayout>
 
     <!--
     <LinearLayout
@@ -144,11 +150,25 @@
             android:verticalSpacing="5dp" />
     </LinearLayout>
 -->
+
+    <LinearLayout style="@style/DetailsBlockPDF"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+        <ImageView
+            android:id="@+id/photo_1"
+            android:layout_width="wrap_content"
+            android:layout_height="288px"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:src="@drawable/header_img_2" />
+    </LinearLayout>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
 
+    <!-- Footer info -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
