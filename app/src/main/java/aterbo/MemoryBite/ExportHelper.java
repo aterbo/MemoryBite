@@ -1,6 +1,7 @@
 package aterbo.MemoryBite;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,9 +14,11 @@ import android.graphics.pdf.PdfDocument;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.print.PrintAttributes;
 import android.print.pdf.PrintedPdfDocument;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,13 +100,15 @@ public class ExportHelper {
 
     private File pdfExporter(File pdfFile) {
 
+
+
         //Pull data from Meal Database
         List<Meal> mealList;
         ArrayList<Photo> photos;
         Meal meal;
         int position = 0;
-        int headerPhotoHeight = 234;
-        int headerPhotoWidth = 144;
+        int headerPhotoHeight = 134;
+        int headerPhotoWidth = 234;
 
         //Make PDF file
         try {
@@ -130,6 +135,7 @@ public class ExportHelper {
         LinearLayout container = new LinearLayout(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = new View(context);
+        int pageNumber = position + 1;
 
         while(position < mealCount){
             //Inflate layout to view. Attach to container as root.
@@ -156,16 +162,72 @@ public class ExportHelper {
                 String photoFilePath = photos.get(0).getPhotoFilePath();
                 ImageView headerPhoto = (ImageView) container.findViewById(R.id.header_photo);
                 headerPhoto.setImageBitmap(decodeSampledBitmapFromResource(photoFilePath, headerPhotoWidth, headerPhotoHeight));
-
-                headerPhoto = (ImageView) container.findViewById(R.id.photo_1);
-                headerPhoto.setImageBitmap(decodeSampledBitmapFromResource(photoFilePath, 600, 600));
             }
 
-            TextView pageNumber = ((TextView) container.findViewById(R.id.page_number));
-            pageNumber.setText(context.getResources().getString(R.string.page) + (position+1));
+            TextView pageNumberView = ((TextView) container.findViewById(R.id.page_number));
+            pageNumberView.setText(context.getResources().getString(R.string.page) + pageNumber);
 
             //Method call to make and write page
-            document = makePageAndWriteToCanvas(document, container, position + 1);
+//            document = makePageAndWriteToCanvas(document, container, position + 1);
+
+            //Set page dimensions. Can eventually be set for A4 also
+            int pageWidth = 612; //8.5" * 72
+            int pageHeight = 792; //11" * 72
+
+            //create page
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create();
+            PdfDocument.Page page = document.startPage(pageInfo);
+            Canvas canvas = page.getCanvas();
+
+            // draw view on the page
+            int measureWidth = View.MeasureSpec.makeMeasureSpec(canvas.getWidth(), View.MeasureSpec.EXACTLY);
+            int measuredHeight = View.MeasureSpec.makeMeasureSpec(canvas.getHeight(), View.MeasureSpec.EXACTLY);
+            container.measure(measureWidth, measuredHeight);
+            container.layout(0, 0, canvas.getWidth(), canvas.getHeight());
+
+            //Get bottom edge of text box
+            int y = container.findViewById(R.id.textBlock).getBottom();
+            Log.i("MyActivity", "Bottom edge of textBlock " + y);
+
+            if(!photos.isEmpty()){
+                int neededYSpace = 450;
+
+                //If meal has 1-2 or 5-6 photos, measure space below text and put up to two photos there.
+                if(y > neededYSpace && (photos.size() < 3 || photos.size()< 5)){
+
+                    container.findViewById(R.id.photoBlock).setVisibility(View.VISIBLE);
+                    ImageView photoView;
+
+                    int availableXSpace = 550;
+                    int availableYSpace = 792-100-y;
+
+                    if(photos.size() > 1){
+                        availableXSpace = availableXSpace/2;
+                        //Set Photo 2, if needed
+                        photoView = (ImageView) container.findViewById(R.id.photo_2);
+                        photoView.setVisibility(View.VISIBLE);
+                        photoView.getLayoutParams().height = availableYSpace;
+                        photoView.getLayoutParams().width = availableXSpace;
+                        photoView.setImageBitmap(decodeSampledBitmapFromResource(
+                                photos.get(1).getPhotoFilePath(), availableXSpace, availableYSpace));
+                    }
+
+                    photoView = (ImageView) container.findViewById(R.id.photo_1);
+                    photoView.setVisibility(View.VISIBLE);
+                    photoView.getLayoutParams().height = availableYSpace;
+                    photoView.getLayoutParams().width = availableXSpace;
+                    photoView.setImageBitmap(decodeSampledBitmapFromResource(
+                            photos.get(0).getPhotoFilePath(), availableXSpace, availableYSpace));
+
+                    container.measure(measureWidth, measuredHeight);
+                    container.layout(0, 0, canvas.getWidth(), canvas.getHeight());
+                }
+            }
+
+
+
+            container.draw(canvas);
+            document.finishPage(page);
 
             //Clean up to prevent duplicate data in following meals
             container = new LinearLayout(context);
@@ -386,7 +448,5 @@ public class ExportHelper {
             alert.show();
         }
     }
-
-
 
 }

@@ -170,6 +170,7 @@
     <string name="close">Close</string>
     <string name="export">Export Journal</string>
     <string name="toCSV">.CSV Format (No Photos)</string>
+    <string name="toPDF">.PDF (Photos, LARGE FILE SIZE)</string>
     <string name="export_format">Choose a file format</string>
     <string name="export_subject">Memory Bite Journal Export</string>
     <string name="export_text">Food journal data exported from Memory Bite on </string>
@@ -195,7 +196,6 @@
     <!-- Test Ad ID! -->
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="toPDF">.PDF (With Photos)</string>
     <string name="created_w_memory_bite">Created using Memory Bite.\nwww.MemoryBite.com</string>
     <string name="page">Pg.</string>
 

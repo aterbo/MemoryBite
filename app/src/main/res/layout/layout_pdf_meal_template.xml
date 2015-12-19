@@ -20,14 +20,14 @@
         <ImageView
             android:id="@+id/header_photo"
             android:layout_width="234px"
-            android:layout_height="144px"
+            android:layout_height="134px"
             android:scaleType="centerCrop"
             android:src="@drawable/header_img_2" />
         </LinearLayout>
 
         <LinearLayout style="@style/DetailsBlockPDF"
             android:gravity="center"
-            android:layout_marginLeft="36px"
+            android:layout_marginLeft="12px"
             android:layout_height="144px">
 
             <TextView
@@ -43,11 +43,15 @@
                 android:gravity="center">
 
                 <TextView
-                android:id="@+id/date_details"
-                style="@style/DetailsTextCenteredPDF" />
+                    android:id="@+id/date_details"
+                    android:layout_marginRight="5px"
+                    android:layout_marginLeft="5px"
+                    style="@style/DetailsTextCenteredPDF" />
 
                 <TextView
                     android:id="@+id/location_details"
+                    android:layout_marginRight="5px"
+                    android:layout_marginLeft="5px"
                     style="@style/DetailsTextCenteredPDF" />
             </LinearLayout>
 
@@ -81,7 +85,8 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout style="@style/DetailsBlockPDF">
+    <LinearLayout style="@style/DetailsBlockPDF"
+        android:id="@+id/textBlock">
 
         <TextView
             android:id="@+id/appetizers_title"
@@ -152,15 +157,29 @@
 -->
 
     <LinearLayout style="@style/DetailsBlockPDF"
+        android:id="@+id/photoBlock"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:visibility="gone">
         <ImageView
             android:id="@+id/photo_1"
             android:layout_width="wrap_content"
-            android:layout_height="288px"
+            android:layout_height="1px"
+            android:layout_marginLeft="5px"
             android:scaleType="fitCenter"
             android:layout_gravity="center"
-            android:src="@drawable/header_img_2" />
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/photo_2"
+            android:layout_width="wrap_content"
+            android:layout_height="1px"
+            android:layout_marginLeft="5px"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <Space
