@@ -193,7 +193,7 @@ public class ExportHelper {
                 int neededYSpace = 450;
 
                 //If meal has 1-2 or 5-6 photos, measure space below text and put up to two photos there.
-                if(y > neededYSpace && (photos.size() < 3 || photos.size()< 5)){
+                if(y <= neededYSpace && (photos.size() < 3 || photos.size() > 4)){
 
                     container.findViewById(R.id.photoBlock).setVisibility(View.VISIBLE);
                     ImageView photoView;
@@ -445,7 +445,7 @@ public class ExportHelper {
             });
 
             AlertDialog alert = builder.create();
-            alert.show();
+          alert.show();
         }
     }
 
