@@ -15,15 +15,12 @@
         android:orientation="horizontal"
         android:layout_gravity="center">
 
-        <LinearLayout style="@style/DetailsBlockPDF"
-            android:layout_width="wrap_content">
         <ImageView
             android:id="@+id/header_photo"
-            android:layout_width="234px"
-            android:layout_height="134px"
-            android:scaleType="centerCrop"
-            android:src="@drawable/header_img_2" />
-        </LinearLayout>
+            android:layout_width="216px"
+            android:layout_height="144px"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mbicon" />
 
         <LinearLayout style="@style/DetailsBlockPDF"
             android:gravity="center"
@@ -134,27 +131,6 @@
             style="@style/DetailsTextPDF" />
 
     </LinearLayout>
-
-
-    <!--
-    <LinearLayout
-        android:id="@+id/photoGroup"
-        style="@style/DetailsBlock"
-        android:visibility="gone">
-
-        <aterbo.MemoryBite.FullHeightGridView
-            android:id="@+id/meal_details_photo_grid"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:horizontalSpacing="5dp"
-            android:numColumns="3"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="5dp" />
-    </LinearLayout>
--->
 
     <LinearLayout style="@style/DetailsBlockPDF"
         android:id="@+id/photoBlock"
