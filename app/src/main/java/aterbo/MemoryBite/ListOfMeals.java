@@ -150,7 +150,7 @@ public class ListOfMeals extends ActionBarActivity {
 
         // TextFilter
         mealsListView.setTextFilterEnabled(true);
-        EditText editTxt = (EditText) findViewById(R.id.editTxt);
+        EditText editTxt = (EditText) findViewById(R.id.search_box);
 
         editTxt.addTextChangedListener(new TextWatcher() {
 
