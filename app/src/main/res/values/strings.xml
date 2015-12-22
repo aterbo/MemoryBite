@@ -199,5 +199,6 @@
     <string name="created_w_memory_bite">Created using Memory Bite.\nwww.MemoryBite.com</string>
     <string name="page">Pg.</string>
     <string name="search_hint">Search by Restaurant Name</string>
+    <string name="search_meals">Search meals</string>
 
 </resources>
