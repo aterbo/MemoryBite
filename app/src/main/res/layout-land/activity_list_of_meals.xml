@@ -11,13 +11,13 @@
     tools:context="aterbo.MemoryBite.ListOfMeals">
 
     <EditText
-        android:id="@+id/search_box"
+        android:id="@+id/search_meals_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:maxLines="1"
         android:hint="@string/search_hint"
-        android:inputType="textCapCharacters"
+        android:inputType="textCapWords"
         android:visibility="gone"/>
 
     <ImageView

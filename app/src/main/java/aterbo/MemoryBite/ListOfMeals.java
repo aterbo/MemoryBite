@@ -88,6 +88,15 @@ public class ListOfMeals extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case R.id.search_meals_menu:
+                if(findViewById(R.id.search_meals_box).getVisibility() == View.GONE) {
+                    findViewById(R.id.search_meals_box).setVisibility(View.VISIBLE);
+                    findViewById(R.id.header_photo).setVisibility(View.GONE);
+                } else{
+                    findViewById(R.id.search_meals_box).setVisibility(View.GONE);
+                    findViewById(R.id.header_photo).setVisibility(View.VISIBLE);
+                }
+                return true;
             case R.id.sort_meals_menu:
                 sortMeals();
                 return true;
@@ -150,9 +159,9 @@ public class ListOfMeals extends ActionBarActivity {
 
         // TextFilter
         mealsListView.setTextFilterEnabled(true);
-        EditText editTxt = (EditText) findViewById(R.id.search_box);
+        EditText searchInputBox = (EditText) findViewById(R.id.search_meals_box);
 
-        editTxt.addTextChangedListener(new TextWatcher() {
+        searchInputBox.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
