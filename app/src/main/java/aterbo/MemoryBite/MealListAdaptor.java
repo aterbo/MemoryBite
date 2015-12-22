@@ -6,22 +6,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ATerbo on 9/19/15.
  */
-public class MealListAdaptor extends BaseAdapter {
-    List<Meal> mealList;
-    Context context;
+public class MealListAdaptor extends BaseAdapter implements Filterable{
+    private List<Meal> mealList;
+    private Context context;
+    private Filter mealFilter;
+    private List<Meal> originalMealList;
 
     public MealListAdaptor(List<Meal> mealList, Context context) {
         this.mealList = mealList;
         this.context = context;
+        this.originalMealList = mealList;
     }
 
     @Override
@@ -84,6 +90,10 @@ public class MealListAdaptor extends BaseAdapter {
         return convertView;
     }
 
+    public void resetData() {
+        mealList = originalMealList;
+    }
+
     private void contentTest(String string, TextView textView) {
         if (!string.isEmpty()) {
             textView.setText(string);
@@ -104,4 +114,60 @@ public class MealListAdaptor extends BaseAdapter {
         TextView mealIdNumber;
         SquareImageView mealPicture;
     }
+
+
+    //Below is to set up filtering
+    //https://github.com/survivingwithandroid/Surviving-with-android/blob/master/ListView_Filter_Tutorial/src/com/survivingwithandroid/listview/SimpleList/MainActivity.java
+    //http://www.survivingwithandroid.com/2013/01/android-listview-filterable.html
+    @Override
+    public Filter getFilter(){
+        if(mealFilter == null){
+            mealFilter = new MealFilter();
+        }
+        return mealFilter;
+    }
+
+    private class MealFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint){
+            FilterResults results = new FilterResults();
+            // We implement here the filter logic
+            if (constraint == null || constraint.length() == 0) {
+                // No filter implemented we return all the list
+                results.values = mealList;
+                results.count = mealList.size();
+            }
+            else {
+                // We perform filtering operation
+                List<Meal> nMealList = new ArrayList<>();
+
+                for (Meal meal : mealList) {
+                    if (meal.getRestaurantName().toUpperCase().startsWith(
+                            constraint.toString().toUpperCase())) {
+                        nMealList.add(meal);
+                    } else if (meal.getRestaurantName().toUpperCase().contains(
+                            constraint.toString().toUpperCase())) {
+                        nMealList.add(meal);
+                    }
+                }
+
+                results.values = nMealList;
+                results.count = nMealList.size();
+
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results){
+            // Now we have to inform the adapter about the new list filtered
+            if (results.count == 0)
+                notifyDataSetInvalidated();
+            else {
+                mealList = (List<Meal>) results.values;
+                notifyDataSetChanged();
+            }
+        }
+    }
+
 }

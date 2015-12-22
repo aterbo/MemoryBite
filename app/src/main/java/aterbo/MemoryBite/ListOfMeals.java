@@ -7,13 +7,15 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -25,16 +27,15 @@ import java.util.Random;
 
 public class ListOfMeals extends ActionBarActivity {
 
-    private DBHelper db;
-    private SimpleCursorAdapter dataAdapter;
     private List<Meal> mealList;
+    MealListAdaptor mealListAdaptor;
     private int resID;
     static final String STATE_RESID = "imageResID";
     static final String STATE_SORT_SETTING = "sortSetting";
     private String sortColumn;
     static final String STATE_SORT_ORDER = "sortOrder";
     private Boolean isAscending;
-
+    private ListView mealsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,19 +127,53 @@ public class ListOfMeals extends ActionBarActivity {
     private void displayListView() {
         DBHelper db = new DBHelper(this);
         mealList = db.getAllMealsSortedList(sortColumn, isAscending);
-        final MealListAdaptor mealListAdaptor = new MealListAdaptor(mealList, this);
-        final ListView mealsList = (ListView) findViewById(R.id.meal_list_view);
-        mealsList.setAdapter(mealListAdaptor);
+        mealListAdaptor = new MealListAdaptor(mealList, this);
+        mealsListView = (ListView) findViewById(R.id.meal_list_view);
+        mealsListView.setAdapter(mealListAdaptor);
 
-        mealsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
-                Meal chosenMeal = mealListAdaptor.getMeal(position);
-                int mealId = (int) chosenMeal.getMealIdNumber();
+                int mealId = (int) mealListAdaptor.getMeal(position).getMealIdNumber();
                 Intent intent = new Intent(getApplicationContext(), MealDetails.class)
                         .putExtra(Intent.EXTRA_TEXT, mealId);
                 startActivity(intent);
+            }
+        });
+
+        //Below is to set up filtering
+        //https://github.com/survivingwithandroid/Surviving-with-android/blob/master/ListView_Filter_Tutorial/src/com/survivingwithandroid/listview/SimpleList/MainActivity.java
+        //http://www.survivingwithandroid.com/2013/01/android-listview-filterable.html
+        // we register for the contextmneu
+        registerForContextMenu(mealsListView);
+
+        // TextFilter
+        mealsListView.setTextFilterEnabled(true);
+        EditText editTxt = (EditText) findViewById(R.id.editTxt);
+
+        editTxt.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
+                if (count < before) {
+                    // We're deleting char so we need to reset the adapter data
+                    mealListAdaptor.resetData();
+                }
+
+                mealListAdaptor.getFilter().filter(s.toString());
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
     }
@@ -209,5 +244,5 @@ public class ListOfMeals extends ActionBarActivity {
             }
         });
             builder.show();
-        }
     }
+}
