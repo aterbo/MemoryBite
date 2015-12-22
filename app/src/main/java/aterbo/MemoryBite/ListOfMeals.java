@@ -50,6 +50,9 @@ public class ListOfMeals extends ActionBarActivity {
             isAscending = savedInstanceState.getBoolean(STATE_SORT_ORDER);
         } else {
             //Set random header image based on files in drawable folder and value array
+            DBHelper db = new DBHelper(this);
+            db.getAllPhotosList();
+
             final TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
             final Random rand = new Random();
             final int rndInt = rand.nextInt(imgs.length());

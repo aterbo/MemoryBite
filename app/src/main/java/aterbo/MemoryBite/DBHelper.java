@@ -514,6 +514,28 @@ public class DBHelper extends SQLiteOpenHelper {
         return photos;
     }
 
+    public ArrayList getAllPhotoFilePathsList() {
+        ArrayList<String> photoFilePaths = new ArrayList();
+
+        // select meal query
+        String query = "SELECT " + DBContract.PhotosDBTable.COLUMN_PHOTO_FILE_PATH + " FROM "
+                + DBContract.PhotosDBTable.PHOTO_TABLE;
+
+        // get reference of the database
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // parse all results
+        if (cursor.moveToFirst()) {
+            do {
+                photoFilePaths.add((cursor.getString(
+                        cursor.getColumnIndexOrThrow(DBContract.PhotosDBTable.COLUMN_PHOTO_FILE_PATH))));
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return photoFilePaths;
+    }
+
     //Get all photos from a given meal ID
     public ArrayList getAllPhotosForMealList(long mealId) {
         ArrayList photosFromMeal = new ArrayList();
