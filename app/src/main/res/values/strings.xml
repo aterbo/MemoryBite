@@ -7,9 +7,9 @@
     <string name="version_number">Version: 1.8</string>
     <string name="release_date">Release Date: November 15, 2015</string>
     <string name="title_activity_open_screen">Memory Bite</string>
-    <string name="title_activity_list_of_meals">My Meal Journal</string>
+    <string name="title_activity_list_of_meals">Meal Journal</string>
     <string name="title_activity_meal_details">Meal Details</string>
-    <string name="title_activity_input_meal">Enter Meal Details</string>
+    <string name="title_activity_input_meal">Enter Meal</string>
 
     <string name="restaurant_name">Restaurant Name</string>
     <string name="location">Location</string>
