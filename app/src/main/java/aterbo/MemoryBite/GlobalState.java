@@ -5,6 +5,7 @@ import android.app.Application;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
  * Created by ATerbo on 9/24/15.
@@ -30,6 +31,7 @@ public class GlobalState extends Application {
                 .showImageOnLoading(R.drawable.mbicon)
                 .showImageForEmptyUri(R.drawable.mbicon)
                 .showImageOnFail(R.drawable.mbicon)
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
                 .delayBeforeLoading(50)
                 .cacheOnDisk(false).cacheInMemory(false)
                 .considerExifParams(true)

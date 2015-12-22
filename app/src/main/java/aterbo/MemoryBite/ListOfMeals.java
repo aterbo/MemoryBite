@@ -20,7 +20,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -32,9 +34,13 @@ public class ListOfMeals extends ActionBarActivity {
     private int resID;
     static final String STATE_RESID = "imageResID";
     static final String STATE_SORT_SETTING = "sortSetting";
-    private String sortColumn;
     static final String STATE_SORT_ORDER = "sortOrder";
+    static final String STATE_HEADER_TYPE = "headerPhotoType";
+    static final String STATE_HEADER_PHOTO_PATH = "headerPhotoFilePath";
+    private String headerPhotoFilePath;
+    private String sortColumn;
     private Boolean isAscending;
+    private Boolean userHeaderPhotos;
     private ListView mealsListView;
 
     @Override
@@ -48,21 +54,48 @@ public class ListOfMeals extends ActionBarActivity {
             resID = savedInstanceState.getInt(STATE_RESID);
             sortColumn = savedInstanceState.getString(STATE_SORT_SETTING);
             isAscending = savedInstanceState.getBoolean(STATE_SORT_ORDER);
-        } else {
-            //Set random header image based on files in drawable folder and value array
-            DBHelper db = new DBHelper(this);
-            db.getAllPhotosList();
+            userHeaderPhotos = savedInstanceState.getBoolean(STATE_HEADER_TYPE);
+            headerPhotoFilePath = savedInstanceState.getString(STATE_HEADER_PHOTO_PATH);
 
-            final TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
-            final Random rand = new Random();
-            final int rndInt = rand.nextInt(imgs.length());
-            resID = imgs.getResourceId(rndInt, 0);
+            //Return header photo to previous used image
+            //Set random header image to photo from user images if there are more than 5 photos
+            if(userHeaderPhotos){
+                //Display title using UIL
+                ImageLoader.getInstance().displayImage("file://" + headerPhotoFilePath,
+                        (ImageView) findViewById(R.id.header_photo));
+            } else {
+                //Set random header image based on files in drawable folder and value array
+                ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
+            }
+
+        } else { //Not returning from screen rotate, etc. Display all data first time
             sortColumn = DBContract.MealDBTable.COLUMN_DATE;
             isAscending = false;
             displayListView();
 
+            //Display header photo
+            DBHelper db = new DBHelper(this);
+            Random rand = new Random();
+            int rndInt;
+            ArrayList<String> photoList = db.getAllPhotoFilePathsList();
+
+            //Set random header image to photo from user images if there are more than 5 photos
+            if (photoList.size() > 5) {
+                userHeaderPhotos = true;
+                rndInt = rand.nextInt(photoList.size());
+                headerPhotoFilePath = photoList.get(rndInt);
+                //Display title using UIL
+                ImageLoader.getInstance().displayImage("file://" + headerPhotoFilePath,
+                        (ImageView) findViewById(R.id.header_photo));
+            } else {
+                //Set random header image based on files in drawable folder and value array
+                userHeaderPhotos = false;
+                TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
+                rndInt = rand.nextInt(imgs.length());
+                resID = imgs.getResourceId(rndInt, 0);
+                ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
+            }
         }
-        ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
 
         //AD MONEY AD MONEY
         if(findViewById(R.id.adView)!=null) {
@@ -130,6 +163,8 @@ public class ListOfMeals extends ActionBarActivity {
         savedInstanceState.putInt(STATE_RESID, resID);
         savedInstanceState.putString(STATE_SORT_SETTING, sortColumn);
         savedInstanceState.putBoolean(STATE_SORT_ORDER, isAscending);
+        savedInstanceState.putBoolean(STATE_HEADER_TYPE, userHeaderPhotos);
+        savedInstanceState.putString(STATE_HEADER_PHOTO_PATH, headerPhotoFilePath);
 
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
