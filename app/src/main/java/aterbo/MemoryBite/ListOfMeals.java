@@ -2,6 +2,7 @@ package aterbo.MemoryBite;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -128,9 +130,16 @@ public class ListOfMeals extends ActionBarActivity {
                 if(findViewById(R.id.search_meals_box).getVisibility() == View.GONE) {
                     findViewById(R.id.search_meals_box).setVisibility(View.VISIBLE);
                     findViewById(R.id.header_photo).setVisibility(View.GONE);
+
+                    findViewById(R.id.search_meals_box).requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 } else{
                     findViewById(R.id.search_meals_box).setVisibility(View.GONE);
                     findViewById(R.id.header_photo).setVisibility(View.VISIBLE);
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(findViewById(R.id.search_meals_box).getWindowToken(), 0);
                 }
                 return true;
             case R.id.sort_meals_menu:
