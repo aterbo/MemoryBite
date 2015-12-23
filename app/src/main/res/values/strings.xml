@@ -208,11 +208,11 @@
     <string name="search_meals">Search meals</string>
 
     <string name="busy_exporting_message">Hold your horses, I\'m trying to export a file here!!
-        \nI don\'t know why, but the PDF export crashes sporadically. If it does, check your Documents
+        \n\nI don\'t know why, but the PDF export crashes sporadically. If it does, check your Documents
         folder for a partial PDF. Try a few times; sometimes it goes through, sometimes it doesn\'t.
         Technically, I think it\'s related to available memory in your phone or maybe RAM. It might
-        have something to do with specific photos that cause the crash. Maybe it\'s ghosts. Really,
+        have something to do with specific photos. Maybe it\'s ghosts. Really,
         I have no idea. Please submit the crash report if it happens, so that I can try to
-        figure it out. Thanks!    -Andy</string>
+        figure it out. Thanks!\n\n    -Andy</string>
 
 </resources>
