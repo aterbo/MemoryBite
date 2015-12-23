@@ -441,7 +441,7 @@ public class InputMeal extends ActionBarActivity {
             Toast.makeText(this, getResources().getText(R.string.saved_meal_message), Toast.LENGTH_LONG).show();
 
             //start Details view w/ new or updated meal
-            Intent intent = new Intent(getApplicationContext(), MealDetails.class)
+            Intent intent = new Intent(this, MealDetails.class)
                     .putExtra(Intent.EXTRA_TEXT, mealIdNumber);
             startActivity(intent);
         } else { //Make a toast if the IDIOT USER tries saving a meal without entering anything
