@@ -41,7 +41,8 @@
             android:name="aterbo.MemoryBite.MealDetails"
             android:label="@string/title_activity_meal_details"
             android:hardwareAccelerated="true"
-            android:parentActivityName="aterbo.MemoryBite.ListOfMeals">
+            android:parentActivityName="aterbo.MemoryBite.ListOfMeals"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="aterbo.MemoryBite.ListOfMeals" />
