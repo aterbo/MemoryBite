@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/main_background"
     android:orientation="vertical"
-    tools:context="aterbo.MemoryBite.ListOfMeals">
+    tools:context="aterbo.MemoryBite.activities.ListOfMealsActivity">
 
     <EditText
         android:id="@+id/search_meals_box"

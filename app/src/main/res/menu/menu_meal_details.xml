@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="aterbo.MemoryBite.MealDetails">
+    tools:context="aterbo.MemoryBite.activities.MealDetailsActivity">
 
     <item
         android:id="@+id/share_meal_menu"

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="aterbo.MemoryBite.ListOfMeals">
+    tools:context="aterbo.MemoryBite.activities.ListOfMealsActivity">
     <item
         android:id="@+id/search_meals_menu"
         android:orderInCategory="40"

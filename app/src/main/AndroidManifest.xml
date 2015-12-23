@@ -15,12 +15,12 @@
         android:theme="@style/AppTheme"
         android:name=".GlobalState">
         <activity
-            android:name="aterbo.MemoryBite.InputMeal"
+            android:name=".activities.InputMealActivity"
             android:label="@string/title_activity_input_meal"
             android:hardwareAccelerated="true">
         </activity>
         <activity
-            android:name="aterbo.MemoryBite.OpenScreen"
+            android:name=".activities.OpenScreenActivity"
             android:label="@string/title_activity_open_screen"
             android:hardwareAccelerated="true">
             <intent-filter>
@@ -29,30 +29,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="aterbo.MemoryBite.ListOfMeals"
+            android:name=".activities.ListOfMealsActivity"
             android:label="@string/title_activity_list_of_meals"
             android:hardwareAccelerated="true"
-            android:parentActivityName=".OpenScreen">
+            android:parentActivityName=".activities.OpenScreenActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="aterbo.MemoryBite.OpenScreen" />
+                android:value=".activities.OpenScreenActivity" />
         </activity>
         <activity
-            android:name="aterbo.MemoryBite.MealDetails"
+            android:name=".activities.MealDetailsActivity"
             android:label="@string/title_activity_meal_details"
             android:hardwareAccelerated="true"
-            android:parentActivityName="aterbo.MemoryBite.ListOfMeals"
+            android:parentActivityName=".activities.ListOfMealsActivity"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="aterbo.MemoryBite.ListOfMeals" />
+                android:value=".activities.ListOfMealsActivity" />
         </activity>
         <activity
             android:name="aterbo.MemoryBite.FullScreenViewActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="aterbo.MemoryBite.MealDetails" />
+                android:value=".activities.MealDetailsActivity" />
         </activity>
     </application>
 
