@@ -4,8 +4,8 @@
     <string-array name="email_array">
             <item>@string/email</item>
     </string-array>
-    <string name="version_number">Version: 1.8</string>
-    <string name="release_date">Release Date: November 15, 2015</string>
+    <string name="version_number">Version: 1.9</string>
+    <string name="release_date">Release Date: December 22, 2015</string>
     <string name="title_activity_open_screen">Memory Bite</string>
     <string name="title_activity_list_of_meals">Meal Journal</string>
     <string name="title_activity_meal_details">Meal Details</string>
@@ -75,7 +75,7 @@
         gas station boudin or Commander\'s Palace turtle soup.
         \n
         \nUnfortunately, as a side effect of this lifespan-shortening life style (and possibly
-        from IPAs, sazeracs, and red wine) I found that I was having a tough time keeping it all
+        from IPAs, sazeracs, and red wine) I was having a tough time keeping it all
         straight. After a point, you can\'t remember what was when and where with
         who. Since eating good food in the company of good people is one of life\'s great joys,
         forgetting these meals is a true sin to me.
@@ -92,7 +92,7 @@
         to make it as efficient as possible. And hopefully prettier, too.
         \n
         \nNow that I have the tool I wanted, I no longer live in New Orleans and I try to
-        spend money on things other than restaurants, like new clothes and actual furniture.
+        spend money on things other than restaurants, like decent clothes and actual furniture.
         Even though I may be missing a few meals from my journal, I hope it\'s something you find
         useful.
         \n
@@ -104,7 +104,9 @@
         photos. I am working on providing cloud backup service for your journals, but for the
         moment your meal journal is saved only on the phone your app is on. Your journal will be
         saved when updating to newer versions of Memory Bite, but it will not carry over to new
-        phones or devices. Stay tuned for updates!
+        phones or devices. As of version 1.9, there is an export feature for building a PDF or CSV
+        copy of your journal, but this is more of an interim solution until a proper cloud backup
+        can be developed. Stay tuned for updates!
         \n
         \n
         \n
@@ -193,9 +195,13 @@
     <!--
     <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
     -->
+
     <!-- Test Ad ID! -->
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+
+
     <string name="created_w_memory_bite">Created using Memory Bite.\nwww.MemoryBite.com</string>
     <string name="page">Pg.</string>
     <string name="search_hint">Search by Restaurant Name</string>
