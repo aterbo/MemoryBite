@@ -1,6 +1,7 @@
 package aterbo.MemoryBite;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,10 +45,12 @@ public class ExportHelper {
     private Context context;
     private String shareType;
     private String PRINT_SERVICE = "PrintService";
+    //Progress Dialog 
+    private ProgressDialog dialog;
 
-    //Constructor code
-    public ExportHelper(Context context) {
+    public ExportHelper(Context context){
         this.context = context;
+        dialog = new ProgressDialog(context);
     }
 
     private static int calculateInSampleSize(
@@ -559,6 +563,8 @@ public class ExportHelper {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog.setMessage(context.getResources().getString(R.string.busy_exporting_message));
+            dialog.show();
         }
 
         @Override
@@ -581,6 +587,10 @@ public class ExportHelper {
         @Override
         protected void onPostExecute(final File outputFile) {
             super.onPostExecute(outputFile);
+
+            if(dialog.isShowing()){
+                dialog.dismiss();
+            }
 
             //Show dialog notifying where file has been saved.
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
