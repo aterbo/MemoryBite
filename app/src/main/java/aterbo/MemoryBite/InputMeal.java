@@ -443,7 +443,9 @@ public class InputMeal extends ActionBarActivity {
             //start Details view w/ new or updated meal
             Intent intent = new Intent(this, MealDetails.class)
                     .putExtra(Intent.EXTRA_TEXT, mealIdNumber);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
         } else { //Make a toast if the IDIOT USER tries saving a meal without entering anything
 
             Toast.makeText(this, getResources().getText(R.string.no_data_no_save_message), Toast.LENGTH_LONG).show();
