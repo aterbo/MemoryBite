@@ -31,7 +31,7 @@
             android:textSize="@dimen/medium_text" />
 
         <TextView
-            android:id="@+id/location_list"
+            android:id="@+id/date_and_location_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -41,7 +41,7 @@
             android:textSize="@dimen/small_text" />
 
         <TextView
-            android:id="@+id/date_and_dined_with_list"
+            android:id="@+id/dined_with_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary_text"

@@ -57,8 +57,8 @@ public class MealListAdaptorCompressed extends BaseAdapter implements Filterable
             viewHolder = new ViewHolder();
 
             viewHolder.restaurantName = (TextView) convertView.findViewById(R.id.restaurant_name_list);
-            viewHolder.location = (TextView) convertView.findViewById(R.id.location_list);
-            viewHolder.dateAndDinedWith = (TextView) convertView.findViewById(R.id.date_and_dined_with_list);
+            viewHolder.dateAndLocation = (TextView) convertView.findViewById(R.id.date_and_location_list);
+            viewHolder.dinedWith = (TextView) convertView.findViewById(R.id.dined_with_list);
             viewHolder.mealIdNumber = (TextView) convertView.findViewById(R.id.id_number_list);
             viewHolder.mealPicture = (SquareImageView) convertView.findViewById(R.id.meal_picture_list);
 
@@ -71,12 +71,12 @@ public class MealListAdaptorCompressed extends BaseAdapter implements Filterable
 
         //
         contentTest(meal.getRestaurantName(), viewHolder.restaurantName);
-        contentTest(meal.getLocation(), viewHolder.location);
+        contentTest(meal.getDinedWith(), viewHolder.dinedWith);
 
-        if (!meal.getDinedWith().isEmpty()) {
-            viewHolder.dateAndDinedWith.setText(meal.getDateMealEaten() +
-                    "   w. " + meal.getDinedWith());
-        } else {viewHolder.dateAndDinedWith.setText(meal.getDateMealEaten());}
+        if (!meal.getLocation().isEmpty()) {
+            viewHolder.dateAndLocation.setText(meal.getDateMealEaten() +
+                    "   " + meal.getLocation());
+        } else {viewHolder.dateAndLocation.setText(meal.getDateMealEaten());}
 
         viewHolder.mealIdNumber.setText(Long.toString(meal.getMealIdNumber()));
 
@@ -109,8 +109,8 @@ public class MealListAdaptorCompressed extends BaseAdapter implements Filterable
     //http://www.javacodegeeks.com/2013/09/android-viewholder-pattern-example.html
     static class ViewHolder {
         TextView restaurantName;
-        TextView location;
-        TextView dateAndDinedWith;
+        TextView dateAndLocation;
+        TextView dinedWith;
         TextView mealIdNumber;
         SquareImageView mealPicture;
     }
