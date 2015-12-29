@@ -15,6 +15,11 @@
         android:icon="@mipmap/ic_sort_white_24dp"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/toggle_list_size_menu"
+        android:orderInCategory="55"
+        android:title="@string/change_list_size"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/add_new_meal_menu"
         android:orderInCategory="60"
         android:title="@string/add_new_meal"

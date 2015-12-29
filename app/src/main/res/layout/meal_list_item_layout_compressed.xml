@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/customborder">
+
+    <aterbo.MemoryBite.SquareImageView
+        android:id="@+id/meal_picture_list"
+        android:layout_width="60dp"
+        android:layout_height="2dp"
+        android:layout_margin="1dp"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/restaurant_name_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/medium_text" />
+
+        <TextView
+            android:id="@+id/location_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/small_text" />
+
+        <TextView
+            android:id="@+id/date_and_dined_with_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="@dimen/small_text" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/id_number_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+</LinearLayout>

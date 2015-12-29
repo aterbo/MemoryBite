@@ -34,6 +34,7 @@ import aterbo.MemoryBite.DBHelper;
 import aterbo.MemoryBite.ExportHelper;
 import aterbo.MemoryBite.Meal;
 import aterbo.MemoryBite.MealListAdaptor;
+import aterbo.MemoryBite.MealListAdaptorCompressed;
 import aterbo.MemoryBite.R;
 
 
@@ -41,16 +42,19 @@ public class ListOfMealsActivity extends ActionBarActivity {
 
     private List<Meal> mealList;
     MealListAdaptor mealListAdaptor;
+    MealListAdaptorCompressed mealListAdaptorCompressed;
     private int resID;
     static final String STATE_RESID = "imageResID";
     static final String STATE_SORT_SETTING = "sortSetting";
     static final String STATE_SORT_ORDER = "sortOrder";
     static final String STATE_HEADER_TYPE = "headerPhotoType";
     static final String STATE_HEADER_PHOTO_PATH = "headerPhotoFilePath";
+    static final String STATE_LIST_SIZE = "listSize";
     private String headerPhotoFilePath;
     private String sortColumn;
     private Boolean isAscending;
     private Boolean userHeaderPhotos;
+    private Boolean isCondensedView;
     private ListView mealsListView;
 
     @Override
@@ -66,6 +70,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
             isAscending = savedInstanceState.getBoolean(STATE_SORT_ORDER);
             userHeaderPhotos = savedInstanceState.getBoolean(STATE_HEADER_TYPE);
             headerPhotoFilePath = savedInstanceState.getString(STATE_HEADER_PHOTO_PATH);
+            isCondensedView = savedInstanceState.getBoolean(STATE_LIST_SIZE);
 
             //Return header photo to previous used image
             //Set random header image to photo from user images if there are more than 5 photos
@@ -81,6 +86,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
         } else { //Not returning from screen rotate, etc. Display all data first time
             sortColumn = DBContract.MealDBTable.COLUMN_DATE;
             isAscending = false;
+            isCondensedView = false;
             displayListView();
 
             //Display header photo
@@ -153,6 +159,14 @@ public class ListOfMealsActivity extends ActionBarActivity {
             case R.id.sort_meals_menu:
                 sortMeals();
                 return true;
+            case R.id.toggle_list_size_menu:
+                if(isCondensedView){
+                    isCondensedView = false;
+                } else {
+                    isCondensedView = true;
+                }
+                displayListView();
+                return true;
             case R.id.add_new_meal_menu:
                 Intent newMealIntent = new Intent(this, InputMealActivity.class);
                 startActivity(newMealIntent);
@@ -181,6 +195,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
         savedInstanceState.putString(STATE_SORT_SETTING, sortColumn);
         savedInstanceState.putBoolean(STATE_SORT_ORDER, isAscending);
         savedInstanceState.putBoolean(STATE_HEADER_TYPE, userHeaderPhotos);
+        savedInstanceState.putBoolean(STATE_LIST_SIZE, isCondensedView);
         savedInstanceState.putString(STATE_HEADER_PHOTO_PATH, headerPhotoFilePath);
 
         // Always call the superclass so it can save the view hierarchy state
@@ -191,55 +206,110 @@ public class ListOfMealsActivity extends ActionBarActivity {
     private void displayListView() {
         DBHelper db = new DBHelper(this);
         mealList = db.getAllMealsSortedList(sortColumn, isAscending);
-        mealListAdaptor = new MealListAdaptor(mealList, this);
         mealsListView = (ListView) findViewById(R.id.meal_list_view);
-        mealsListView.setAdapter(mealListAdaptor);
 
-        mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
-                int mealId = (int) mealListAdaptor.getMeal(position).getMealIdNumber();
-                Intent intent = new Intent(getApplicationContext(), MealDetailsActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, mealId);
-                startActivity(intent);
-            }
-        });
+        //Test if is condensed view or not and apply appropriate adaptor
+        if(isCondensedView){
+            mealListAdaptorCompressed = new MealListAdaptorCompressed(mealList, this);
+            mealsListView.setAdapter(mealListAdaptorCompressed);
 
-        //Below is to set up filtering
-        //https://github.com/survivingwithandroid/Surviving-with-android/blob/master/ListView_Filter_Tutorial/src/com/survivingwithandroid/listview/SimpleList/MainActivity.java
-        //http://www.survivingwithandroid.com/2013/01/android-listview-filterable.html
-        // we register for the contextmneu
-        registerForContextMenu(mealsListView);
+            mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        // TextFilter
-        mealsListView.setTextFilterEnabled(true);
-        EditText searchInputBox = (EditText) findViewById(R.id.search_meals_box);
+                @Override
+                public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
+                    int mealId = (int) mealListAdaptorCompressed.getMeal(position).getMealIdNumber();
+                    Intent intent = new Intent(getApplicationContext(), MealDetailsActivity.class)
+                            .putExtra(Intent.EXTRA_TEXT, mealId);
+                    startActivity(intent);
+                }
+            });
 
-        searchInputBox.addTextChangedListener(new TextWatcher() {
+            //Below is to set up filtering
+            //https://github.com/survivingwithandroid/Surviving-with-android/blob/master/ListView_Filter_Tutorial/src/com/survivingwithandroid/listview/SimpleList/MainActivity.java
+            //http://www.survivingwithandroid.com/2013/01/android-listview-filterable.html
+            // we register for the contextmneu
+            registerForContextMenu(mealsListView);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
-                if (count < before) {
-                    // We're deleting char so we need to reset the adapter data
-                    mealListAdaptor.resetData();
+            // TextFilter
+            mealsListView.setTextFilterEnabled(true);
+            EditText searchInputBox = (EditText) findViewById(R.id.search_meals_box);
+
+            searchInputBox.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
+                    if (count < before) {
+                        // We're deleting char so we need to reset the adapter data
+                        mealListAdaptorCompressed.resetData();
+                    }
+
+                    mealListAdaptorCompressed.getFilter().filter(s.toString());
+
                 }
 
-                mealListAdaptor.getFilter().filter(s.toString());
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count,
+                                              int after) {
 
-            }
+                }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
 
-            }
+        } else {
+            mealListAdaptor = new MealListAdaptor(mealList, this);
+            mealsListView.setAdapter(mealListAdaptor);
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+            mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
+                    int mealId = (int) mealListAdaptor.getMeal(position).getMealIdNumber();
+                    Intent intent = new Intent(getApplicationContext(), MealDetailsActivity.class)
+                            .putExtra(Intent.EXTRA_TEXT, mealId);
+                    startActivity(intent);
+                }
+            });
+
+            //Below is to set up filtering
+            //https://github.com/survivingwithandroid/Surviving-with-android/blob/master/ListView_Filter_Tutorial/src/com/survivingwithandroid/listview/SimpleList/MainActivity.java
+            //http://www.survivingwithandroid.com/2013/01/android-listview-filterable.html
+            // we register for the contextmneu
+            registerForContextMenu(mealsListView);
+
+            // TextFilter
+            mealsListView.setTextFilterEnabled(true);
+            EditText searchInputBox = (EditText) findViewById(R.id.search_meals_box);
+
+            searchInputBox.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
+                    if (count < before) {
+                        // We're deleting char so we need to reset the adapter data
+                        mealListAdaptor.resetData();
+                    }
+
+                    mealListAdaptor.getFilter().filter(s.toString());
+
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count,
+                                              int after) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+        }
     }
 
     public void editLastMeal() {

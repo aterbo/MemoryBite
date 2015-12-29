@@ -215,5 +215,6 @@
         have something to do with specific photos. Maybe it\'s ghosts. Really,
         I have no idea. Please submit the crash report if it happens, so that I can try to
         figure it out. Thanks!\n\n    -Andy</string>
+    <string name="change_list_size">Toggle List Size</string>
 
 </resources>
