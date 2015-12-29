@@ -129,10 +129,10 @@ public class MealListAdaptor extends BaseAdapter implements Filterable{
 
     private class MealFilter extends Filter {
         @Override
-        protected FilterResults performFiltering(CharSequence constraint){
+        protected FilterResults performFiltering(CharSequence searchString){
             FilterResults results = new FilterResults();
             // We implement here the filter logic
-            if (constraint == null || constraint.length() == 0) {
+            if (searchString == null || searchString.length() == 0) {
                 // No filter implemented we return all the list
                 results.values = mealList;
                 results.count = mealList.size();
@@ -143,10 +143,17 @@ public class MealListAdaptor extends BaseAdapter implements Filterable{
 
                 for (Meal meal : mealList) {
                     if (meal.getRestaurantName().toUpperCase().startsWith(
-                            constraint.toString().toUpperCase())) {
+                            searchString.toString().toUpperCase())) {
                         nMealList.add(meal);
                     } else if (meal.getRestaurantName().toUpperCase().contains(
-                            constraint.toString().toUpperCase())) {
+                            searchString.toString().toUpperCase())) {
+                        nMealList.add(meal);
+                    }
+                    if (meal.getDinedWith().toUpperCase().startsWith(
+                            searchString.toString().toUpperCase())) {
+                        nMealList.add(meal);
+                    } else if (meal.getDinedWith().toUpperCase().contains(
+                            searchString.toString().toUpperCase())) {
                         nMealList.add(meal);
                     }
                 }

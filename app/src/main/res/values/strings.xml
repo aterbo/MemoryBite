@@ -192,14 +192,15 @@
     <string name="close_X">X</string> <!--Used as a Close Window X. Do not translate -->
 
     <!-- Live Ad ID! -->
+    <!--
     <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
-
+    -->
 
     <!-- Test Ad ID! -->
 
-    <!--
+
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    -->
+
 
 
     <string name="created_w_memory_bite">Created using Memory Bite.\nwww.MemoryBite.com</string>
