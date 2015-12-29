@@ -86,7 +86,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
         } else { //Not returning from screen rotate, etc. Display all data first time
             sortColumn = DBContract.MealDBTable.COLUMN_DATE;
             isAscending = false;
-            isCondensedView = false;
+            isCondensedView = true;
             displayListView();
 
             //Display header photo
