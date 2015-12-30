@@ -49,12 +49,12 @@ public class ListOfMealsActivity extends ActionBarActivity {
     static final String STATE_SORT_ORDER = "sortOrder";
     static final String STATE_HEADER_TYPE = "headerPhotoType";
     static final String STATE_HEADER_PHOTO_PATH = "headerPhotoFilePath";
-    static final String STATE_LIST_SIZE = "listSize";
     private String headerPhotoFilePath;
     private String sortColumn;
     private Boolean isAscending;
     private Boolean userHeaderPhotos;
-    private Boolean isCondensedView;
+    private Boolean useCondensedLayout;
+    static final String STATE_LIST_LAYOUT_SIZE = "listSize";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
 
         // Restore preferences for big/small view
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        isCondensedView = settings.getBoolean(STATE_LIST_SIZE, true);
+        useCondensedLayout = settings.getBoolean(STATE_LIST_LAYOUT_SIZE, true);
 
         //address saved instance state to deal with screen rotation
         if (savedInstanceState != null) {
@@ -73,7 +73,6 @@ public class ListOfMealsActivity extends ActionBarActivity {
             isAscending = savedInstanceState.getBoolean(STATE_SORT_ORDER);
             userHeaderPhotos = savedInstanceState.getBoolean(STATE_HEADER_TYPE);
             headerPhotoFilePath = savedInstanceState.getString(STATE_HEADER_PHOTO_PATH);
-            //isCondensedView = savedInstanceState.getBoolean(STATE_LIST_SIZE);
 
             //Return header photo to previous used image
             //Set random header image to photo from user images if there are more than 5 photos
@@ -89,7 +88,6 @@ public class ListOfMealsActivity extends ActionBarActivity {
         } else { //Not returning from screen rotate, etc. Display all data first time
             sortColumn = DBContract.MealDBTable.COLUMN_DATE;
             isAscending = false;
-            //isCondensedView = true;
             displayListView();
 
             //Display header photo
@@ -164,12 +162,12 @@ public class ListOfMealsActivity extends ActionBarActivity {
                 return true;
             case R.id.toggle_list_size_menu:
                 //Switch Boolean value
-                isCondensedView = !isCondensedView;
+                useCondensedLayout = !useCondensedLayout;
                 // We need an Editor object to make preference changes.
                 // All objects are from android.context.Context
                 SharedPreferences settings = getPreferences(MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean(STATE_LIST_SIZE, isCondensedView);
+                editor.putBoolean(STATE_LIST_LAYOUT_SIZE, useCondensedLayout);
 
                 // Commit the edits!
                 editor.commit();
@@ -204,7 +202,6 @@ public class ListOfMealsActivity extends ActionBarActivity {
         savedInstanceState.putString(STATE_SORT_SETTING, sortColumn);
         savedInstanceState.putBoolean(STATE_SORT_ORDER, isAscending);
         savedInstanceState.putBoolean(STATE_HEADER_TYPE, userHeaderPhotos);
-        //savedInstanceState.putBoolean(STATE_LIST_SIZE, isCondensedView);
         savedInstanceState.putString(STATE_HEADER_PHOTO_PATH, headerPhotoFilePath);
 
         // Always call the superclass so it can save the view hierarchy state
@@ -217,61 +214,54 @@ public class ListOfMealsActivity extends ActionBarActivity {
         mealList = db.getAllMealsSortedList(sortColumn, isAscending);
         mealsListView = (ListView) findViewById(R.id.meal_list_view);
 
+        //Apply appropriate adaptor based on "useCondensedLayout" value
+        mealListAdaptor = new MealListAdaptor(mealList, this, useCondensedLayout);
+        mealsListView.setAdapter(mealListAdaptor);
+        mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        //Test if is condensed view or not and apply appropriate adaptor
-        if(isCondensedView) {
-            mealListAdaptor = new MealListAdaptor(mealList, this, true);
-        } else {
-            mealListAdaptor = new MealListAdaptor(mealList, this, false);
-        }
+            @Override
+            public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
+                int mealId = (int) mealListAdaptor.getMeal(position).getMealIdNumber();
+                Intent intent = new Intent(getApplicationContext(), MealDetailsActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, mealId);
+                startActivity(intent);
+            }
+        });
 
-            mealsListView.setAdapter(mealListAdaptor);
+        //Below is to set up filtering
+        //https://github.com/survivingwithandroid/Surviving-with-android/blob/master/ListView_Filter_Tutorial/src/com/survivingwithandroid/listview/SimpleList/MainActivity.java
+        //http://www.survivingwithandroid.com/2013/01/android-listview-filterable.html
+        // we register for the contextmneu
+        registerForContextMenu(mealsListView);
 
-            mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // TextFilter
+        mealsListView.setTextFilterEnabled(true);
+        EditText searchInputBox = (EditText) findViewById(R.id.search_meals_box);
 
-                @Override
-                public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
-                    int mealId = (int) mealListAdaptor.getMeal(position).getMealIdNumber();
-                    Intent intent = new Intent(getApplicationContext(), MealDetailsActivity.class)
-                            .putExtra(Intent.EXTRA_TEXT, mealId);
-                    startActivity(intent);
-                }
-            });
+        searchInputBox.addTextChangedListener(new TextWatcher() {
 
-            //Below is to set up filtering
-            //https://github.com/survivingwithandroid/Surviving-with-android/blob/master/ListView_Filter_Tutorial/src/com/survivingwithandroid/listview/SimpleList/MainActivity.java
-            //http://www.survivingwithandroid.com/2013/01/android-listview-filterable.html
-            // we register for the contextmneu
-            registerForContextMenu(mealsListView);
-
-            // TextFilter
-            mealsListView.setTextFilterEnabled(true);
-            EditText searchInputBox = (EditText) findViewById(R.id.search_meals_box);
-
-            searchInputBox.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
-                    if (count < before) {
-                        // We're deleting char so we need to reset the adapter data
-                        mealListAdaptor.resetData();
-                    }
-
-                    mealListAdaptor.getFilter().filter(s.toString());
-
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
+                if (count < before) {
+                    // We're deleting char so we need to reset the adapter data
+                    mealListAdaptor.resetData();
                 }
 
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count,
-                                              int after) {
+                mealListAdaptor.getFilter().filter(s.toString());
 
-                }
+            }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     public void editLastMeal() {
