@@ -23,11 +23,20 @@ public class MealListAdaptor extends BaseAdapter implements Filterable{
     private Context context;
     private Filter mealFilter;
     private List<Meal> originalMealList;
+    private Boolean isCompressed;
 
     public MealListAdaptor(List<Meal> mealList, Context context) {
         this.mealList = mealList;
         this.context = context;
         this.originalMealList = mealList;
+        isCompressed = true;
+    }
+
+    public MealListAdaptor(List<Meal> mealList, Context context, Boolean isCompressed) {
+        this.mealList = mealList;
+        this.context = context;
+        this.originalMealList = mealList;
+        this.isCompressed = isCompressed;
     }
 
     @Override
@@ -52,13 +61,19 @@ public class MealListAdaptor extends BaseAdapter implements Filterable{
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.meal_list_item_layout, viewGroup, false);
+
+            if(isCompressed){
+                convertView = inflater.inflate(R.layout.meal_list_item_layout_compressed, viewGroup, false);
+            } else {
+                convertView = inflater.inflate(R.layout.meal_list_item_layout, viewGroup, false);
+            }
 
             viewHolder = new ViewHolder();
 
             viewHolder.restaurantName = (TextView) convertView.findViewById(R.id.restaurant_name_list);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.date_list);
             viewHolder.location = (TextView) convertView.findViewById(R.id.location_list);
-            viewHolder.dateAndDinedWith = (TextView) convertView.findViewById(R.id.date_list);
+            viewHolder.dinedWith = (TextView) convertView.findViewById(R.id.dined_with_list);
             viewHolder.mealIdNumber = (TextView) convertView.findViewById(R.id.id_number_list);
             viewHolder.mealPicture = (SquareImageView) convertView.findViewById(R.id.meal_picture_list);
 
@@ -71,13 +86,9 @@ public class MealListAdaptor extends BaseAdapter implements Filterable{
 
         //
         contentTest(meal.getRestaurantName(), viewHolder.restaurantName);
+        contentTest(meal.getDateMealEaten(), viewHolder.date);
         contentTest(meal.getLocation(), viewHolder.location);
-
-        if (!meal.getDinedWith().isEmpty()) {
-            viewHolder.dateAndDinedWith.setText(meal.getDateMealEaten() +
-                    "   w. " + meal.getDinedWith());
-        } else {viewHolder.dateAndDinedWith.setText(meal.getDateMealEaten());}
-
+        contentTest(meal.getDinedWith(), viewHolder.dinedWith);
         viewHolder.mealIdNumber.setText(Long.toString(meal.getMealIdNumber()));
 
         if (meal.getPrimaryPhoto() != null && !meal.getPrimaryPhoto().isEmpty()) {
@@ -109,8 +120,9 @@ public class MealListAdaptor extends BaseAdapter implements Filterable{
     //http://www.javacodegeeks.com/2013/09/android-viewholder-pattern-example.html
     static class ViewHolder {
         TextView restaurantName;
+        TextView date;
         TextView location;
-        TextView dateAndDinedWith;
+        TextView dinedWith;
         TextView mealIdNumber;
         SquareImageView mealPicture;
     }

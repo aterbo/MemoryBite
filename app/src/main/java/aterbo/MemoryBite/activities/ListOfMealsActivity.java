@@ -34,7 +34,6 @@ import aterbo.MemoryBite.DBHelper;
 import aterbo.MemoryBite.ExportHelper;
 import aterbo.MemoryBite.Meal;
 import aterbo.MemoryBite.MealListAdaptor;
-import aterbo.MemoryBite.MealListAdaptorCompressed;
 import aterbo.MemoryBite.R;
 
 
@@ -42,7 +41,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
 
     private List<Meal> mealList;
     MealListAdaptor mealListAdaptor;
-    MealListAdaptorCompressed mealListAdaptorCompressed;
+    private ListView mealsListView;
     private int resID;
     static final String STATE_RESID = "imageResID";
     static final String STATE_SORT_SETTING = "sortSetting";
@@ -55,7 +54,6 @@ public class ListOfMealsActivity extends ActionBarActivity {
     private Boolean isAscending;
     private Boolean userHeaderPhotos;
     private Boolean isCondensedView;
-    private ListView mealsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,18 +209,18 @@ public class ListOfMealsActivity extends ActionBarActivity {
 
         //Test if is condensed view or not and apply appropriate adaptor
         if(isCondensedView) {
-            mealListAdaptorCompressed = new MealListAdaptorCompressed(mealList, this, true);
+            mealListAdaptor = new MealListAdaptor(mealList, this, true);
         } else {
-            mealListAdaptorCompressed = new MealListAdaptorCompressed(mealList, this, false);
+            mealListAdaptor = new MealListAdaptor(mealList, this, false);
         }
 
-            mealsListView.setAdapter(mealListAdaptorCompressed);
+            mealsListView.setAdapter(mealListAdaptor);
 
             mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
-                    int mealId = (int) mealListAdaptorCompressed.getMeal(position).getMealIdNumber();
+                    int mealId = (int) mealListAdaptor.getMeal(position).getMealIdNumber();
                     Intent intent = new Intent(getApplicationContext(), MealDetailsActivity.class)
                             .putExtra(Intent.EXTRA_TEXT, mealId);
                     startActivity(intent);
@@ -246,10 +244,10 @@ public class ListOfMealsActivity extends ActionBarActivity {
                     System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
                     if (count < before) {
                         // We're deleting char so we need to reset the adapter data
-                        mealListAdaptorCompressed.resetData();
+                        mealListAdaptor.resetData();
                     }
 
-                    mealListAdaptorCompressed.getFilter().filter(s.toString());
+                    mealListAdaptor.getFilter().filter(s.toString());
 
                 }
 
