@@ -23,11 +23,20 @@ public class MealListAdaptorCompressed extends BaseAdapter implements Filterable
     private Context context;
     private Filter mealFilter;
     private List<Meal> originalMealList;
+    private Boolean isCompressed;
 
     public MealListAdaptorCompressed(List<Meal> mealList, Context context) {
         this.mealList = mealList;
         this.context = context;
         this.originalMealList = mealList;
+        isCompressed = true;
+    }
+
+    public MealListAdaptorCompressed(List<Meal> mealList, Context context, Boolean isCompressed) {
+        this.mealList = mealList;
+        this.context = context;
+        this.originalMealList = mealList;
+        this.isCompressed = isCompressed;
     }
 
     @Override
@@ -52,7 +61,12 @@ public class MealListAdaptorCompressed extends BaseAdapter implements Filterable
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.meal_list_item_layout_compressed, viewGroup, false);
+
+            if(isCompressed){
+                convertView = inflater.inflate(R.layout.meal_list_item_layout_compressed, viewGroup, false);
+            } else {
+                convertView = inflater.inflate(R.layout.meal_list_item_layout, viewGroup, false);
+            }
 
             viewHolder = new ViewHolder();
 
