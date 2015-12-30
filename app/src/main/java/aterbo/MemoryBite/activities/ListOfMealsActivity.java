@@ -163,12 +163,11 @@ public class ListOfMealsActivity extends ActionBarActivity {
             case R.id.toggle_list_size_menu:
                 //Switch Boolean value
                 useCondensedLayout = !useCondensedLayout;
-                // We need an Editor object to make preference changes.
-                // All objects are from android.context.Context
+
+                //Save to preferences file
                 SharedPreferences settings = getPreferences(MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean(STATE_LIST_LAYOUT_SIZE, useCondensedLayout);
-
                 // Commit the edits!
                 editor.commit();
 
@@ -249,13 +248,11 @@ public class ListOfMealsActivity extends ActionBarActivity {
                 }
 
                 mealListAdaptor.getFilter().filter(s.toString());
-
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-
             }
 
             @Override
