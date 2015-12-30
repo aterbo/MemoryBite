@@ -43,8 +43,8 @@ public class ListOfMealsActivity extends ActionBarActivity {
     private List<Meal> mealList;
     MealListAdaptor mealListAdaptor;
     private ListView mealsListView;
-    private int resID;
-    static final String STATE_RESID = "imageResID";
+    private int randomPhotoResID;
+    static final String STATE_RANDOM_PHOTO_RES_ID = "imageResID";
     static final String STATE_SORT_SETTING = "sortSetting";
     static final String STATE_SORT_ORDER = "sortOrder";
     static final String STATE_HEADER_TYPE = "headerPhotoType";
@@ -68,7 +68,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
         //address saved instance state to deal with screen rotation
         if (savedInstanceState != null) {
             //get INT from saved state
-            resID = savedInstanceState.getInt(STATE_RESID);
+            randomPhotoResID = savedInstanceState.getInt(STATE_RANDOM_PHOTO_RES_ID);
             sortColumn = savedInstanceState.getString(STATE_SORT_SETTING);
             isAscending = savedInstanceState.getBoolean(STATE_SORT_ORDER);
             userHeaderPhotos = savedInstanceState.getBoolean(STATE_HEADER_TYPE);
@@ -82,7 +82,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
                         (ImageView) findViewById(R.id.header_photo));
             } else {
                 //Set random header image based on files in drawable folder and value array
-                ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
+                ((ImageView) findViewById(R.id.header_photo)).setImageResource(randomPhotoResID);
             }
 
         } else { //Not returning from screen rotate, etc. Display all data first time
@@ -109,8 +109,8 @@ public class ListOfMealsActivity extends ActionBarActivity {
                 userHeaderPhotos = false;
                 TypedArray imgs = getResources().obtainTypedArray(R.array.headerimages);
                 rndInt = rand.nextInt(imgs.length());
-                resID = imgs.getResourceId(rndInt, 0);
-                ((ImageView) findViewById(R.id.header_photo)).setImageResource(resID);
+                randomPhotoResID = imgs.getResourceId(rndInt, 0);
+                ((ImageView) findViewById(R.id.header_photo)).setImageResource(randomPhotoResID);
             }
         }
 
@@ -196,8 +196,8 @@ public class ListOfMealsActivity extends ActionBarActivity {
     //Also save current sort setting, just in case
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the resID from the random image
-        savedInstanceState.putInt(STATE_RESID, resID);
+        // Save the randomPhotoResID from the random image
+        savedInstanceState.putInt(STATE_RANDOM_PHOTO_RES_ID, randomPhotoResID);
         savedInstanceState.putString(STATE_SORT_SETTING, sortColumn);
         savedInstanceState.putBoolean(STATE_SORT_ORDER, isAscending);
         savedInstanceState.putBoolean(STATE_HEADER_TYPE, userHeaderPhotos);
