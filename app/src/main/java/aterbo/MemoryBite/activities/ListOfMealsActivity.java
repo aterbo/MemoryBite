@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -60,6 +61,10 @@ public class ListOfMealsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_meals);
 
+        // Restore preferences for big/small view
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        isCondensedView = settings.getBoolean(STATE_LIST_SIZE, true);
+
         //address saved instance state to deal with screen rotation
         if (savedInstanceState != null) {
             //get INT from saved state
@@ -68,7 +73,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
             isAscending = savedInstanceState.getBoolean(STATE_SORT_ORDER);
             userHeaderPhotos = savedInstanceState.getBoolean(STATE_HEADER_TYPE);
             headerPhotoFilePath = savedInstanceState.getString(STATE_HEADER_PHOTO_PATH);
-            isCondensedView = savedInstanceState.getBoolean(STATE_LIST_SIZE);
+            //isCondensedView = savedInstanceState.getBoolean(STATE_LIST_SIZE);
 
             //Return header photo to previous used image
             //Set random header image to photo from user images if there are more than 5 photos
@@ -84,7 +89,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
         } else { //Not returning from screen rotate, etc. Display all data first time
             sortColumn = DBContract.MealDBTable.COLUMN_DATE;
             isAscending = false;
-            isCondensedView = true;
+            //isCondensedView = true;
             displayListView();
 
             //Display header photo
@@ -158,11 +163,17 @@ public class ListOfMealsActivity extends ActionBarActivity {
                 sortMeals();
                 return true;
             case R.id.toggle_list_size_menu:
-                if(isCondensedView){
-                    isCondensedView = false;
-                } else {
-                    isCondensedView = true;
-                }
+                //Switch Boolean value
+                isCondensedView = !isCondensedView;
+                // We need an Editor object to make preference changes.
+                // All objects are from android.context.Context
+                SharedPreferences settings = getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean(STATE_LIST_SIZE, isCondensedView);
+
+                // Commit the edits!
+                editor.commit();
+
                 displayListView();
                 return true;
             case R.id.add_new_meal_menu:
@@ -193,7 +204,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
         savedInstanceState.putString(STATE_SORT_SETTING, sortColumn);
         savedInstanceState.putBoolean(STATE_SORT_ORDER, isAscending);
         savedInstanceState.putBoolean(STATE_HEADER_TYPE, userHeaderPhotos);
-        savedInstanceState.putBoolean(STATE_LIST_SIZE, isCondensedView);
+        //savedInstanceState.putBoolean(STATE_LIST_SIZE, isCondensedView);
         savedInstanceState.putString(STATE_HEADER_PHOTO_PATH, headerPhotoFilePath);
 
         // Always call the superclass so it can save the view hierarchy state
