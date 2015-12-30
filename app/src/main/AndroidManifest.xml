@@ -31,6 +31,7 @@
         <activity
             android:name=".activities.ListOfMealsActivity"
             android:label="@string/title_activity_list_of_meals"
+            android:windowSoftInputMode="adjustPan"
             android:hardwareAccelerated="true"
             android:parentActivityName=".activities.OpenScreenActivity">
             <meta-data
