@@ -15,11 +15,6 @@
         android:icon="@mipmap/ic_sort_white_24dp"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/toggle_list_size_menu"
-        android:orderInCategory="55"
-        android:title="@string/change_list_size"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/add_new_meal_menu"
         android:orderInCategory="60"
         android:title="@string/add_new_meal"
@@ -34,6 +29,11 @@
         android:id="@+id/export_menu"
         android:orderInCategory="80"
         android:title="@string/export"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/toggle_list_size_menu"
+        android:orderInCategory="85"
+        android:title="@string/change_list_size"
         app:showAsAction="never" />
     <item
         android:id="@+id/about_menu"
