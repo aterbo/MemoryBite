@@ -58,7 +58,7 @@ public class MealListAdaptor extends BaseAdapter implements Filterable{
 
             viewHolder.restaurantName = (TextView) convertView.findViewById(R.id.restaurant_name_list);
             viewHolder.location = (TextView) convertView.findViewById(R.id.location_list);
-            viewHolder.dateAndDinedWith = (TextView) convertView.findViewById(R.id.date_and_dined_with_list);
+            viewHolder.dateAndDinedWith = (TextView) convertView.findViewById(R.id.date_list);
             viewHolder.mealIdNumber = (TextView) convertView.findViewById(R.id.id_number_list);
             viewHolder.mealPicture = (SquareImageView) convertView.findViewById(R.id.meal_picture_list);
 

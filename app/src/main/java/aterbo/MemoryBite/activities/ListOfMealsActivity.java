@@ -210,8 +210,12 @@ public class ListOfMealsActivity extends ActionBarActivity {
 
 
         //Test if is condensed view or not and apply appropriate adaptor
-        if(isCondensedView){
-            mealListAdaptorCompressed = new MealListAdaptorCompressed(mealList, this);
+        if(isCondensedView) {
+            mealListAdaptorCompressed = new MealListAdaptorCompressed(mealList, this, true);
+        } else {
+            mealListAdaptorCompressed = new MealListAdaptorCompressed(mealList, this, false);
+        }
+
             mealsListView.setAdapter(mealListAdaptorCompressed);
 
             mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -259,57 +263,6 @@ public class ListOfMealsActivity extends ActionBarActivity {
                 public void afterTextChanged(Editable s) {
                 }
             });
-
-        } else {
-            mealListAdaptor = new MealListAdaptor(mealList, this);
-            mealsListView.setAdapter(mealListAdaptor);
-
-            mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
-                    int mealId = (int) mealListAdaptor.getMeal(position).getMealIdNumber();
-                    Intent intent = new Intent(getApplicationContext(), MealDetailsActivity.class)
-                            .putExtra(Intent.EXTRA_TEXT, mealId);
-                    startActivity(intent);
-                }
-            });
-
-            //Below is to set up filtering
-            //https://github.com/survivingwithandroid/Surviving-with-android/blob/master/ListView_Filter_Tutorial/src/com/survivingwithandroid/listview/SimpleList/MainActivity.java
-            //http://www.survivingwithandroid.com/2013/01/android-listview-filterable.html
-            // we register for the contextmneu
-            registerForContextMenu(mealsListView);
-
-            // TextFilter
-            mealsListView.setTextFilterEnabled(true);
-            EditText searchInputBox = (EditText) findViewById(R.id.search_meals_box);
-
-            searchInputBox.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
-                    if (count < before) {
-                        // We're deleting char so we need to reset the adapter data
-                        mealListAdaptor.resetData();
-                    }
-
-                    mealListAdaptor.getFilter().filter(s.toString());
-
-                }
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count,
-                                              int after) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
-        }
     }
 
     public void editLastMeal() {
