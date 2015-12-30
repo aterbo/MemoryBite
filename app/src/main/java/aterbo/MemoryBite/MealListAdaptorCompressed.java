@@ -57,7 +57,8 @@ public class MealListAdaptorCompressed extends BaseAdapter implements Filterable
             viewHolder = new ViewHolder();
 
             viewHolder.restaurantName = (TextView) convertView.findViewById(R.id.restaurant_name_list);
-            viewHolder.dateAndLocation = (TextView) convertView.findViewById(R.id.date_and_location_list);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.date_list);
+            viewHolder.location = (TextView) convertView.findViewById(R.id.location_list);
             viewHolder.dinedWith = (TextView) convertView.findViewById(R.id.dined_with_list);
             viewHolder.mealIdNumber = (TextView) convertView.findViewById(R.id.id_number_list);
             viewHolder.mealPicture = (SquareImageView) convertView.findViewById(R.id.meal_picture_list);
@@ -71,13 +72,9 @@ public class MealListAdaptorCompressed extends BaseAdapter implements Filterable
 
         //
         contentTest(meal.getRestaurantName(), viewHolder.restaurantName);
+        contentTest(meal.getDateMealEaten(), viewHolder.date);
+        contentTest(meal.getLocation(), viewHolder.location);
         contentTest(meal.getDinedWith(), viewHolder.dinedWith);
-
-        if (!meal.getLocation().isEmpty()) {
-            viewHolder.dateAndLocation.setText(meal.getDateMealEaten() +
-                    "   " + meal.getLocation());
-        } else {viewHolder.dateAndLocation.setText(meal.getDateMealEaten());}
-
         viewHolder.mealIdNumber.setText(Long.toString(meal.getMealIdNumber()));
 
         if (meal.getPrimaryPhoto() != null && !meal.getPrimaryPhoto().isEmpty()) {
@@ -109,7 +106,8 @@ public class MealListAdaptorCompressed extends BaseAdapter implements Filterable
     //http://www.javacodegeeks.com/2013/09/android-viewholder-pattern-example.html
     static class ViewHolder {
         TextView restaurantName;
-        TextView dateAndLocation;
+        TextView date;
+        TextView location;
         TextView dinedWith;
         TextView mealIdNumber;
         SquareImageView mealPicture;
