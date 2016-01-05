@@ -34,14 +34,14 @@ import aterbo.MemoryBite.DBContract;
 import aterbo.MemoryBite.DBHelper;
 import aterbo.MemoryBite.ExportHelper;
 import aterbo.MemoryBite.objects.Meal;
-import aterbo.MemoryBite.adaptors.MealListAdaptor;
+import aterbo.MemoryBite.adapters.MealListAdapter;
 import aterbo.MemoryBite.R;
 
 
 public class ListOfMealsActivity extends ActionBarActivity {
 
     private List<Meal> mealList;
-    MealListAdaptor mealListAdaptor;
+    MealListAdapter mealListAdapter;
     private ListView mealsListView;
     private int randomPhotoResID;
     static final String STATE_RANDOM_PHOTO_RES_ID = "imageResID";
@@ -214,13 +214,13 @@ public class ListOfMealsActivity extends ActionBarActivity {
         mealsListView = (ListView) findViewById(R.id.meal_list_view);
 
         //Apply appropriate adaptor based on "useCondensedLayout" value
-        mealListAdaptor = new MealListAdaptor(mealList, this, useCondensedLayout);
-        mealsListView.setAdapter(mealListAdaptor);
+        mealListAdapter = new MealListAdapter(mealList, this, useCondensedLayout);
+        mealsListView.setAdapter(mealListAdapter);
         mealsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> clickListener, View view, int position, long id) {
-                int mealId = (int) mealListAdaptor.getMeal(position).getMealIdNumber();
+                int mealId = (int) mealListAdapter.getMeal(position).getMealIdNumber();
                 Intent intent = new Intent(getApplicationContext(), MealDetailsActivity.class)
                         .putExtra(Intent.EXTRA_TEXT, mealId);
                 startActivity(intent);
@@ -244,10 +244,10 @@ public class ListOfMealsActivity extends ActionBarActivity {
                 System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
                 if (count < before) {
                     // We're deleting char so we need to reset the adapter data
-                    mealListAdaptor.resetData();
+                    mealListAdapter.resetData();
                 }
 
-                mealListAdaptor.getFilter().filter(s.toString());
+                mealListAdapter.getFilter().filter(s.toString());
             }
 
             @Override

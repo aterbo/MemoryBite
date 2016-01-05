@@ -8,14 +8,14 @@ import android.support.v4.view.ViewPager;
 import java.util.ArrayList;
 
 import aterbo.MemoryBite.R;
-import aterbo.MemoryBite.adaptors.FullScreenImageAdaptor;
+import aterbo.MemoryBite.adapters.FullScreenImageAdapter;
 
 /**
  * Created by ATerbo on 11/4/15.
  */
 public class FullScreenViewActivity extends Activity{
 
-        private FullScreenImageAdaptor adapter;
+        private FullScreenImageAdapter adapter;
         private ViewPager viewPager;
         private ArrayList photos;
 
@@ -31,7 +31,7 @@ public class FullScreenViewActivity extends Activity{
             int position = i.getIntExtra("id", 0);
             photos = i.getParcelableArrayListExtra("photoList");
 
-            adapter = new FullScreenImageAdaptor(FullScreenViewActivity.this, photos);
+            adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, photos);
 
             viewPager.setAdapter(adapter);
 

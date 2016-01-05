@@ -32,7 +32,7 @@ import aterbo.MemoryBite.DBHelper;
 import aterbo.MemoryBite.customviews.FullHeightGridView;
 import aterbo.MemoryBite.objects.Meal;
 import aterbo.MemoryBite.objects.Photo;
-import aterbo.MemoryBite.adaptors.PhotoGridAdaptor;
+import aterbo.MemoryBite.adapters.PhotoGridAdapter;
 import aterbo.MemoryBite.R;
 
 
@@ -180,9 +180,9 @@ public class MealDetailsActivity extends ActionBarActivity {
 
     //Set photos to grid view
     private void setPhotosToGridView() {
-        final PhotoGridAdaptor photoGridAdaptor = new PhotoGridAdaptor(photos, this);
+        final PhotoGridAdapter photoGridAdapter = new PhotoGridAdapter(photos, this);
         final FullHeightGridView photoGrid = (FullHeightGridView) findViewById(R.id.meal_details_photo_grid);
-        photoGrid.setAdapter(photoGridAdaptor);
+        photoGrid.setAdapter(photoGridAdapter);
 
         //Set click listener and open selected photo via Intent on click
         photoGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {

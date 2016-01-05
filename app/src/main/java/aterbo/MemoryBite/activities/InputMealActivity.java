@@ -39,7 +39,7 @@ import aterbo.MemoryBite.DBHelper;
 import aterbo.MemoryBite.customviews.FullHeightGridView;
 import aterbo.MemoryBite.objects.Meal;
 import aterbo.MemoryBite.objects.Photo;
-import aterbo.MemoryBite.adaptors.PhotoGridAdaptor;
+import aterbo.MemoryBite.adapters.PhotoGridAdapter;
 import aterbo.MemoryBite.R;
 
 
@@ -242,9 +242,9 @@ public class InputMealActivity extends ActionBarActivity {
 
     //Set photos to grid view
     private void setPhotosToGridView() {
-        final PhotoGridAdaptor photoGridAdaptor = new PhotoGridAdaptor(photos, this);
+        final PhotoGridAdapter photoGridAdapter = new PhotoGridAdapter(photos, this);
         final FullHeightGridView photoGrid = (FullHeightGridView) findViewById(R.id.meal_input_photo_grid);
-        photoGrid.setAdapter(photoGridAdaptor);
+        photoGrid.setAdapter(photoGridAdapter);
 
         findViewById(R.id.photoGroup).setVisibility(View.VISIBLE);
 
@@ -292,7 +292,7 @@ public class InputMealActivity extends ActionBarActivity {
                                                 getResources().getString(R.string.photo_set_as_primary),
                                                 Toast.LENGTH_SHORT).show();
 
-                                        photoGridAdaptor.notifyDataSetChanged();
+                                        photoGridAdapter.notifyDataSetChanged();
                                     }
 
                                     break;
@@ -301,7 +301,7 @@ public class InputMealActivity extends ActionBarActivity {
                                     photos.remove(position);
                                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.photo_removed),
                                             Toast.LENGTH_SHORT).show();
-                                    photoGridAdaptor.notifyDataSetChanged();
+                                    photoGridAdapter.notifyDataSetChanged();
                                     break;
 
                                 case 4: //cancel case
