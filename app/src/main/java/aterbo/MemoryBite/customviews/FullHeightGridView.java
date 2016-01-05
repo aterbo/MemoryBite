@@ -1,4 +1,4 @@
-package aterbo.MemoryBite;
+package aterbo.MemoryBite.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;

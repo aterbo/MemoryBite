@@ -1,7 +1,6 @@
-package aterbo.MemoryBite;
+package aterbo.MemoryBite.adaptors;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import aterbo.MemoryBite.objects.Meal;
+import aterbo.MemoryBite.R;
+import aterbo.MemoryBite.customviews.SquareImageView;
 
 /**
  * Created by ATerbo on 9/19/15.

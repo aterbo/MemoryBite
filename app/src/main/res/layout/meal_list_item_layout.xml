@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:background="@drawable/customborder">
 
-    <aterbo.MemoryBite.SquareImageView
+    <aterbo.MemoryBite.customviews.SquareImageView
         android:id="@+id/meal_picture_list"
         android:layout_width="120dp"
         android:layout_height="2dp"

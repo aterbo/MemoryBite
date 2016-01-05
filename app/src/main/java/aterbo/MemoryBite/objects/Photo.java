@@ -1,4 +1,4 @@
-package aterbo.MemoryBite;
+package aterbo.MemoryBite.objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;

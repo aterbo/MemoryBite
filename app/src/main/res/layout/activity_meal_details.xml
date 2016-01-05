@@ -125,7 +125,7 @@
                 style="@style/DetailsBlock"
                 android:visibility="gone">
 
-                <aterbo.MemoryBite.FullHeightGridView
+                <aterbo.MemoryBite.customviews.FullHeightGridView
                     android:id="@+id/meal_details_photo_grid"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

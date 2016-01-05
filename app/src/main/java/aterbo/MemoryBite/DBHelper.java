@@ -5,17 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import aterbo.MemoryBite.objects.Meal;
+import aterbo.MemoryBite.objects.Photo;
 
 public class DBHelper extends SQLiteOpenHelper {
 

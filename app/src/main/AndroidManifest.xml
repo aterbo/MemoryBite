@@ -49,7 +49,7 @@
                 android:value=".activities.ListOfMealsActivity" />
         </activity>
         <activity
-            android:name="aterbo.MemoryBite.FullScreenViewActivity"
+            android:name=".activities.FullScreenViewActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

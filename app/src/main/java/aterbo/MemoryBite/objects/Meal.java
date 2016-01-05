@@ -1,8 +1,10 @@
-package aterbo.MemoryBite;
+package aterbo.MemoryBite.objects;
 
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import aterbo.MemoryBite.R;
 
 /**
  * This is the meal class that stores all of the data for a given meal.

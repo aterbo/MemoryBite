@@ -33,8 +33,8 @@ import aterbo.MemoryBite.AboutDialog;
 import aterbo.MemoryBite.DBContract;
 import aterbo.MemoryBite.DBHelper;
 import aterbo.MemoryBite.ExportHelper;
-import aterbo.MemoryBite.Meal;
-import aterbo.MemoryBite.MealListAdaptor;
+import aterbo.MemoryBite.objects.Meal;
+import aterbo.MemoryBite.adaptors.MealListAdaptor;
 import aterbo.MemoryBite.R;
 
 

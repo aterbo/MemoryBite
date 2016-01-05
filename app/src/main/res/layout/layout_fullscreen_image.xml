@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@android:color/black">
 
-    <aterbo.MemoryBite.TouchImageView
+    <aterbo.MemoryBite.customviews.TouchImageView
         android:id="@+id/imgDisplay"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

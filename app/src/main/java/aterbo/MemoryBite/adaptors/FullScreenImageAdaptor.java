@@ -1,9 +1,8 @@
-package aterbo.MemoryBite;
+package aterbo.MemoryBite.adaptors;
 
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +16,20 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
+import aterbo.MemoryBite.objects.Photo;
+import aterbo.MemoryBite.R;
+import aterbo.MemoryBite.customviews.TouchImageView;
+
 /**
  * Created by ATerbo on 11/4/15.
  */
-public class FullScreenImageAdapter extends PagerAdapter {
+public class FullScreenImageAdaptor extends PagerAdapter {
     private Activity activity;
     private ArrayList<Photo> photoList;
     private LayoutInflater inflater;
 
     // constructor
-    public FullScreenImageAdapter(Activity activity,
+    public FullScreenImageAdaptor(Activity activity,
                                   ArrayList<Photo> photoList) {
         this.activity = activity;
         this.photoList = photoList;

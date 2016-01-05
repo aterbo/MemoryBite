@@ -36,10 +36,10 @@ import java.util.Locale;
 
 import aterbo.MemoryBite.AboutDialog;
 import aterbo.MemoryBite.DBHelper;
-import aterbo.MemoryBite.FullHeightGridView;
-import aterbo.MemoryBite.Meal;
-import aterbo.MemoryBite.Photo;
-import aterbo.MemoryBite.PhotoGridAdaptor;
+import aterbo.MemoryBite.customviews.FullHeightGridView;
+import aterbo.MemoryBite.objects.Meal;
+import aterbo.MemoryBite.objects.Photo;
+import aterbo.MemoryBite.adaptors.PhotoGridAdaptor;
 import aterbo.MemoryBite.R;
 
 
