@@ -154,21 +154,15 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
                 int numDishResults = 0;
 
                 for (Meal meal : mealList) {
-                    if (meal.getRestaurantName().toUpperCase().startsWith(
-                            searchString.toString().toUpperCase()) ||
-                            meal.getRestaurantName().toUpperCase().contains(
+                    if (meal.getRestaurantName().toUpperCase().contains(
                             searchString.toString().toUpperCase())) {
                         nMealList.add(numRestResults, meal);
                         numRestResults++;
-                    } else if (meal.getDinedWith().toUpperCase().startsWith(
-                            searchString.toString().toUpperCase()) ||
-                            meal.getDinedWith().toUpperCase().contains(
+                    } else if (meal.getDinedWith().toUpperCase().contains(
                                     searchString.toString().toUpperCase())) {
                         nMealList.add(numRestResults + numDinedWithResults, meal);
                         numDinedWithResults++;
-                    } else if (meal.getCuisineType().toUpperCase().startsWith(
-                            searchString.toString().toUpperCase()) ||
-                            meal.getCuisineType().toUpperCase().contains(
+                    } else if (meal.getCuisineType().toUpperCase().contains(
                                     searchString.toString().toUpperCase())) {
                         nMealList.add(numRestResults + numDinedWithResults + numCuisineType, meal);
                         numCuisineType++;
