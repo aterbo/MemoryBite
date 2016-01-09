@@ -28,13 +28,6 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
     private List<Meal> originalMealList;
     private Boolean isCompressed;
 
-    public MealListAdapter(List<Meal> mealList, Context context) {
-        this.mealList = mealList;
-        this.context = context;
-        this.originalMealList = mealList;
-        isCompressed = true;
-    }
-
     public MealListAdapter(List<Meal> mealList, Context context, Boolean isCompressed) {
         this.mealList = mealList;
         this.context = context;
@@ -155,21 +148,23 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
             else {
                 // We perform filtering operation
                 List<Meal> nMealList = new ArrayList<>();
+                int numRestResults = 0;
+                int numDinedWithResults = 0;
+                int numDishResults = 0;
 
                 for (Meal meal : mealList) {
                     if (meal.getRestaurantName().toUpperCase().startsWith(
+                            searchString.toString().toUpperCase()) ||
+                            meal.getRestaurantName().toUpperCase().contains(
                             searchString.toString().toUpperCase())) {
-                        nMealList.add(meal);
-                    } else if (meal.getRestaurantName().toUpperCase().contains(
-                            searchString.toString().toUpperCase())) {
-                        nMealList.add(meal);
-                    }
-                    if (meal.getDinedWith().toUpperCase().startsWith(
-                            searchString.toString().toUpperCase())) {
-                        nMealList.add(meal);
-                    } else if (meal.getDinedWith().toUpperCase().contains(
-                            searchString.toString().toUpperCase())) {
-                        nMealList.add(meal);
+                        nMealList.add(numRestResults, meal);
+                        numRestResults++;
+                    } else if (meal.getDinedWith().toUpperCase().startsWith(
+                            searchString.toString().toUpperCase()) ||
+                            meal.getDinedWith().toUpperCase().contains(
+                                    searchString.toString().toUpperCase())) {
+                        nMealList.add(numRestResults + numDinedWithResults, meal);
+                        numDinedWithResults++;
                     }
                 }
 
