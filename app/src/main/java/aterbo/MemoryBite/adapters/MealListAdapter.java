@@ -150,6 +150,7 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
                 List<Meal> nMealList = new ArrayList<>();
                 int numRestResults = 0;
                 int numDinedWithResults = 0;
+                int numCuisineType = 0;
                 int numDishResults = 0;
 
                 for (Meal meal : mealList) {
@@ -165,6 +166,12 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
                                     searchString.toString().toUpperCase())) {
                         nMealList.add(numRestResults + numDinedWithResults, meal);
                         numDinedWithResults++;
+                    } else if (meal.getCuisineType().toUpperCase().startsWith(
+                            searchString.toString().toUpperCase()) ||
+                            meal.getCuisineType().toUpperCase().contains(
+                                    searchString.toString().toUpperCase())) {
+                        nMealList.add(numRestResults + numDinedWithResults + numCuisineType, meal);
+                        numCuisineType++;
                     }
                 }
 
