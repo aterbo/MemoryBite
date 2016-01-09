@@ -166,6 +166,16 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
                                     searchString.toString().toUpperCase())) {
                         nMealList.add(numRestResults + numDinedWithResults + numCuisineType, meal);
                         numCuisineType++;
+                    } else if (meal.getAppetizersNotes().toUpperCase().contains(
+                                    searchString.toString().toUpperCase()) ||
+                                    meal.getMainCoursesNotes().toUpperCase().contains(
+                                    searchString.toString().toUpperCase()) ||
+                                    meal.getDessertsNotes().toUpperCase().contains(
+                                    searchString.toString().toUpperCase()) ||
+                                    meal.getDrinksNotes().toUpperCase().contains(
+                                    searchString.toString().toUpperCase()) ) {
+                        nMealList.add(meal);
+                        numDishResults++;
                     }
                 }
 
