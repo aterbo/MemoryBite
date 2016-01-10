@@ -148,25 +148,37 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
             else {
                 // We perform filtering operation
                 List<Meal> nMealList = new ArrayList<>();
+
+                //Counters so that I can insert meals in the correct place by category
                 int numRestResults = 0;
                 int numDinedWithResults = 0;
                 int numCuisineType = 0;
                 int numDishResults = 0;
 
                 for (Meal meal : mealList) {
+                    //Test if search string in restaurant name and put in first category
                     if (meal.getRestaurantName().toUpperCase().contains(
                             searchString.toString().toUpperCase())) {
                         nMealList.add(numRestResults, meal);
                         numRestResults++;
-                    } else if (meal.getDinedWith().toUpperCase().contains(
+                    }
+
+                    //If search string in Dined with, second category
+                    else if (meal.getDinedWith().toUpperCase().contains(
                                     searchString.toString().toUpperCase())) {
                         nMealList.add(numRestResults + numDinedWithResults, meal);
                         numDinedWithResults++;
-                    } else if (meal.getCuisineType().toUpperCase().contains(
+                    }
+
+                    //If search string in Cuisine Type, third category
+                    else if (meal.getCuisineType().toUpperCase().contains(
                                     searchString.toString().toUpperCase())) {
                         nMealList.add(numRestResults + numDinedWithResults + numCuisineType, meal);
                         numCuisineType++;
-                    } else if (meal.getAppetizersNotes().toUpperCase().contains(
+                    }
+
+                    //If search string in Dish type entries, last category
+                    else if (meal.getAppetizersNotes().toUpperCase().contains(
                                     searchString.toString().toUpperCase()) ||
                                     meal.getMainCoursesNotes().toUpperCase().contains(
                                     searchString.toString().toUpperCase()) ||
