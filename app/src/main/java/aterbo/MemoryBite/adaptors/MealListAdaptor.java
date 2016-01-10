@@ -66,9 +66,9 @@ public class MealListAdaptor extends BaseAdapter implements Filterable{
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             if(isCompressed){
-                convertView = inflater.inflate(R.layout.meal_list_item_layout_compressed, viewGroup, false);
+                convertView = inflater.inflate(R.layout.layout_meal_list_item_compressed, viewGroup, false);
             } else {
-                convertView = inflater.inflate(R.layout.meal_list_item_layout, viewGroup, false);
+                convertView = inflater.inflate(R.layout.layout_meal_list_item, viewGroup, false);
             }
 
             viewHolder = new ViewHolder();

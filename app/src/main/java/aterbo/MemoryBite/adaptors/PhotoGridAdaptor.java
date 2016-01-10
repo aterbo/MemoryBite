@@ -48,7 +48,7 @@ public class PhotoGridAdaptor extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.photo_grid_item_layout, viewGroup, false);
+            convertView = inflater.inflate(R.layout.layout_photo_grid_item, viewGroup, false);
 
             viewHolder = new ViewHolder();
 
