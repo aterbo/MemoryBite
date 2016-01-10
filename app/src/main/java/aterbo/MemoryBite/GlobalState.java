@@ -2,6 +2,7 @@ package aterbo.MemoryBite;
 
 import android.app.Application;
 
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -33,13 +34,15 @@ public class GlobalState extends Application {
                 .showImageOnFail(R.drawable.mbicon)
                 .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
                 .delayBeforeLoading(50)
-                .cacheOnDisk(false).cacheInMemory(false)
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
                 .considerExifParams(true)
                 .build();
 
         // Create global configuration and initialize ImageLoader with this configuration
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions)
+                .denyCacheImageMultipleSizesInMemory()
                 .build();
 
 
