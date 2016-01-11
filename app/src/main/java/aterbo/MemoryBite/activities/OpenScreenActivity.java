@@ -53,18 +53,6 @@ public class OpenScreenActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.add_new_meal_menu:
-                Intent newMealIntent = new Intent(this, InputMealActivity.class);
-                super.onResume();
-                startActivity(newMealIntent);
-                return true;
-            case R.id.edit_last_entry_menu:
-                editLastMeal();
-                return true;
-            case R.id.view_journal_menu:
-                Intent viewJournalIntent = new Intent(this, ListOfMealsActivity.class);
-                startActivity(viewJournalIntent);
-                return true;
             case R.id.export_menu:
                 ExportHelper exportHelper = new ExportHelper(this);
                 exportHelper.chooseExportType();
