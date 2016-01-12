@@ -201,9 +201,11 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results){
             // Now we have to inform the adapter about the new list filtered
-            if (results.count == 0)
-                notifyDataSetInvalidated();
-            else {
+            //AGT - Also check if the results are zero and if so blank the list
+            if (results.count == 0) {
+                resetData();
+                mealList = (List<Meal>) results.values;
+            } else {
                 mealList = (List<Meal>) results.values;
                 notifyDataSetChanged();
             }

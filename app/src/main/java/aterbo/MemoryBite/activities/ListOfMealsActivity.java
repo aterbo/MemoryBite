@@ -248,6 +248,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
                 }
 
                 mealListAdapter.getFilter().filter(s.toString());
+                mealListAdapter.notifyDataSetChanged();
             }
 
             @Override
