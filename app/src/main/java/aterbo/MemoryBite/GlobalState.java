@@ -2,6 +2,8 @@ package aterbo.MemoryBite;
 
 import android.app.Application;
 
+import com.nostra13.universalimageloader.cache.disc.impl.ext.LruDiskCache;
+import com.nostra13.universalimageloader.cache.memory.impl.LargestLimitedMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -42,9 +44,8 @@ public class GlobalState extends Application {
         // Create global configuration and initialize ImageLoader with this configuration
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions)
-                .denyCacheImageMultipleSizesInMemory()
+                .diskCacheSize(10 * 1024 * 1024)
                 .build();
-
 
         ImageLoader.getInstance().init(config);
     }
