@@ -151,6 +151,7 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
 
                 //Counters so that I can insert meals in the correct place by category
                 int numRestResults = 0;
+                int numLocation = 0;
                 int numDinedWithResults = 0;
                 int numCuisineType = 0;
                 int numDishResults = 0;
@@ -163,17 +164,24 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
                         numRestResults++;
                     }
 
-                    //If search string in Dined with, second category
-                    else if (meal.getDinedWith().toUpperCase().contains(
-                                    searchString.toString().toUpperCase())) {
-                        nMealList.add(numRestResults + numDinedWithResults, meal);
+                    //If search string in Location, second category
+                    else if (meal.getLocation().toUpperCase().contains(
+                            searchString.toString().toUpperCase())) {
+                        nMealList.add(numRestResults + numLocation, meal);
                         numDinedWithResults++;
                     }
 
-                    //If search string in Cuisine Type, third category
+                    //If search string in Dined with, third category
+                    else if (meal.getDinedWith().toUpperCase().contains(
+                                    searchString.toString().toUpperCase())) {
+                        nMealList.add(numRestResults + numLocation + numDinedWithResults, meal);
+                        numDinedWithResults++;
+                    }
+
+                    //If search string in Cuisine Type, 4th category
                     else if (meal.getCuisineType().toUpperCase().contains(
                                     searchString.toString().toUpperCase())) {
-                        nMealList.add(numRestResults + numDinedWithResults + numCuisineType, meal);
+                        nMealList.add(numRestResults + numLocation + numDinedWithResults + numCuisineType, meal);
                         numCuisineType++;
                     }
 
