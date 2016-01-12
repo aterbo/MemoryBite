@@ -4,8 +4,8 @@
     <string-array name="email_array">
             <item>@string/email</item>
     </string-array>
-    <string name="version_number">Version: 1.9</string>
-    <string name="release_date">Release Date: December 22, 2015</string>
+    <string name="version_number">Version: 1.95</string>
+    <string name="release_date">Release Date: January 11, 2016</string>
     <string name="title_activity_open_screen">Memory Bite</string>
     <string name="title_activity_list_of_meals">Meal Journal</string>
     <string name="title_activity_meal_details">Meal Details</string>
@@ -126,7 +126,7 @@
         written meal entries, or other data.
         \n
         \n
-        &#169; 2015, Andy Terbovich. All rights reserved
+        &#169; 2015-2016, Andy Terbovich. All rights reserved
     </string>
     <string name="on">on</string> <!--Used as "on" as in "File exported ON 12/15/2015 -->
 
@@ -192,15 +192,12 @@
     <string name="close_X">X</string> <!--Used as a Close Window X. Do not translate -->
 
     <!-- Live Ad ID! -->
-    <!--
     <string name="banner_ad_unit_id">ca-app-pub-5493267843150526/3921546693</string>
-    -->
 
     <!-- Test Ad ID! -->
-
-
+    <!--
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-
+    -->
 
 
     <string name="created_w_memory_bite">Created using Memory Bite.\nwww.MemoryBite.com</string>
