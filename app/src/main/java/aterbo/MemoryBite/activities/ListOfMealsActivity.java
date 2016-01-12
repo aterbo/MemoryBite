@@ -241,7 +241,7 @@ public class ListOfMealsActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
+                //System.out.println("Text [" + s + "] - Start [" + start + "] - Before [" + before + "] - Count [" + count + "]");
                 if (count < before) {
                     // We're deleting char so we need to reset the adapter data
                     mealListAdapter.resetData();
