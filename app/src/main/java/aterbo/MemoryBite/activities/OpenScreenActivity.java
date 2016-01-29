@@ -94,7 +94,7 @@ public class OpenScreenActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void goToViewList(View view) {
+    public void viewMealJournal(View view) {
         Intent intent = new Intent(this, ListOfMealsActivity.class);
         startActivity(intent);
     }
