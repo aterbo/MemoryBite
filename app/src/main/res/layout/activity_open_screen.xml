@@ -35,13 +35,13 @@
                 android:id="@+id/add_new_meal_button"
                 style="@style/MainMenuButton"
                 android:layout_marginTop="10dp"
-                android:onClick="startNewMeal"
+                android:onClick="addNewMeal"
                 android:text="@string/add_new_meal" />
 
             <Button
                 android:id="@+id/edit_last_meal_button"
                 style="@style/MainMenuButton"
-                android:onClick="editLastMealClick"
+                android:onClick="editLastMeal"
                 android:text="@string/edit_last_meal" />
 
             <Button
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center|bottom"
-                android:onClick="helpButtonClick"
+                android:onClick="showHelpDialog"
                 android:text="@string/help"
                 android:textAllCaps="false"
                 android:textColor="@color/secondary_text" />
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:onClick="commentsButtonClick"
+                android:onClick="sendFeedbackEmail"
                 android:text="@string/comments_suggestions"
                 android:textAllCaps="false"
                 android:textColor="@color/secondary_text" />

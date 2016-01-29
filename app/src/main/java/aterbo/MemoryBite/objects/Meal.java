@@ -30,9 +30,7 @@ public class Meal implements Parcelable {
     private String price;
     private String primaryPhoto;
 
-    //Empty constructor
-    public Meal() {
-    }
+    public Meal() {    }
 
     public String getPrimaryPhoto() {
         return primaryPhoto;
@@ -41,8 +39,6 @@ public class Meal implements Parcelable {
     public void setPrimaryPhoto(String primaryPhoto) {
         this.primaryPhoto = primaryPhoto;
     }
-
-    //Setters and Getters
 
     public long getMealIdNumber() {
         return mealIdNumber;
@@ -67,7 +63,6 @@ public class Meal implements Parcelable {
     public void setLocation(String location) {
         this.location = location;
     }
-
 
     public String getCuisineType() {
         return cuisineType;
@@ -160,14 +155,11 @@ public class Meal implements Parcelable {
         return false;
     }
 
-
     public String getEmailShareSubjectString(Context context) {
         //create subject
         String shareSubject = context.getResources().getString(R.string.share_subject) + " " +
-                restaurantName + " " + context.getResources().getString(R.string.on) + " "
-                + dateMealEaten;
+                restaurantName + " " + context.getResources().getString(R.string.on) + " " + dateMealEaten;
         return shareSubject;
-
     }
 
     public String getEmailShareBodyString(Context context) {

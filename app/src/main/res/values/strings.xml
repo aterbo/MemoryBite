@@ -214,4 +214,7 @@
         figure it out. Thanks!\n\n    -Andy</string>
     <string name="change_list_size">Toggle List Size</string>
 
+    <string name="default_font_file">fonts/kaushanscript.ttf</string>
+    <string name="no_email_clients">There are no email clients installed.</string>
+
 </resources>

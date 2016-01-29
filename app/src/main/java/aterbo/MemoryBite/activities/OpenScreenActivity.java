@@ -27,31 +27,34 @@ public class OpenScreenActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_screen);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/kaushanscript.ttf");
-        Button button = (Button) findViewById(R.id.add_new_meal_button);
-        button.setTypeface(tf);
-        button = (Button) findViewById(R.id.edit_last_meal_button);
-        button.setTypeface(tf);
-        button = (Button) findViewById(R.id.view_journal_button);
-        button.setTypeface(tf);
+        setButtonFont(R.id.add_new_meal_button);
+        setButtonFont(R.id.edit_last_meal_button);
+        setButtonFont(R.id.view_journal_button);
 
-        AdView mAdView = (AdView) findViewById(R.id.adView);
+        setAdView(R.id.adView);
+    }
+
+    private void setButtonFont(int resourceId){
+        Typeface tf = Typeface.createFromAsset(getAssets(),
+                getResources().getString(R.string.default_font_file));
+        Button button = (Button) findViewById(resourceId);
+        button.setTypeface(tf);
+    }
+
+    private void setAdView(int resourceId){
+        AdView mAdView = (AdView) findViewById(resourceId);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_open_screen, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.export_menu:
                 ExportHelper exportHelper = new ExportHelper(this);
@@ -65,50 +68,43 @@ public class OpenScreenActivity extends ActionBarActivity {
         }
     }
 
-    //onClick of New Meal button.
-    // 1. Create intent
-    // 2. startActivity
-    public void startNewMeal(View view) {
+    public void addNewMeal(View view) {
         Intent intent = new Intent(this, InputMealActivity.class);
         startActivity(intent);
     }
 
-    //onClick of Edit Last Meal button
-    // 1. get count of all meals
-    //2. Call edit on that database item.
-    public void editLastMealClick(View view) {
-        editLastMeal();
-    }
+    public void editLastMeal(View view) {
+        int maxMealId = getMaxMealId();
 
-    public void editLastMeal() {
-        DBHelper db = new DBHelper(this);
-        int maxId = db.getMaxMealId();
-
-        //test if 0 is returned, showing no meals entered. if so, toast!!
-        if (maxId == 0) {
-            Toast.makeText(this, getResources().getString(R.string.no_meals), Toast.LENGTH_SHORT).show();
+        if (maxMealId > 0) {
+            editMealFromMealId(maxMealId);
         } else {
-            Intent intent = new Intent(getApplicationContext(), InputMealActivity.class)
-                    .putExtra(Intent.EXTRA_TEXT, maxId);
-            startActivity(intent);
+            showToastFromStringResource(R.string.no_meals);
         }
     }
+    
+    private int getMaxMealId(){
+        DBHelper db = new DBHelper(this);
+        return db.getMaxMealId();
+    }
 
+    private void editMealFromMealId(int mealId){
+        Intent intent = new Intent(getApplicationContext(), InputMealActivity.class)
+                .putExtra(Intent.EXTRA_TEXT, mealId);
+        startActivity(intent);
+    }
 
-    //onClick of List Button
     public void goToViewList(View view) {
         Intent intent = new Intent(this, ListOfMealsActivity.class);
         startActivity(intent);
     }
 
-    //onClick of Help button
-    public void helpButtonClick(View view) {
+    public void showHelpDialog(View view) {
         DialogFragment newFragment = HelpDialog.newInstance();
         newFragment.show(getFragmentManager(), "help");
     }
 
-    //onClick of Comments button
-    public void commentsButtonClick(View view) {
+    public void sendFeedbackEmail(View view) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{getResources().getString(R.string.email)});
@@ -116,7 +112,11 @@ public class OpenScreenActivity extends ActionBarActivity {
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            showToastFromStringResource(R.string.no_email_clients);
         }
+    }
+
+    private void showToastFromStringResource(int stringResourceId) {
+        Toast.makeText(this, getResources().getString(stringResourceId), Toast.LENGTH_LONG).show();
     }
 }
