@@ -13,7 +13,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,34 +68,18 @@ public class InputMealActivity extends ActionBarActivity {
 
         setMealDatePicker(findViewById(R.id.meal_date));
 
-        // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            mealIdNumber = savedInstanceState.getInt(STATE_MEAL_ID);
-            meal = savedInstanceState.getParcelable(STATE_MEAL);
-            photos = savedInstanceState.getParcelableArrayList(STATE_PHOTO_LIST);
-            photoPath = savedInstanceState.getString(STATE_PHOTO_PATH);
-
+            restoreSavedStateValues(savedInstanceState);
             setMealToUI();
-        } else { //continue create if not from bundle
-
-            //Check for intent and if one present load meal. If no intent, new meal
+        } else {
             Intent intent = this.getIntent();
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-                mealIdNumber = intent.getIntExtra(Intent.EXTRA_TEXT, 0);
-                DBHelper db = new DBHelper(this);
-                meal = db.readMeal(mealIdNumber);
-
-                //Get all photos and check for photos exist
-                photos = (ArrayList) db.getAllPhotosForMealList(mealIdNumber);
-
+                loadExistingMeal(intent);
                 setMealToUI();
 
-            } else { //no intent, make no meal
-                meal = new Meal();
-                photos = new ArrayList<>();
-                EditText dateBox = (EditText) findViewById(R.id.meal_date);
-                dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+            } else {
+                createNewMeal();
+                setDateBoxToCurrentDay();
             }
         }
     }
@@ -113,7 +96,6 @@ public class InputMealActivity extends ActionBarActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -129,7 +111,6 @@ public class InputMealActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 new DatePickerDialog(InputMealActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -150,6 +131,31 @@ public class InputMealActivity extends ActionBarActivity {
         EditText editText = (EditText) findViewById(viewResourceId);
         editText.setHorizontallyScrolling(false);
         editText.setMaxLines(Integer.MAX_VALUE);
+    }
+
+    private void restoreSavedStateValues(Bundle savedInstanceState){
+        mealIdNumber = savedInstanceState.getInt(STATE_MEAL_ID);
+        meal = savedInstanceState.getParcelable(STATE_MEAL);
+        photos = savedInstanceState.getParcelableArrayList(STATE_PHOTO_LIST);
+        photoPath = savedInstanceState.getString(STATE_PHOTO_PATH);
+    }
+
+    private void loadExistingMeal(Intent intent){
+        mealIdNumber = intent.getIntExtra(Intent.EXTRA_TEXT, 0);
+        DBHelper db = new DBHelper(this);
+        meal = db.readMeal(mealIdNumber);
+
+        photos = (ArrayList) db.getAllPhotosForMealList(mealIdNumber);
+    }
+
+    private void createNewMeal(){
+        meal = new Meal();
+        photos = new ArrayList<>();
+    }
+
+    private void setDateBoxToCurrentDay(){
+        EditText dateBox = (EditText) findViewById(R.id.meal_date);
+        dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
     }
 
     @Override
@@ -240,9 +246,9 @@ public class InputMealActivity extends ActionBarActivity {
         photoGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> arg0, View arg1,
-                                           final int position, long arg3) {
+                                    final int position, long arg3) {
 
-                CharSequence photoOptions[] = new CharSequence[] {
+                CharSequence photoOptions[] = new CharSequence[]{
                         getResources().getString(R.string.add_caption),
                         getResources().getString(R.string.set_as_primary),
                         getResources().getString(R.string.remove),
@@ -273,7 +279,7 @@ public class InputMealActivity extends ActionBarActivity {
                         }
                     }
                 });
-            builder.show();
+                builder.show();
             }
         });
     }
@@ -358,7 +364,7 @@ public class InputMealActivity extends ActionBarActivity {
     }
 
     private int numberOfPhotos() {
-        if (photos != null) {
+        if (hasPhotos()) {
             return photos.size();
         } else {
             return 0;
@@ -398,7 +404,7 @@ public class InputMealActivity extends ActionBarActivity {
     }
 
     private void setPrimaryPhotoToMeal(){
-        if (numberOfPhotos() > 0) {
+        if (hasPhotos()) {
             meal.setPrimaryPhoto(photos.get(0).getPhotoFilePath());
         } else {
             meal.setPrimaryPhoto("");
@@ -410,7 +416,7 @@ public class InputMealActivity extends ActionBarActivity {
     }
 
     private void savePhotos() {
-        if (numberOfPhotos() > 0) {
+        if (hasPhotos()) {
             for (Photo photo : photos) {
                 photo.setAssociatedMealIdNumber(mealIdNumber);
                 db.createPhoto(photo);
@@ -424,60 +430,51 @@ public class InputMealActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
-    }
-
     private static int REQUEST_CAMERA = 1;
     private static int SELECT_FILE = 2;
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
 
-    //Test if number of photos is under limit
-    private boolean canAddMorePhotos() {
-        if (numberOfPhotos() < getResources().getInteger(R.integer.max_number_of_photos)) {
-            return true;
-        } else {
-            showToastFromStringResource(R.string.cant_add_photos);
-            return false;
-        }
-    }
-
     public void takeNewPhoto(View view){
         if(canAddMorePhotos()){
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Ensure that there's a camera activity to handle the intent
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
-                File cameraPicFile = null;
-                try {
-                    cameraPicFile = createImageFile();
-                    photoPath = cameraPicFile.getAbsolutePath();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    cameraPicFile = null;
-                    photoPath = null;
-                }
+
+            if (isCameraActivity(takePictureIntent)) {
+                File cameraPicFile = createCameraPictureFile();
+
                 if (cameraPicFile != null) {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPicFile));
                     startActivityForResult(takePictureIntent, REQUEST_CAMERA);
                 } else {
                     showToastFromStringResource(R.string.error_taking_photo);
                     photoPath = null;
-
                 }
             }
+        } else {
+            showToastFromStringResource(R.string.cant_add_photos);
         }
+    }
+
+    private boolean canAddMorePhotos() {
+        return numberOfPhotos() < getResources().getInteger(R.integer.max_number_of_photos);
+    }
+
+    private boolean isCameraActivity(Intent takePictureIntent){
+        return (takePictureIntent.resolveActivity(getPackageManager()) != null);
+    }
+
+    private File createCameraPictureFile(){
+        File cameraPicFile;
+
+        try {
+            cameraPicFile = createImageFile();
+            photoPath = cameraPicFile.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            cameraPicFile = null;
+            photoPath = null;
+        }
+        return cameraPicFile;
     }
 
     public void choosePhotoFromGallery(View view){
@@ -491,30 +488,25 @@ public class InputMealActivity extends ActionBarActivity {
     }
 
     private File createImageFile() throws IOException {
-        //Check if MemoryBite subfolder exists in gallery and create if needed
-        // Get the directory for the user's public pictures directory.
-        boolean success = true;
+        File folder = getPhotoFolder();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = JPEG_FILE_PREFIX + timeStamp + JPEG_FILE_SUFFIX;
+
+        return new File(folder, imageFileName);
+    }
+
+    private File getPhotoFolder(){
         File folder = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "MemoryBite/");
         if (!folder.exists()) {
-            success = folder.mkdirs();
-            Log.e("Album Creation", "Directory not created");
+            boolean isFolderCreatedSuccessfully;
+            isFolderCreatedSuccessfully = folder.mkdirs();
+            if (!isFolderCreatedSuccessfully) { //error creating MemoryBite folder -- Store in generic photos directory
+                folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            }
         }
-        if (success) { //if folder creation works or folder exists return MemoryBite folder
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = JPEG_FILE_PREFIX + timeStamp + JPEG_FILE_SUFFIX;
-            File imageF = new File(folder, imageFileName);
-            return imageF;
-        } else { //else return non-MemoryBite folder
-            // Do something else on failure
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = JPEG_FILE_PREFIX + timeStamp + JPEG_FILE_SUFFIX;
-            File imageF = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES), imageFileName);
-            return imageF;
-        }
+        return folder;
     }
 
     //Handling return from camera or gallery
@@ -523,35 +515,41 @@ public class InputMealActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
-                Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
-                File f = new File(photoPath);
-                Uri contentUri = Uri.fromFile(f);
-                mediaScanIntent.setData(contentUri);
-                this.sendBroadcast(mediaScanIntent);
-
+                setPhotoTakenFromCamera();
             } else if (requestCode == SELECT_FILE) {
-                Uri selectedImageUri = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                Cursor cursor = getContentResolver().query(selectedImageUri,
-                        filePathColumn, null, null, null);
-
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-
-                // String picturePath contains the path of selected Image
-                photoPath = cursor.getString(columnIndex);
-                cursor.close();
-
+                setPhotoTakenFromGallery(data);
             }
-            //Create photo object
-            Photo newPhoto = new Photo(photoPath);
-            //Add returned photo to end of photos list
-            photos.add(newPhoto);
-            //Redraw gridview
+
+            addNewPhotoFromPhotoPath();
             setPhotosToGridView();
         }
+    }
+
+    private void setPhotoTakenFromCamera(){
+        Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+        File f = new File(photoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+    private void setPhotoTakenFromGallery(Intent data){
+        Uri selectedImageUri = data.getData();
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+        Cursor cursor = getContentResolver().query(selectedImageUri,
+                filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+
+        // String picturePath contains the path of selected Image
+        photoPath = cursor.getString(columnIndex);
+        cursor.close();
+    }
+
+    private void addNewPhotoFromPhotoPath(){
+        Photo newPhoto = new Photo(photoPath);
+        photos.add(newPhoto);
     }
 
     @Override
