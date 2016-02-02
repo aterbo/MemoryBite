@@ -216,5 +216,6 @@
 
     <string name="default_font_file">fonts/kaushanscript.ttf</string>
     <string name="no_email_clients">There are no email clients installed.</string>
+    <string name="photo_already_primary">This photo is already set as primary.</string>
 
 </resources>

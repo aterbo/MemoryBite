@@ -47,42 +47,29 @@ public class InputMealActivity extends ActionBarActivity {
     private DBHelper db = new DBHelper(this);
     private Meal meal;
     private ArrayList<Photo> photos;
-    private boolean hasPhotos;
     private int mealIdNumber = -1;
     static final String STATE_MEAL_ID = "mealIdNumber";
     static final String STATE_MEAL = "meal";
     static final String STATE_PHOTO_LIST = "photoList";
     static final String STATE_PHOTO_PATH = "photoPath";
     private String photoPath;
-    private String photoCaptionHolder;
-    private Photo photoUpdateHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); //always call the superclass first
-
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_input_meal);
+        setButtonFont(R.id.save_button);
 
-        //Setting appetizer, mains, desserts, drinks, and notes to have multiline input on display
-        //but to also have Next button
-        setNextWithWordWrap((EditText) findViewById(R.id.appetizers_input));
-        setNextWithWordWrap((EditText) findViewById(R.id.main_courses_input));
-        setNextWithWordWrap((EditText) findViewById(R.id.desserts_input));
-        setNextWithWordWrap((EditText) findViewById(R.id.drinks_input));
-        setNextWithWordWrap((EditText) findViewById(R.id.notes_input));
+        setInputToWordWrapWithNext(R.id.appetizers_input);
+        setInputToWordWrapWithNext(R.id.main_courses_input);
+        setInputToWordWrapWithNext(R.id.desserts_input);
+        setInputToWordWrapWithNext(R.id.drinks_input);
+        setInputToWordWrapWithNext(R.id.notes_input);
 
-        //Set date picker for date box
         setMealDatePicker(findViewById(R.id.meal_date));
 
-        //Set button font to fancy type
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/kaushanscript.ttf");
-        Button button = (Button) findViewById(R.id.save_button);
-        button.setTypeface(tf);
-
         // Check whether we're recreating a previously destroyed instance
-        // This should check if the app is coming back from the camera and unpack all needed
-        //data from the bundle
         if (savedInstanceState != null) {
             // Restore value of members from saved state
             mealIdNumber = savedInstanceState.getInt(STATE_MEAL_ID);
@@ -90,11 +77,6 @@ public class InputMealActivity extends ActionBarActivity {
             photos = savedInstanceState.getParcelableArrayList(STATE_PHOTO_LIST);
             photoPath = savedInstanceState.getString(STATE_PHOTO_PATH);
 
-            if (photos.isEmpty()) {
-                hasPhotos = false;
-            } else {
-                hasPhotos = true;
-            }
             setMealToUI();
         } else { //continue create if not from bundle
 
@@ -107,11 +89,6 @@ public class InputMealActivity extends ActionBarActivity {
 
                 //Get all photos and check for photos exist
                 photos = (ArrayList) db.getAllPhotosForMealList(mealIdNumber);
-                if (photos.isEmpty()) {
-                    hasPhotos = false;
-                } else {
-                    hasPhotos = true;
-                }
 
                 setMealToUI();
 
@@ -122,6 +99,10 @@ public class InputMealActivity extends ActionBarActivity {
                 dateBox.setText(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
             }
         }
+    }
+
+    private boolean hasPhotos(){
+        return !photos.isEmpty();
     }
 
     private void setMealDatePicker(final View edittext) {
@@ -157,25 +138,28 @@ public class InputMealActivity extends ActionBarActivity {
 
     }
 
+    private void setButtonFont(int resourceId){
+        Typeface tf = Typeface.createFromAsset(getAssets(),
+                getResources().getString(R.string.default_font_file));
+        Button button = (Button) findViewById(resourceId);
+        button.setTypeface(tf);
+    }
+
     //http://stackoverflow.com/questions/5014219/multiline-edittext-with-done-softinput-action-label-on-2-3
-    //Setting the larger EditText boxes to display wordwrapping while showing a next key
-    private void setNextWithWordWrap(EditText editText) {
+    private void setInputToWordWrapWithNext(int viewResourceId) {
+        EditText editText = (EditText) findViewById(viewResourceId);
         editText.setHorizontallyScrolling(false);
         editText.setMaxLines(Integer.MAX_VALUE);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_input_meal, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.view_journal_menu:
                 Intent viewJournalIntent = new Intent(this, ListOfMealsActivity.class);
@@ -189,7 +173,6 @@ public class InputMealActivity extends ActionBarActivity {
         }
     }
 
-    //Sets pre-existing meal data to UI views (if in edit existing meal mode)
     private void setMealToUI() {
         ((TextView) findViewById(R.id.restaurant_name_input)).setText(meal.getRestaurantName());
         ((TextView) findViewById(R.id.meal_date)).setText(meal.getDateMealEaten());
@@ -202,13 +185,21 @@ public class InputMealActivity extends ActionBarActivity {
         ((TextView) findViewById(R.id.notes_input)).setText(meal.getGeneralNotes());
         ((TextView) findViewById(R.id.dined_with_input)).setText(meal.getDinedWith());
 
+        setAtmosphereRadioButtons();
+        setPriceRadioButtons();
 
-        //set radio buttons
-        //Atmosphere
-        if (meal.getAtmosphere() != null && !meal.getAtmosphere().isEmpty()) {
-            if (meal.getAtmosphere().equals(getString(R.string.atmosphere_1))) {
+        if(hasPhotos()) {
+            setPhotosToGridView();
+        }
+    }
+
+    private void setAtmosphereRadioButtons(){
+        String atmosphere = meal.getAtmosphere();
+
+        if (atmosphere != null && !atmosphere.isEmpty()) {
+            if (atmosphere.equals(getString(R.string.atmosphere_1))) {
                 ((RadioButton) findViewById(R.id.atmosphere_1)).setChecked(true);
-            } else if (meal.getAtmosphere().equals(getString(R.string.atmosphere_2))) {
+            } else if (atmosphere.equals(getString(R.string.atmosphere_2))) {
                 ((RadioButton) findViewById(R.id.atmosphere_2)).setChecked(true);
             } else if (meal.getAtmosphere().equals(getString(R.string.atmosphere_3))) {
                 ((RadioButton) findViewById(R.id.atmosphere_3)).setChecked(true);
@@ -218,25 +209,23 @@ public class InputMealActivity extends ActionBarActivity {
                 ((RadioButton) findViewById(R.id.atmosphere_5)).setChecked(true);
             }
         }
-        //set radio buttons
-        //Price
-        if (meal.getPrice() != null && !meal.getPrice().isEmpty()) {
-            if (meal.getPrice().equals(getString(R.string.price_1))) {
+    }
+
+    private void setPriceRadioButtons() {
+        String price = meal.getPrice();
+
+        if (price != null && !price.isEmpty()) {
+            if (price.equals(getString(R.string.price_1))) {
                 ((RadioButton) findViewById(R.id.price_1)).setChecked(true);
-            } else if (meal.getPrice().equals(getString(R.string.price_2))) {
+            } else if (price.equals(getString(R.string.price_2))) {
                 ((RadioButton) findViewById(R.id.price_2)).setChecked(true);
-            } else if (meal.getPrice().equals(getString(R.string.price_3))) {
+            } else if (price.equals(getString(R.string.price_3))) {
                 ((RadioButton) findViewById(R.id.price_3)).setChecked(true);
-            } else if (meal.getPrice().equals(getString(R.string.price_4))) {
+            } else if (price.equals(getString(R.string.price_4))) {
                 ((RadioButton) findViewById(R.id.price_4)).setChecked(true);
-            } else if (meal.getPrice().equals(getString(R.string.price_5))) {
+            } else if (price.equals(getString(R.string.price_5))) {
                 ((RadioButton) findViewById(R.id.price_5)).setChecked(true);
             }
-        }
-
-        //Set Photos to Grid View, if present
-        if (hasPhotos) {
-            setPhotosToGridView();
         }
     }
 
@@ -253,77 +242,45 @@ public class InputMealActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                            final int position, long arg3) {
 
-                    CharSequence photoOptions[] = new CharSequence[] {
-                            getResources().getString(R.string.add_caption),
-                            getResources().getString(R.string.set_as_primary),
-                            getResources().getString(R.string.remove),
-                            getResources().getString(R.string.cancel)
-                    };
+                CharSequence photoOptions[] = new CharSequence[] {
+                        getResources().getString(R.string.add_caption),
+                        getResources().getString(R.string.set_as_primary),
+                        getResources().getString(R.string.remove),
+                        getResources().getString(R.string.cancel)
+                };
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(InputMealActivity.this);
-                    builder.setTitle(getResources().getString(R.string.photo_options));
-                    builder.setIcon(R.drawable.mbicon);
-                    builder.setItems(photoOptions, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case 0: //Add caption case
-                                    addCaption(position);
-                                    break;
-
-                                case 1: //Set as Primary Case
-                                    /* This is the code for using the actual "Primary Photo" data in
-                                    the DB. As a current shortcut, I have just moved the primary
-                                    photo to the beginning of the list
-                                    //Set all photos in list to Not Primary
-                                    for (Photo photo : photos){
-                                        photo.setPhotoIsPrimary(0);
-                                    }
-
-                                    //Set selected photo as Primary
-                                    photos.get(position).setPhotoIsPrimary(1);
-                                    */
-
-                                    if (position != 0) {
-                                        Photo holderPhoto = photos.get(position);
-                                        photos.remove(position);
-                                        photos.add(0, holderPhoto);
-                                        Toast.makeText(getApplicationContext(),
-                                                getResources().getString(R.string.photo_set_as_primary),
-                                                Toast.LENGTH_SHORT).show();
-
-                                        photoGridAdapter.notifyDataSetChanged();
-                                    }
-
-                                    break;
-
-                                case 2: //Remove case
-                                    photos.remove(position);
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.photo_removed),
-                                            Toast.LENGTH_SHORT).show();
-                                    photoGridAdapter.notifyDataSetChanged();
-                                    break;
-
-                                case 4: //cancel case
-                                    break;
-                            }
+                AlertDialog.Builder builder = new AlertDialog.Builder(InputMealActivity.this);
+                builder.setTitle(getResources().getString(R.string.photo_options));
+                builder.setIcon(R.drawable.mbicon);
+                builder.setItems(photoOptions, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                addCaptionToPhoto(position);
+                                break;
+                            case 1:
+                                setPhotoAsPrimary(position);
+                                photoGridAdapter.notifyDataSetChanged();
+                                break;
+                            case 2:
+                                photos.remove(position);
+                                showToastFromStringResource(R.string.photo_removed);
+                                photoGridAdapter.notifyDataSetChanged();
+                                break;
+                            case 4:
+                                break;
                         }
-                    });
-                    builder.show();
+                    }
+                });
+            builder.show();
             }
         });
     }
 
-//Display dialog box to show caption input and update photo and photo list.
-    private void addCaption(final int position){
-
-        photoUpdateHolder = photos.get(position);
-        // Getting existing caption from photo
-        photoCaptionHolder = photoUpdateHolder.getPhotoCaption();
-
-        // Setting up dialog box to enter caption
-        AlertDialog.Builder builder = new AlertDialog.Builder(InputMealActivity.this);
-        builder.setTitle(getResources().getString(R.string.add_caption));
+    private void addCaptionToPhoto(final int position){
+        AlertDialog.Builder addCaptionDialog = new AlertDialog.Builder(InputMealActivity.this);
+        addCaptionDialog.setTitle(getResources().getString(R.string.add_caption));
 
         // Set up the input
         final EditText input = new EditText(InputMealActivity.this);
@@ -331,58 +288,51 @@ public class InputMealActivity extends ActionBarActivity {
         // Specify the type of input expected
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
                 | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        builder.setView(input);
-        input.setText(photoCaptionHolder);
+        addCaptionDialog.setView(input);
+
+        String existingCaption = photos.get(position).getPhotoCaption();
+        input.setText(existingCaption);
+
         // Set up the buttons
-        builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+        addCaptionDialog.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                photoCaptionHolder = input.getText().toString();
-                photoUpdateHolder.setPhotoCaption(photoCaptionHolder);
-                photos.set(position, photoUpdateHolder);
+                String newCaption = input.getText().toString();
+                photos.get(position).setPhotoCaption(newCaption);
             }
         });
-        builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        addCaptionDialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
-        builder.show();
+
+        addCaptionDialog.show();
     }
 
+    private void setPhotoAsPrimary(final int position){
+        if (position != 0) {
+            Photo holderPhoto = photos.get(position);
+            photos.remove(position);
+            photos.add(0, holderPhoto);
+            showToastFromStringResource(R.string.photo_set_as_primary);
+        } else {
+            showToastFromStringResource(R.string.photo_already_primary);
+        }
+    }
 
-    //Set entered data to meal (pulls data from UI views)
     private void setInputToMeal() {
-        EditText inputText = (EditText) findViewById(R.id.restaurant_name_input);
-        meal.setRestaurantName(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.meal_date);
-        meal.setDateMealEaten(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.location_input);
-        meal.setLocation(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.cuisine_type_input);
-        meal.setCuisineType(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.appetizers_input);
-        meal.setAppetizersNotes(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.main_courses_input);
-        meal.setMainCoursesNotes(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.desserts_input);
-        meal.setDessertsNotes(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.drinks_input);
-        meal.setDrinksNotes(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.notes_input);
-        meal.setGeneralNotes(inputText.getText().toString());
-
-        inputText = (EditText) findViewById(R.id.dined_with_input);
-        meal.setDinedWith(inputText.getText().toString());
+        meal.setRestaurantName(getStringFromViewId(R.id.restaurant_name_input));
+        meal.setDateMealEaten(getStringFromViewId(R.id.meal_date));
+        meal.setLocation(getStringFromViewId(R.id.location_input));
+        meal.setCuisineType(getStringFromViewId(R.id.cuisine_type_input));
+        meal.setAppetizersNotes(getStringFromViewId(R.id.appetizers_input));
+        meal.setMainCoursesNotes(getStringFromViewId(R.id.main_courses_input));
+        meal.setDessertsNotes(getStringFromViewId(R.id.desserts_input));
+        meal.setDrinksNotes(getStringFromViewId(R.id.drinks_input));
+        meal.setGeneralNotes(getStringFromViewId(R.id.notes_input));
+        meal.setDinedWith(getStringFromViewId(R.id.dined_with_input));
 
         //Get Atmosphere radio result
         RadioButton inputRadioButton;
@@ -400,7 +350,11 @@ public class InputMealActivity extends ActionBarActivity {
             inputRadioButton = (RadioButton) findViewById(inputRadioGroup.getCheckedRadioButtonId());
             meal.setPrice(inputRadioButton.getText().toString());
         }
+    }
 
+    private String getStringFromViewId(int editTextViewId){
+        EditText inputText = (EditText) findViewById(editTextViewId);
+        return inputText.getText().toString();
     }
 
     private int numberOfPhotos() {
@@ -411,31 +365,16 @@ public class InputMealActivity extends ActionBarActivity {
         }
     }
 
-
-    //Save button clicked
     public void saveMeal(View view) {
-
-        //Copy input from layout and assign to meal
         setInputToMeal();
 
-        //check if there is data to save
-        if (meal.isDataFilledOut() || numberOfPhotos() > 0) {
+        if (isMealEntryComplete()) {
+            setPrimaryPhotoToMeal();
 
-            //Save photo 1 to primary photo in meal prior to updating meal DB
-            //if no photos, ensure to clear any existing primary photo if was deleted during upgrayedd
-            if (numberOfPhotos() > 0) {
-                meal.setPrimaryPhoto(photos.get(0).getPhotoFilePath());
-            } else {
-                meal.setPrimaryPhoto("");
-            }
-
-            //if mealIdNumber == -1 means that this is a new meal
-            if (mealIdNumber == -1) {
+            if (isNewMeal()){
                 mealIdNumber = db.createMeal(meal);
                 meal.setMealIdNumber(mealIdNumber);
             } else {
-                //If mealIdNumber is NOT -1, then that means a meal exists and the meal is updated
-                //to the existing ID number
                 meal.setMealIdNumber(mealIdNumber);
                 db.updateMeal(meal);
                 //In order to ensure proper update, delete all existing photos for
@@ -446,22 +385,30 @@ public class InputMealActivity extends ActionBarActivity {
             //save photos once meal is saved and mealIdNumber is confirmed
             savePhotos();
 
-            Toast.makeText(this, getResources().getText(R.string.saved_meal_message), Toast.LENGTH_LONG).show();
-
-            //start Details view w/ new or updated meal
-            Intent intent = new Intent(this, MealDetailsActivity.class)
-                    .putExtra(Intent.EXTRA_TEXT, mealIdNumber);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            showToastFromStringResource(R.string.saved_meal_message);
+            openMealDetailActivity();
             finish();
-        } else { //Make a toast if the IDIOT USER tries saving a meal without entering anything
-
-            Toast.makeText(this, getResources().getText(R.string.no_data_no_save_message), Toast.LENGTH_LONG).show();
-
+        } else {
+            showToastFromStringResource(R.string.no_data_no_save_message);
         }
     }
 
-    //save photos via enhanced for loop through photo list
+    private boolean isMealEntryComplete(){
+        return (meal.isDataFilledOut() || numberOfPhotos() > 0);
+    }
+
+    private void setPrimaryPhotoToMeal(){
+        if (numberOfPhotos() > 0) {
+            meal.setPrimaryPhoto(photos.get(0).getPhotoFilePath());
+        } else {
+            meal.setPrimaryPhoto("");
+        }
+    }
+
+    private boolean isNewMeal(){
+        return (mealIdNumber == -1); //if mealIdNumber == -1 means that this is a new meal
+    }
+
     private void savePhotos() {
         if (numberOfPhotos() > 0) {
             for (Photo photo : photos) {
@@ -469,6 +416,12 @@ public class InputMealActivity extends ActionBarActivity {
                 db.createPhoto(photo);
             }
         }
+    }
+
+    private void openMealDetailActivity(){
+        Intent intent = new Intent(this, MealDetailsActivity.class)
+                .putExtra(Intent.EXTRA_TEXT, mealIdNumber);
+        startActivity(intent);
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -495,7 +448,7 @@ public class InputMealActivity extends ActionBarActivity {
         if (numberOfPhotos() < getResources().getInteger(R.integer.max_number_of_photos)) {
             return true;
         } else {
-            Toast.makeText(this, getResources().getString(R.string.cant_add_photos), Toast.LENGTH_LONG).show();
+            showToastFromStringResource(R.string.cant_add_photos);
             return false;
         }
     }
@@ -519,8 +472,7 @@ public class InputMealActivity extends ActionBarActivity {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPicFile));
                     startActivityForResult(takePictureIntent, REQUEST_CAMERA);
                 } else {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_taking_photo),
-                            Toast.LENGTH_LONG).show();
+                    showToastFromStringResource(R.string.error_taking_photo);
                     photoPath = null;
 
                 }
@@ -611,4 +563,7 @@ public class InputMealActivity extends ActionBarActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    private void showToastFromStringResource(int stringResourceId) {
+        Toast.makeText(this, getResources().getString(stringResourceId), Toast.LENGTH_LONG).show();
+    }
 }
