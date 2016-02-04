@@ -52,8 +52,7 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
-        String photoPath;
+        ViewHolder viewHolder = new ViewHolder();
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -64,15 +63,7 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
                 convertView = inflater.inflate(R.layout.layout_meal_list_item, viewGroup, false);
             }
 
-            viewHolder = new ViewHolder();
-
-            viewHolder.restaurantName = (TextView) convertView.findViewById(R.id.restaurant_name_list);
-            viewHolder.date = (TextView) convertView.findViewById(R.id.date_list);
-            viewHolder.location = (TextView) convertView.findViewById(R.id.location_list);
-            viewHolder.dinedWith = (TextView) convertView.findViewById(R.id.dined_with_list);
-            viewHolder.mealIdNumber = (TextView) convertView.findViewById(R.id.id_number_list);
-            viewHolder.mealPicture = (SquareImageView) convertView.findViewById(R.id.meal_picture_list);
-
+            viewHolder = setNewViewHolder(viewHolder, convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -80,21 +71,41 @@ public class MealListAdapter extends BaseAdapter implements Filterable{
 
         Meal meal = mealList.get(position);
 
-        //
+        populateViewWithMealText(viewHolder, meal);
+        setViewImageWithPrimaryImage(viewHolder, meal);
+
+        return convertView;
+    }
+
+    private ViewHolder setNewViewHolder(ViewHolder viewHolder, View convertView){
+        viewHolder.restaurantName = (TextView) convertView.findViewById(R.id.restaurant_name_list);
+        viewHolder.date = (TextView) convertView.findViewById(R.id.date_list);
+        viewHolder.location = (TextView) convertView.findViewById(R.id.location_list);
+        viewHolder.dinedWith = (TextView) convertView.findViewById(R.id.dined_with_list);
+        viewHolder.mealIdNumber = (TextView) convertView.findViewById(R.id.id_number_list);
+        viewHolder.mealPicture = (SquareImageView) convertView.findViewById(R.id.meal_picture_list);
+        return viewHolder;
+    }
+
+    private void populateViewWithMealText(ViewHolder viewHolder, Meal meal){
         contentTest(meal.getRestaurantName(), viewHolder.restaurantName);
         contentTest(meal.getDateMealEaten(), viewHolder.date);
         contentTest(meal.getLocation(), viewHolder.location);
         contentTest(meal.getDinedWith(), viewHolder.dinedWith);
         viewHolder.mealIdNumber.setText(Long.toString(meal.getMealIdNumber()));
+    }
 
-        if (meal.getPrimaryPhoto() != null && !meal.getPrimaryPhoto().isEmpty()) {
-            //Image filepath with "file://" appended for UIL formatting
+    private void setViewImageWithPrimaryImage(ViewHolder viewHolder, Meal meal){
+        String photoPath = "";
+
+        if (hasPrimaryPhoto(meal)){
             photoPath = "file://" + meal.getPrimaryPhoto();
-        } else { photoPath = ""; }
-
+        }
         ImageLoader.getInstance().displayImage(photoPath, viewHolder.mealPicture);
+    }
 
-        return convertView;
+    private boolean hasPrimaryPhoto(Meal meal){
+        return (meal.getPrimaryPhoto() != null && !meal.getPrimaryPhoto().isEmpty());
     }
 
     public void resetData() {
