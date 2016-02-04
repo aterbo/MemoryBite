@@ -47,11 +47,15 @@ public class InputMealActivity extends ActionBarActivity {
     private Meal meal;
     private ArrayList<Photo> photos;
     private int mealIdNumber = -1;
+    private String photoPath;
     static final String STATE_MEAL_ID = "mealIdNumber";
     static final String STATE_MEAL = "meal";
     static final String STATE_PHOTO_LIST = "photoList";
     static final String STATE_PHOTO_PATH = "photoPath";
-    private String photoPath;
+    private static int REQUEST_CAMERA = 1;
+    private static int SELECT_FILE = 2;
+    private static final String JPEG_FILE_PREFIX = "IMG_";
+    private static final String JPEG_FILE_SUFFIX = ".jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +103,7 @@ public class InputMealActivity extends ActionBarActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                String myFormat = "MM/dd/yyyy"; //In which you need put here
+                String myFormat = "MM/dd/yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 TextView edTextView = (TextView) findViewById(R.id.meal_date);
                 edTextView.setText(sdf.format(myCalendar.getTime()));
@@ -126,7 +130,6 @@ public class InputMealActivity extends ActionBarActivity {
         button.setTypeface(tf);
     }
 
-    //http://stackoverflow.com/questions/5014219/multiline-edittext-with-done-softinput-action-label-on-2-3
     private void setInputToWordWrapWithNext(int viewResourceId) {
         EditText editText = (EditText) findViewById(viewResourceId);
         editText.setHorizontallyScrolling(false);
@@ -235,7 +238,6 @@ public class InputMealActivity extends ActionBarActivity {
         }
     }
 
-    //Set photos to grid view
     private void setPhotosToGridView() {
         final PhotoGridAdapter photoGridAdapter = new PhotoGridAdapter(photos, this);
         final FullHeightGridView photoGrid = (FullHeightGridView) findViewById(R.id.meal_input_photo_grid);
@@ -288,10 +290,8 @@ public class InputMealActivity extends ActionBarActivity {
         AlertDialog.Builder addCaptionDialog = new AlertDialog.Builder(InputMealActivity.this);
         addCaptionDialog.setTitle(getResources().getString(R.string.add_caption));
 
-        // Set up the input
         final EditText input = new EditText(InputMealActivity.this);
 
-        // Specify the type of input expected
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
                 | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         addCaptionDialog.setView(input);
@@ -328,7 +328,38 @@ public class InputMealActivity extends ActionBarActivity {
         }
     }
 
-    private void setInputToMeal() {
+    private String getStringFromViewId(int editTextViewId){
+        EditText inputText = (EditText) findViewById(editTextViewId);
+        return inputText.getText().toString();
+    }
+
+    private int numberOfPhotos() {
+        if (hasPhotos()) {
+            return photos.size();
+        } else {
+            return 0;
+        }
+    }
+
+    public void saveMeal(View view) {
+        setUiInputToMeal();
+
+        if (isMealEntryComplete()) {
+            setPrimaryPhotoToMeal();
+            saveNewOrUpdateExistingMeal();
+
+            //save photos once meal is saved and mealIdNumber is confirmed
+            savePhotosToDB();
+
+            showToastFromStringResource(R.string.saved_meal_message);
+            openMealDetailActivity();
+            finish();
+        } else {
+            showToastFromStringResource(R.string.no_data_no_save_message);
+        }
+    }
+
+    private void setUiInputToMeal() {
         meal.setRestaurantName(getStringFromViewId(R.id.restaurant_name_input));
         meal.setDateMealEaten(getStringFromViewId(R.id.meal_date));
         meal.setLocation(getStringFromViewId(R.id.location_input));
@@ -358,49 +389,16 @@ public class InputMealActivity extends ActionBarActivity {
         }
     }
 
-    private String getStringFromViewId(int editTextViewId){
-        EditText inputText = (EditText) findViewById(editTextViewId);
-        return inputText.getText().toString();
-    }
-
-    private int numberOfPhotos() {
-        if (hasPhotos()) {
-            return photos.size();
-        } else {
-            return 0;
-        }
-    }
-
-    public void saveMeal(View view) {
-        setInputToMeal();
-
-        if (isMealEntryComplete()) {
-            setPrimaryPhotoToMeal();
-
-            if (isNewMeal()){
-                mealIdNumber = db.createMeal(meal);
-                meal.setMealIdNumber(mealIdNumber);
-            } else {
-                meal.setMealIdNumber(mealIdNumber);
-                db.updateMeal(meal);
-                //In order to ensure proper update, delete all existing photos for
-                //meal number and replace with new photos
-                db.deleteAllPhotosFromMeal(mealIdNumber);
-            }
-
-            //save photos once meal is saved and mealIdNumber is confirmed
-            savePhotos();
-
-            showToastFromStringResource(R.string.saved_meal_message);
-            openMealDetailActivity();
-            finish();
-        } else {
-            showToastFromStringResource(R.string.no_data_no_save_message);
-        }
-    }
-
     private boolean isMealEntryComplete(){
         return (meal.isDataFilledOut() || numberOfPhotos() > 0);
+    }
+
+    private void saveNewOrUpdateExistingMeal(){
+        if (isNewMeal()){
+            saveAsNewMeal();
+        } else {
+            updateExistingMeal();
+        }
     }
 
     private void setPrimaryPhotoToMeal(){
@@ -411,11 +409,24 @@ public class InputMealActivity extends ActionBarActivity {
         }
     }
 
+    private void saveAsNewMeal(){
+        mealIdNumber = db.createMeal(meal);
+        meal.setMealIdNumber(mealIdNumber);
+    }
+
+    private void updateExistingMeal(){
+        meal.setMealIdNumber(mealIdNumber);
+        db.updateMeal(meal);
+        //In order to ensure proper update, delete all existing photos for
+        //meal number and replace with new photos
+        db.deleteAllPhotosFromMeal(mealIdNumber);
+    }
+
     private boolean isNewMeal(){
         return (mealIdNumber == -1); //if mealIdNumber == -1 means that this is a new meal
     }
 
-    private void savePhotos() {
+    private void savePhotosToDB() {
         if (hasPhotos()) {
             for (Photo photo : photos) {
                 photo.setAssociatedMealIdNumber(mealIdNumber);
@@ -430,36 +441,35 @@ public class InputMealActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    private static int REQUEST_CAMERA = 1;
-    private static int SELECT_FILE = 2;
-    private static final String JPEG_FILE_PREFIX = "IMG_";
-    private static final String JPEG_FILE_SUFFIX = ".jpg";
-
     public void takeNewPhoto(View view){
-        if(canAddMorePhotos()){
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            if (isCameraActivity(takePictureIntent)) {
-                File cameraPicFile = createCameraPictureFile();
-
-                if (cameraPicFile != null) {
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPicFile));
-                    startActivityForResult(takePictureIntent, REQUEST_CAMERA);
-                } else {
-                    showToastFromStringResource(R.string.error_taking_photo);
-                    photoPath = null;
-                }
-            }
+        if(isSpaceForNewPhoto()){
+            takePhotoWithCamera();
         } else {
             showToastFromStringResource(R.string.cant_add_photos);
         }
     }
 
-    private boolean canAddMorePhotos() {
+    private boolean isSpaceForNewPhoto() {
         return numberOfPhotos() < getResources().getInteger(R.integer.max_number_of_photos);
     }
 
-    private boolean isCameraActivity(Intent takePictureIntent){
+    private void takePhotoWithCamera(){
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (isCameraOnDevice(pictureIntent)) {
+            File cameraPictureFile = createCameraPictureFile();
+
+            if (cameraPictureFile != null) {
+                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPictureFile));
+                startActivityForResult(pictureIntent, REQUEST_CAMERA);
+            } else {
+                showToastFromStringResource(R.string.error_taking_photo);
+                photoPath = null;
+            }
+        }
+    }
+
+    private boolean isCameraOnDevice(Intent takePictureIntent){
         return (takePictureIntent.resolveActivity(getPackageManager()) != null);
     }
 
@@ -478,8 +488,7 @@ public class InputMealActivity extends ActionBarActivity {
     }
 
     public void choosePhotoFromGallery(View view){
-        Intent intent = new Intent(
-                Intent.ACTION_PICK,
+        Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(
@@ -488,12 +497,7 @@ public class InputMealActivity extends ActionBarActivity {
     }
 
     private File createImageFile() throws IOException {
-        File folder = getPhotoFolder();
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = JPEG_FILE_PREFIX + timeStamp + JPEG_FILE_SUFFIX;
-
-        return new File(folder, imageFileName);
+        return new File(getPhotoFolder(), getPhotoFileName());
     }
 
     private File getPhotoFolder(){
@@ -507,6 +511,11 @@ public class InputMealActivity extends ActionBarActivity {
             }
         }
         return folder;
+    }
+
+    private String getPhotoFileName(){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return JPEG_FILE_PREFIX + timeStamp + JPEG_FILE_SUFFIX;
     }
 
     //Handling return from camera or gallery
@@ -542,7 +551,6 @@ public class InputMealActivity extends ActionBarActivity {
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 
-        // String picturePath contains the path of selected Image
         photoPath = cursor.getString(columnIndex);
         cursor.close();
     }
