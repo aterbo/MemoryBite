@@ -20,16 +20,7 @@ public class GlobalState extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //gets 8dp in pixels so that it can be fed to UIL for rounding corners of images
-        //REMOVED ROUNDED BITMAPS DUE TO DISTORTED IMAGES
-        // .displayer(new RoundedBitmapDisplayer(px))
-        /*
-        Resources r = getResources();
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, r.getDisplayMetrics());
-        */
-
         //Implimentation of Universal Image Loader
-        // Create global configuration and initialize ImageLoader with this config
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.mbicon)
                 .showImageForEmptyUri(R.drawable.mbicon)
@@ -41,7 +32,6 @@ public class GlobalState extends Application {
                 .considerExifParams(true)
                 .build();
 
-        // Create global configuration and initialize ImageLoader with this configuration
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions)
                 .diskCacheSize(10 * 1024 * 1024)
