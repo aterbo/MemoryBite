@@ -27,6 +27,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
     compile files('libs/universal-image-loader-1.9.4.jar')
-    compile 'com.google.android.gms:play-services-ads:8.1.0'
+    compile 'com.google.android.gms:play-services-ads:9.0.0'
     compile files('libs/opencsv-3.6.jar')
 }
+
+apply plugin: 'com.google.gms.google-services'

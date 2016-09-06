@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "454348375184",
+    "firebase_url": "https://memory-bite.firebaseio.com",
+    "project_id": "memory-bite",
+    "storage_bucket": "memory-bite.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454348375184:android:01638d299fdafbcc",
+        "android_client_info": {
+          "package_name": "aterbo.MemoryBite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454348375184-fk3q8tucvlf8cqm2o3g89i7jl6kjsmuk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgh2od0axXNFOigVKSKPbM5IEd6m0_h2g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454348375184:android:fd337c0cbe2a9a35",
+        "android_client_info": {
+          "package_name": "aterbo.MemoryBite.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454348375184-fk3q8tucvlf8cqm2o3g89i7jl6kjsmuk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgh2od0axXNFOigVKSKPbM5IEd6m0_h2g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
