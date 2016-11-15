@@ -356,19 +356,19 @@ public class DBHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     String arrStr[] ={cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable._ID)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_RESTAURANT_NAME)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_LOCATION)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DATE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_CUISINE_TYPE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_APPETIZERS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_MAIN_COURSES)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DESSERTS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DRINKS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_GENERAL_NOTES)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_DINED_WITH)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_ATMOSPHERE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_PRICE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBContract.MealDBTable.COLUMN_PRIMARY_PHOTO))};
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_RESTAURANT_NAME),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_DATE),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_LOCATION),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_CUISINE_TYPE),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_APPETIZERS),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_MAIN_COURSES),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_DESSERTS),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_DRINKS),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_GENERAL_NOTES),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_DINED_WITH),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_ATMOSPHERE),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_PRICE),
+                    getStringFromCursorWithoutCommas(cursor, DBContract.MealDBTable.COLUMN_PRIMARY_PHOTO)};
 
                     csvWrite.writeNext(arrStr, true);
                 } while (cursor.moveToNext());
@@ -383,6 +383,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
         return destinationFile;
+    }
+
+    private String getStringFromCursorWithoutCommas(Cursor cursor, String ColumnReference) {
+        String currentString = cursor.getString(cursor.getColumnIndexOrThrow(ColumnReference));
+        if (currentString != null && !currentString.isEmpty()) {
+            return currentString.replace(",", "");
+        } else {
+            return "";
+        }
+
     }
     /////////////////////////////////////////////
 
