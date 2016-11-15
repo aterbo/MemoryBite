@@ -1,10 +1,13 @@
 package aterbo.MemoryBite;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 
 import com.nostra13.universalimageloader.cache.disc.impl.ext.LruDiskCache;
+import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LargestLimitedMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -27,6 +30,7 @@ public class GlobalState extends Application {
                 .showImageOnFail(R.drawable.mbicon)
                 .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
                 .delayBeforeLoading(50)
+                .bitmapConfig(Bitmap.Config.RGB_565)
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
                 .considerExifParams(true)
@@ -34,7 +38,9 @@ public class GlobalState extends Application {
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions)
-                .diskCacheSize(10 * 1024 * 1024)
+                .denyCacheImageMultipleSizesInMemory()
+                .diskCacheSize(20 * 1024 * 1024)
+                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
                 .build();
 
         ImageLoader.getInstance().init(config);
